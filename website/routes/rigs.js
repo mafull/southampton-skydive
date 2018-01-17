@@ -1,24 +1,28 @@
 var express = require("express");
 var router = express.Router();
 
+var middleware = require("../middleware");
+
 var Rig = require("../models/rig");
 
 // Rigs index
 router.get("/", function(req, res) {
 	Rig.find({}, function(err, rigs) {
-		if(!err) {
-			res.render("rigs/index", {rigs: rigs});
-		}		
+		if(err) {
+			return;
+		}	
+
+		res.render("rigs/index", {rigs: rigs});	
 	});	
 });
 
 // Rigs new
-router.get("/new", isLoggedIn, function(req, res) {
+router.get("/new", middleware.isLoggedIn, function(req, res) {
 	res.render("rigs/new");
 });
 
 // Rigs create
-router.post("/", isLoggedIn, function(req, res) {
+router.post("/", middleware.isLoggedIn, function(req, res) {
 	var rig = {
 		name: req.body.name,
 		main: req.body.main,
@@ -26,43 +30,43 @@ router.post("/", isLoggedIn, function(req, res) {
 	};
 
 	Rig.create(rig, function(err, rig) {
-		if(!err) {
-			res.redirect("/rigs");
-		} else {
+		if(err) {
 			console.log(err);
-			res.redirect("/rigs");
+			return res.redirect("back");
 		}
+
+		res.redirect("/rigs");
 	});	
 });
 
 // Rigs show
 router.get("/:id", function(req, res) {
 	Rig.findById(req.params.id, function(err, foundRig) {
-		if(!err) {
-			res.render("rigs/show", {rig: foundRig});
-		} else {
+		if(err) {
 			// ALSO SEND ERROR MESSAGE
-			res.redirect("/rigs");
+			return res.redirect("back");
 		}
+
+		res.render("rigs/show", {rig: foundRig});			
 	});
 	
 });
 
 // Rigs edit
-router.get("/:id/edit", isLoggedIn, function(req, res) {
+router.get("/:id/edit", middleware.isLoggedIn, function(req, res) {
 	Rig.findById(req.params.id, function(err, foundRig) {
-		if(!err) {
-			res.render("rigs/edit", {rig: foundRig});
-		} else {
+		if(err) {
 			// ALSO SEND ERROR MESSAGE
-			res.redirect("/rigs");
+			return res.redirect("back");			
 		}
+			
+		res.render("rigs/edit", {rig: foundRig});
 	});
 	
 });
 
 // Rigs update
-router.put("/:id", isLoggedIn, function(req, res) {
+router.put("/:id", middleware.isLoggedIn, function(req, res) {
 	var rig = {
 		name: req.body.name,
 		main: req.body.main,
@@ -70,32 +74,25 @@ router.put("/:id", isLoggedIn, function(req, res) {
 	};
 
 	Rig.findByIdAndUpdate(req.params.id, rig, function(err, updatedRig) {
-		if(!err) {
-			res.redirect("/rigs/" + req.params.id);
-		} else {
+		if(err) {
 			// ALSO SEND ERROR MESSAGE
-			res.redirect("/rigs");
+			return res.redirect("back");
 		}
+		
+		res.redirect("/rigs/" + req.params.id);
 	});	
 });
 
 // Rigs destroy
-router.delete("/:id", isLoggedIn, function(req, res) {
+router.delete("/:id", middleware.isLoggedIn, function(req, res) {
 	Rig.findByIdAndRemove(req.params.id, function(err) {
-		if(!err) {
-			res.redirect("/rigs");
-		} else {
+		if(err) {
 			// ALSO SEND ERROR MESSAGE
-			res.redirect("/rigs");
+			return res.redirect("back");			
 		}
+		
+		res.redirect("/rigs");
 	});
 });
-
-function isLoggedIn(req, res, next) {
-	if(req.isAuthenticated()) {
-		return next();
-	}
-	res.redirect("/login");
-}
 
 module.exports = router;

@@ -1,47 +1,45 @@
 <% include ../partials/header %>
 
-<div class="ui main text container segment">
-	<div class="ui huge header">Rig booking</div>
-	<p>Book out a rig and view current rig status</p>
+<div class="ui huge header">Rig booking</div>
+<p>Book out a rig and view current rig status</p>
 
-	<div class="ui stackable grid container">
-		<% rigs.forEach(function(rig) { %>
-			<div class="four wide column">
-				<div class="item">
-					<div class="content">
-						<a class="ui huge header" href="/rigs/<%= rig._id %>"><%= rig.name %></a>
-						<div class="meta">
-							<span><%= rig.main.model + " " + rig.main.size %></span>
-						</div>
-						<div class="description">
+<div class="ui stackable grid container">
+	<% rigs.forEach(function(rig) { %>
+		<div class="four wide column">
+			<div class="item">
+				<div class="content">
+					<a class="ui huge header" href="/rigs/<%= rig._id %>"><%= rig.name %></a>
+					<div class="meta">
+						<span><%= rig.main.model + " " + rig.main.size %></span>
+					</div>
+					<div class="description">
 
-						</div>
-						<div class="extra">
-							<!-- <a class="ui floated basic blue button" href="/rigs/<%= rig._id %>">Select</a> -->
-						</div>
+					</div>
+					<div class="extra">
+						<!-- <a class="ui floated basic blue button" href="/rigs/<%= rig._id %>">Select</a> -->
 					</div>
 				</div>
 			</div>
-		<% }); %>
+		</div>
+	<% }); %>
 
-		<% if(currentUser && currentUser.canEditRigs) { %>
-			<div class="four wide column">
-				<div class="item">
-					<div class="content">
-						<div class="meta">
-							<span></span>
-						</div>
-						<div class="description">
+	<% if(currentUser && currentUser.canEditRigs) { %>
+		<div class="four wide column">
+			<div class="item">
+				<div class="content">
+					<div class="meta">
+						<span></span>
+					</div>
+					<div class="description">
 
-						</div>
-						<div class="extra">
-							<a class="ui big green button" href="/rigs/new">Add rig</a>
-						</div>
+					</div>
+					<div class="extra">
+						<a class="ui big green button" href="/rigs/new">Add rig</a>
 					</div>
 				</div>
 			</div>
-		<% } %>
-	</div>
+		</div>
+	<% } %>
 </div>
 
 <% include ../partials/footer %>

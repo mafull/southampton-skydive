@@ -1,7 +1,8 @@
 var express 	= require("express"),
 	passport 	= require("passport");
-
 var router = express.Router();
+
+var middleware = require("../middleware");
 
 var User = require("../models/user");
 
@@ -23,10 +24,10 @@ router.post("/register", function(req, res) {
 	}
 	console.log(newUser);
 
-	User.register(newUser, newUser.password, function(err, user) {
+	User.register(newUser, req.body.password, function(err, user) {
 		if(err) {
 			console.log(err);
-			return res.render("register");
+			return res.render("back");
 		}
 
 		passport.authenticate("local")(req, res, function() {
@@ -44,7 +45,7 @@ router.post("/login",
 		"local", 
 		{
 			successRedirect: "/",
-			failureRedirect: "/login"
+			failureRedirect: "back"
 		}
 	),
 	function(req, res) {
@@ -55,13 +56,5 @@ router.get("/logout", function(req, res) {
 	req.logout();
 	res.redirect("/");
 });
-
-
-function isLoggedIn(req, res, next) {
-	if(req.isAuthenticated()) {
-		return next();
-	}
-	res.redirect("/login");
-}
 
 module.exports = router;

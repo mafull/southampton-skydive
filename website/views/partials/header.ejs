@@ -34,3 +34,14 @@
 			</div>
 		</div>
 	</div>
+
+<div class="ui main text container segment">
+	<% if(message.error && message.error.length) { %>
+		<div class="ui error message"><%= message.error %></div>
+	<% } %>
+	<% if(message.success && message.success.length) { %>
+		<div class="ui positive message"><%= message.success %></div>
+	<% } %>
+	<% if(message.info && message.info.length) { %>
+		<div class="ui info message"><%= message.info %></div>
+	<% } %>

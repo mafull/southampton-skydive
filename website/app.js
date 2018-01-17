@@ -3,6 +3,7 @@ var express 				= require("express"),
 	bodyParser 				= require("body-parser"),
 	request 				= require("request"),
 	mongoose 				= require("mongoose"),
+	connectFlash			= require("connect-flash"),
 	methodOverride 			= require("method-override"),
 	passport				= require("passport"),
 	LocalStrategy			= require("passport-local"),
@@ -39,9 +40,15 @@ app.use(express.static("public"));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(expressSanitizer());
 app.use(methodOverride("_method"));
+app.use(connectFlash());
 
 app.use(function(req, res, next) {
 	res.locals.currentUser = req.user;
+	res.locals.message = {
+		error: req.flash("error"),
+		success: req.flash("success"),
+		info: req.flash("info")
+	};
 	next();
 });
 

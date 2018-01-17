@@ -1,48 +1,45 @@
 <% include ../partials/header %>
 
-<div class="ui main text container segment">
-	<header class="ui huge header">Edit <%= rig.name %></header>
+<header class="ui huge header">Edit <%= rig.name %></header>
 
-	<form action="/rigs/<%= rig._id %>?_method=PUT" method="POST" class="ui form">
-		<div class="field required">
-			<label>Rig name</label>
-			<input type="text" name="name" value="<%= rig.name %>">
+<form action="/rigs/<%= rig._id %>?_method=PUT" method="POST" class="ui form">
+	<div class="field required">
+		<label>Rig name</label>
+		<input type="text" name="name" value="<%= rig.name %>">
+	</div>
+	<div class="inline fields">
+		<label>Main canopy</label>
+		<div class="field">
+			<label>Manufacturer</label>
+			<input type="text" name="main[make]" value="<%= rig.main.make %>">
 		</div>
-		<div class="inline fields">
-			<label>Main canopy</label>
-			<div class="field">
-				<label>Manufacturer</label>
-				<input type="text" name="main[make]" value="<%= rig.main.make %>">
-			</div>
-			<div class="field">
-				<label>Model</label>
-				<input type="text" name="main[model]" value="<%= rig.main.model %>" placeholder="Model">
-			</div>
-			<div class="field">
-				<label>Size (ft<sup>2</sup>)</label>
-				<input type="text" name="main[size]" value="<%= rig.main.size %>">
-			</div>
+		<div class="field">
+			<label>Model</label>
+			<input type="text" name="main[model]" value="<%= rig.main.model %>" placeholder="Model">
 		</div>
-		<div class="inline fields">
-			<label>Reserve canopy</label>
-			<div class="field">
-				<label>Manufacturer</label>
-				<input type="text" name="reserve[make]" value="<%= rig.reserve.make %>">
-			</div>
-			<div class="field">
-				<label>Model</label>
-				<input type="text" name="reserve[model]" value="<%= rig.reserve.model %>">
-			</div>
-			<div class="field">
-				<label>Size (ft<sup>2</sup>)</label>
-				<input type="text" name="reserve[size]" value="<%= rig.reserve.size %>">
-			</div>
+		<div class="field">
+			<label>Size (ft<sup>2</sup>)</label>
+			<input type="text" name="main[size]" value="<%= rig.main.size %>">
 		</div>
-		<button type="submit" class="ui fluid blue big button">Save</button>
-		<button type="reset" class="ui blue inverted button">Clear</button>
-		<a href="/rigs" class="ui blue inverted button">Go back</a>
-	</form>
-
-</div>
+	</div>
+	<div class="inline fields">
+		<label>Reserve canopy</label>
+		<div class="field">
+			<label>Manufacturer</label>
+			<input type="text" name="reserve[make]" value="<%= rig.reserve.make %>">
+		</div>
+		<div class="field">
+			<label>Model</label>
+			<input type="text" name="reserve[model]" value="<%= rig.reserve.model %>">
+		</div>
+		<div class="field">
+			<label>Size (ft<sup>2</sup>)</label>
+			<input type="text" name="reserve[size]" value="<%= rig.reserve.size %>">
+		</div>
+	</div>
+	<button type="submit" class="ui fluid blue big button">Save</button>
+	<button type="reset" class="ui blue inverted button">Clear</button>
+	<a href="/rigs" class="ui blue inverted button">Go back</a>
+</form>
 
 <% include ../partials/footer %>

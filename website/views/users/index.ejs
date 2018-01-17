@@ -1,28 +1,24 @@
 <% include ../partials/header %>
 
-<div class="ui main text container segment">
-	<div class="ui huge header">Users</div>
-	<p>View all registered users</p>
+<div class="ui huge header">Users</div>
+<p>View all registered users</p>
 
-	<table class="ui celled table">
-		<thead>
+<table class="ui celled table">
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Email</th>
+		</tr>	
+	</thead>
+	<tbody>
+		<% users.forEach(function(user) { %>
 			<tr>
-				<th>Name</th>
-				<th>Email</th>
-			</tr>	
-		</thead>
-		<tbody>
-			<% users.forEach(function(user) { %>
-				<tr>
-					<td><%= user.forename + " " + user.surname %></td>
-					<td><%= user.email %></td>
-				</tr>
-			<% }); %>
-		</tbody>
-		
-	</table>
-
-
-</div>
+				<td><%= user.forename + " " + user.surname %></td>
+				<td><%= user.email %></td>
+			</tr>
+		<% }); %>
+	</tbody>
+	
+</table>
 
 <% include ../partials/footer %>
