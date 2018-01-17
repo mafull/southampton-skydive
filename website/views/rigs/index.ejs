@@ -23,7 +23,7 @@
 		</div>
 	<% }); %>
 
-	<% if(currentUser && currentUser.canEditRigs) { %>
+	<% if(currentUser && (currentUser.isAdmin || currentUser.canEditRigs)) { %>
 		<div class="four wide column">
 			<div class="item">
 				<div class="content">
