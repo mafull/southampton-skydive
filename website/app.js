@@ -47,7 +47,7 @@ app.use(function(req, res, next) {
 
 // ----- RESTful routes -----
 app.use("/", authRoutes);
-app.use("/user", userRoutes);
+app.use("/users", userRoutes);
 app.use("/rigs", rigRoutes);
 
 
