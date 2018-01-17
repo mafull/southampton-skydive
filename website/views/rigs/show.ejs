@@ -13,10 +13,10 @@
 	<div class="ui top attached segment">
 		<div class="item">
 			<header class="ui header">Main</header>
-			<p><%= rig.main.make + " " + rig.main.model + " " + rig.main.size %></p>
+			<p><%= rig.main.make %> <strong><%= rig.main.model + " " + rig.main.size %></strong></p>
 			
 			<header class="ui header">Reserve</header>
-			<p><%= rig.reserve.make + " " + rig.reserve.model + " " +rig.reserve.size %></p>
+			<p><%= rig.reserve.make %> <strong><%= rig.reserve.model + " " + rig.reserve.size %></strong></p>
 		</div>
 	</div>
 
@@ -24,7 +24,7 @@
 
 	<a href="/rigs" class="ui blue inverted button">Go back</a>
 
-	<% if(currentUser) { %>
+	<% if(currentUser && currentUser.canEditRigs) { %>
 		<a href="/rigs/<%= rig.id %>/edit" class="ui yellow button">Edit</a>
 		<form action="/rigs/<%= rig._id %>?_method=DELETE" method="POST">
 			<button class="ui negative button ">Delete</button>

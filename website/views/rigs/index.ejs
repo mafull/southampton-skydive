@@ -4,8 +4,6 @@
 	<div class="ui huge header">Rig booking</div>
 	<p>Book out a rig and view current rig status</p>
 
-	<a href="/rigs/new">New rig</a>
-
 	<div class="ui stackable grid container">
 		<% rigs.forEach(function(rig) { %>
 			<div class="four wide column">
@@ -19,14 +17,14 @@
 
 						</div>
 						<div class="extra">
-							<a class="ui floated basic blue button" href="/rigs/<%= rig._id %>">Select</a>
+							<!-- <a class="ui floated basic blue button" href="/rigs/<%= rig._id %>">Select</a> -->
 						</div>
 					</div>
 				</div>
 			</div>
 		<% }); %>
 
-		<% if(currentUser) { %>
+		<% if(currentUser && currentUser.canEditRigs) { %>
 			<div class="four wide column">
 				<div class="item">
 					<div class="content">
