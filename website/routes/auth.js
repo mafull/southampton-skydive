@@ -10,7 +10,12 @@ router.get("/register", function(req, res) {
 });
 
 router.post("/register", function(req, res) {
-	User.register(req.body.user, req.body.password, function(err, user) {
+	var newUser = req.body.user;
+	if(newUser.username == "admin") {
+		newUser.isAdmin = true;
+	}
+
+	User.register(newUser, req.body.password, function(err, user) {
 		if(err) {
 			console.log(err);
 			return res.render("register");
