@@ -10,6 +10,7 @@ var express 				= require("express"),
 
 // Require routes
 var authRoutes 	= require("./routes/auth"),
+	userRoutes	= require("./routes/users"),
 	rigRoutes	= require("./routes/rigs");
 
 // Require models
@@ -46,7 +47,9 @@ app.use(function(req, res, next) {
 
 // ----- RESTful routes -----
 app.use("/", authRoutes);
+app.use("/user", userRoutes);
 app.use("/rigs", rigRoutes);
+
 
 // Index
 app.get("/", function(req, res) {
