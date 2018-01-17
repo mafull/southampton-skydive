@@ -1,5 +1,6 @@
 var express 				= require("express"),
 	expressSanitizer 		= require("express-sanitizer"),
+	expressValidator		= require("express-validator"),
 	bodyParser 				= require("body-parser"),
 	request 				= require("request"),
 	mongoose 				= require("mongoose"),
@@ -60,7 +61,7 @@ app.use("/rigs", rigRoutes);
 
 // Index
 app.get("/", function(req, res) {
-	res.render("home");
+	res.render("landing");
 });
 
 // Weather
@@ -86,7 +87,7 @@ app.get("/weather", function(req, res) {
 
 app.get("*", function(req, res) {
 	//res.send("Page not found!");
-	res.render("home");
+	res.render("landing");
 });
 
 

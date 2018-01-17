@@ -9,7 +9,7 @@ var User = require("../models/user");
 
 // Index
 router.get("/", function(req, res) {
-	res.render("home");
+	res.render("landing");
 });
 
 
