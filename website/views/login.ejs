@@ -3,10 +3,17 @@
 <div class="ui main text container segment">
 	<div class="ui huge header">Log in</div>
 
-	<form action="/login" method="POST">
-		<input type="text" name="username" placeholder="Username">
-		<input type="password" name="password" placeholder="********">
-		<button>Log in</button>
+	<form action="/login" method="POST" class="ui form">
+		<div class="field required">
+			<label>Username</label>
+			<input type="text" name="username" placeholder="Username" autofocus>
+		</div>
+		<div class="field required">
+			<label>Password</label>
+			<input type="password" name="password" placeholder="********">
+		</div>	
+		
+		<button class="ui fluid blue big button">Log in</button>
 	</form>
 </div>
 
