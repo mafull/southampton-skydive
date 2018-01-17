@@ -9,7 +9,7 @@ var express 				= require("express"),
 	passportLocalMongoose 	= require("passport-local-mongoose");
 
 // Require routes
-var authRoutes 	= require("./routes/auth"),
+var indexRoutes = require("./routes/index"),
 	userRoutes	= require("./routes/users"),
 	rigRoutes	= require("./routes/rigs");
 
@@ -46,7 +46,7 @@ app.use(function(req, res, next) {
 });
 
 // ----- RESTful routes -----
-app.use("/", authRoutes);
+app.use(indexRoutes);
 app.use("/users", userRoutes);
 app.use("/rigs", rigRoutes);
 

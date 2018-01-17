@@ -5,17 +5,25 @@ var router = express.Router();
 
 var User = require("../models/user");
 
+// Index
+router.get("/", function(req, res) {
+	res.render("home");
+});
+
+// New
 router.get("/register", function(req, res) {
 	res.render("register");
 });
 
+// Create
 router.post("/register", function(req, res) {
 	var newUser = req.body.user;
 	if(newUser.username == "admin") {
 		newUser.isAdmin = true;
 	}
+	console.log(newUser);
 
-	User.register(newUser, req.body.password, function(err, user) {
+	User.register(newUser, newUser.password, function(err, user) {
 		if(err) {
 			console.log(err);
 			return res.render("register");
