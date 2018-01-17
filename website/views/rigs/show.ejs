@@ -24,10 +24,12 @@
 
 	<a href="/rigs" class="ui blue inverted button">Go back</a>
 
-	<a href="/rigs/<%= rig.id %>/edit">Edit</a>
-	<form action="/rigs/<%= rig._id %>?_method=DELETE" method="POST">
-		<button class="ui negative button">Delete</button>
-	</form>
+	<% if(currentUser) { %>
+		<a href="/rigs/<%= rig.id %>/edit" class="ui yellow button">Edit</a>
+		<form action="/rigs/<%= rig._id %>?_method=DELETE" method="POST">
+			<button class="ui negative button ">Delete</button>
+		</form>
+	<% } %>
 </div>
 
 <% include ../partials/footer %>
