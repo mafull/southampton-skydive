@@ -4,46 +4,52 @@ var router = express.Router();
 var middleware = require("../middleware");
 
 var Rig = require("../models/rig");
+var User = require("../models/rig");
 
-// Rigs index
+
+// Index
 router.get("/", function(req, res) {
 	Rig.find({}, function(err, rigs) {
 		if(err) {
-			return;
+			// DO SOMETHING
 		}	
 
 		res.render("rigs/index", {rigs: rigs});	
 	});	
 });
 
-// Rigs new
+
+// New
 router.get("/new", middleware.isLoggedIn, function(req, res) {
 	res.render("rigs/new");
 });
 
-// Rigs create
+
+// Create
 router.post("/", middleware.isLoggedIn, function(req, res) {
 	var rig = {
 		name: req.body.name,
 		main: req.body.main,
 		reserve: req.body.reserve
-	};
+	};	
 
 	Rig.create(rig, function(err, rig) {
 		if(err) {
-			console.log(err);
+			req.flash("error", err.message);
 			return res.redirect("back");
 		}
 
+		req.flash("success", "New rig created successfully");
 		res.redirect("/rigs");
-	});	
+	});
 });
 
-// Rigs show
+
+// Show
 router.get("/:id", function(req, res) {
-	Rig.findById(req.params.id, function(err, foundRig) {
+	Rig.findById(req.params.id).populate("approvedUsers").exec(function(err, foundRig) {
 		if(err) {
-			// ALSO SEND ERROR MESSAGE
+			req.flash("error", err.message);
 			return res.redirect("back");
 		}
 
@@ -52,12 +58,13 @@ router.get("/:id", function(req, res) {
 	
 });
 
-// Rigs edit
+
+// Edit
 router.get("/:id/edit", middleware.isLoggedIn, function(req, res) {
 	Rig.findById(req.params.id, function(err, foundRig) {
 		if(err) {
-			// ALSO SEND ERROR MESSAGE
-			return res.redirect("back");			
+			req.flash("error", err.message);
+			return res.redirect("back");
 		}
 			
 		res.render("rigs/edit", {rig: foundRig});
@@ -65,32 +72,37 @@ router.get("/:id/edit", middleware.isLoggedIn, function(req, res) {
 	
 });
 
-// Rigs update
+
+// Update
 router.put("/:id", middleware.isLoggedIn, function(req, res) {
 	var rig = {
 		name: req.body.name,
+		modified: Date.now(),
 		main: req.body.main,
 		reserve: req.body.reserve
 	};
 
 	Rig.findByIdAndUpdate(req.params.id, rig, function(err, updatedRig) {
 		if(err) {
-			// ALSO SEND ERROR MESSAGE
+			req.flash("error", err.message);
 			return res.redirect("back");
 		}
 		
+		req.flash("success", "Rig successfully updated");
 		res.redirect("/rigs/" + req.params.id);
 	});	
 });
 
-// Rigs destroy
+
+// Destroy
 router.delete("/:id", middleware.isLoggedIn, function(req, res) {
 	Rig.findByIdAndRemove(req.params.id, function(err) {
 		if(err) {
-			// ALSO SEND ERROR MESSAGE
+			req.flash("error", err.message);
 			return res.redirect("back");			
 		}
 		
+		req.flash("success", "Rig successfully deleted");
 		res.redirect("/rigs");
 	});
 });

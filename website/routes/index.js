@@ -6,15 +6,18 @@ var middleware = require("../middleware");
 
 var User = require("../models/user");
 
+
 // Index
 router.get("/", function(req, res) {
 	res.render("home");
 });
 
+
 // New
 router.get("/register", function(req, res) {
 	res.render("register");
 });
+
 
 // Create
 router.post("/register", function(req, res) {
@@ -22,12 +25,11 @@ router.post("/register", function(req, res) {
 	if(newUser.username == "admin") {
 		newUser.isAdmin = true;
 	}
-	console.log(newUser);
 
 	User.register(newUser, req.body.password, function(err, user) {
 		if(err) {
-			console.log(err);
-			return res.render("back");
+			req.flash("error", err.message);
+			return res.redirect("/register");
 		}
 
 		passport.authenticate("local")(req, res, function() {
@@ -36,21 +38,26 @@ router.post("/register", function(req, res) {
 	});
 });
 
+
 router.get("/login", function(req, res) {
 	res.render("login");
 });
+
 
 router.post("/login",
 	passport.authenticate(
 		"local", 
 		{
 			successRedirect: "/",
-			failureRedirect: "back"
+			failureRedirect: "/login",
+			successFlash: "Logged in successfully",
+			failureFlash: "Invalid username or password!"
 		}
 	),
 	function(req, res) {
 
 });
+
 
 router.get("/logout", function(req, res) {
 	req.logout();
