@@ -67,7 +67,6 @@ router.post("/register", [
 
 		User.register(newUser, req.body.password, function(err, user) {
 			if(err) {
-				console.log(err);
 				if(err.name === "UserExistsError") {
 					err.message = "A user with the given email address is already registered";
 				}
