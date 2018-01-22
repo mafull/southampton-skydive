@@ -1,15 +1,17 @@
 var mongoose 				= require("mongoose"),
 	passportLocalMongoose 	= require("passport-local-mongoose");
 
+var Rig = require("./rig");
+
 var userSchema = new mongoose.Schema({
-	// Passport required
+	// General info
 	username: String,
 	password: String,
-
-	// Additional info
 	email: String,
 	forename: String,
 	surname: String,
+	created: {type: Date, default: Date.now},
+	modified: {type: Date, default: Date.now},
 
 	// User level
 	isAdmin: {type: Boolean, default: false},
@@ -21,12 +23,13 @@ var userSchema = new mongoose.Schema({
 	// Privileges
 	canEditRigs: {type: Boolean, default: false},
 
-	// approvedRigs: [
-	// 	{
-	// 		type: mongoose.Schema.Types.ObjectId,
-	// 		ref: "Rig"
-	// 	}
-	// ]
+	// Rigs that the user is approved to use
+	approvedRigs: [
+		{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: "Rig"
+		}
+	]
 });
 userSchema.plugin(passportLocalMongoose);
 

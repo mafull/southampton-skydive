@@ -1,13 +1,14 @@
 var mongoose = require("mongoose");
 
-//var User = require("../models/user");
+var User = require("./user");
 
 var rigSchema = new mongoose.Schema({
+	// General info
 	name: String,
-
 	created: {type: Date, default: Date.now},
 	modified: {type: Date, default: Date.now},
 
+	// Equipment
 	main: {
 		make: {type: String, default: ""},
 		model: {type: String, default: ""},
@@ -19,6 +20,7 @@ var rigSchema = new mongoose.Schema({
 		size: {type: Number, default: 0}
 	},
 
+	// Users that are allowed to use the rig
 	approvedUsers: [
 		{
 			type: mongoose.Schema.Types.ObjectId,
