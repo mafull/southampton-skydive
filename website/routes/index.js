@@ -45,11 +45,6 @@ router.post("/register", [
 		.trim()
 		.normalizeEmail(),
 
-	// Username
-	check("user[username]", "Please enter a username that is at least 5 characters long")
-		// Check it is of the required format
-		.isLength({min: 5}),
-
 	// Password
 	check("password", "Please enter a password that is at least 5 characters long and includes a number")
 		// Check it is of the required format
@@ -64,7 +59,9 @@ router.post("/register", [
 		}
 
 		var newUser = req.body.user;
-		if(newUser.username == "admin") {
+		newUser.username = newUser.email;
+
+		if(newUser.forename == "UoS" && newUser.surname == "Admin") {
 			newUser.isAdmin = true;
 		}
 
