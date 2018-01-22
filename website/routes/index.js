@@ -6,7 +6,7 @@ var express 				= require("express"),
 var router = express.Router();
 
 const {check, validationResult} = require("express-validator/check");
-const {matchedData, sanitize} = require("express-validator/filter");
+const {sanitize} = require("express-validator/filter");
 
 var middleware = require("../middleware");
 
@@ -45,7 +45,7 @@ router.get("/", function(req, res) {
 
 // New
 router.get("/register", function(req, res) {
-	res.render("register");
+	res.render("register", {user: null});
 });
 
 
@@ -56,38 +56,39 @@ router.post("/register", [
 		// Check it exists and only contains letters
 		.isLength({min: 1}).withMessage("Please enter your first name")
 		.isAlpha().withMessage("First name must only contain letters"),
+	sanitize("user[forename]").trim().escape(),
 
 	// Surname
 	check("user[surname]")
 		// Check it exists and only contains letters
 		.isLength({min: 1}).withMessage("Please enter your surname")
 		.isAlpha().withMessage("Surname must only contain letters"),
+	sanitize("user[surname]").trim().escape(),
 
 	// Email
 	check("user[email]", "Please enter a valid email address")
 		// Check it exists and is of a valid email address format
 		.isLength({min: 1})
-		.isEmail()
-
-		.trim()
-		.normalizeEmail(),
+		.isEmail(),
+	sanitize("user[email]").trim().escape().normalizeEmail(),
 
 	// Password
 	check("password", "Please enter a password that is at least 5 characters long and includes a number")
 		// Check it is of the required format
 		.isLength({min: 5})
-		.matches(/\d/)
+		.matches(/\d/),
 
 	], (req, res, next) => {
+		var newUser = req.body.user;
+
 		const validationErrors = validationResult(req);
 		if(!validationErrors.isEmpty()) {
-			//return res.render("register", {validationErrors: validationErrors});
-			return res.status(422).json({errors: validationErrors.mapped()});
+			return res.render("register", {validationErrors: validationErrors, user: req.body.user});
+			//return res.status(422).json({errors: validationErrors.mapped()});
 		}
 
-		var newUser = req.body.user;
+		
 		newUser.username = newUser.email;
-
 		if(newUser.forename == "UoS" && newUser.surname == "Admin") {
 			newUser.isAdmin = true;
 		}
@@ -98,10 +99,10 @@ router.post("/register", [
 					err.message = "A user with the given email address is already registered";
 				}
 				req.flash("error", err.message);
-				return res.redirect("/register");
+				return res.render("register", {user: req.body.user});
 			}
 
-			res.redirect("/login");
+			res.redirect("/login", {user: user});
 		});
 	}
 );
