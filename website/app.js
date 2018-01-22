@@ -1,6 +1,5 @@
 var express 				= require("express"),
 	expressSanitizer 		= require("express-sanitizer"),
-	expressValidator		= require("express-validator"),
 	bodyParser 				= require("body-parser"),
 	request 				= require("request"),
 	mongoose 				= require("mongoose"),
@@ -40,6 +39,7 @@ passport.deserializeUser(User.deserializeUser());
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(expressSanitizer());
+//app.use(expressValidator());
 app.use(methodOverride("_method"));
 app.use(connectFlash());
 
