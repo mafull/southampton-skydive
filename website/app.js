@@ -3,11 +3,7 @@ var express 				= require("express"),
 	bodyParser 				= require("body-parser"),
 	request 				= require("request"),
 	mongoose 				= require("mongoose"),
-	connectFlash			= require("connect-flash"),
-	methodOverride 			= require("method-override"),
-	passport				= require("passport"),
-	LocalStrategy			= require("passport-local"),
-	passportLocalMongoose 	= require("passport-local-mongoose");
+	methodOverride 			= require("method-override");
 
 // Require routes
 var indexRoutes = require("./routes/index"),
@@ -24,34 +20,11 @@ mongoose.connect("mongodb://localhost/skydive_website");
 var app = express();
 app.set("view engine", "ejs");
 
-// Passport config
-app.use(require("express-session")({
-	secret: "This secret is used for encoding and decoding",
-	resave: false,
-	saveUninitialized: false
-}));
-app.use(passport.initialize());
-app.use(passport.session());
-passport.use(new LocalStrategy(User.authenticate()));
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
-
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(expressSanitizer());
 //app.use(expressValidator());
 app.use(methodOverride("_method"));
-app.use(connectFlash());
-
-app.use(function(req, res, next) {
-	res.locals.currentUser = req.user;
-	res.locals.message = {
-		error: req.flash("error"),
-		success: req.flash("success"),
-		info: req.flash("info")
-	};
-	next();
-});
 
 // ----- RESTful routes -----
 app.use(indexRoutes);

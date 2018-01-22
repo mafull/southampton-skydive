@@ -1,5 +1,8 @@
-var express 	= require("express"),
-	passport 	= require("passport");
+var express 				= require("express"),
+	connectFlash			= require("connect-flash"),
+	passport 				= require("passport"),
+	LocalStrategy			= require("passport-local"),
+	passportLocalMongoose 	= require("passport-local-mongoose");
 var router = express.Router();
 
 const {check, validationResult} = require("express-validator/check");
@@ -8,6 +11,30 @@ const {matchedData, sanitize} = require("express-validator/filter");
 var middleware = require("../middleware");
 
 var User = require("../models/user");
+
+// Passport config
+router.use(require("express-session")({
+	secret: "This secret is used for encoding and decoding",
+	resave: false,
+	saveUninitialized: false
+}));
+router.use(passport.initialize());
+router.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+router.use(connectFlash());
+
+router.use(function(req, res, next) {
+	res.locals.currentUser = req.user;
+	res.locals.message = {
+		error: req.flash("error"),
+		success: req.flash("success"),
+		info: req.flash("info")
+	};
+	next();
+});
 
 
 // Index
@@ -74,9 +101,7 @@ router.post("/register", [
 				return res.redirect("/register");
 			}
 
-			passport.authenticate("local")(req, res, function() {
-				res.redirect("/");
-			});
+			res.redirect("/login");
 		});
 	}
 );
@@ -99,7 +124,8 @@ router.post("/login",
 	),
 	function(req, res) {
 
-});
+	}
+);
 
 
 router.get("/logout", function(req, res) {
