@@ -102,31 +102,39 @@ router.post("/register", [
 				return res.render("register", {user: req.body.user});
 			}
 
-			res.redirect("/login", {user: user});
+			res.render("login", {username: user.username});
 		});
 	}
 );
 
 
 router.get("/login", function(req, res) {
-	res.render("login");
+	res.render("login", {username: null});
 });
 
 
-router.post("/login",
-	passport.authenticate(
-		"local", 
-		{
-			successRedirect: "/",
-			failureRedirect: "/login",
-			successFlash: "Logged in successfully",
-			failureFlash: "Invalid username or password!"
+router.post("/login", function(req, res, next) {
+	passport.authenticate("local", function(err, user, info) {
+		if(err) {
+			return next(err);
 		}
-	),
-	function(req, res) {
 
-	}
-);
+		if(!user) {
+			req.flash("error", "Invalid email or password!");			
+			return res.render("login", {username: req.body.username});
+		}
+
+		req.logIn(user, function(err) {
+			if(err) {
+				return next(err);
+			}
+
+			req.flash("success", "Logged in successfully");
+			return res.redirect("/");
+		})
+	}) (req, res, next);
+
+});
 
 
 router.get("/logout", function(req, res) {

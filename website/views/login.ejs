@@ -5,7 +5,8 @@
 <form action="/login" method="POST" class="ui form">
 	<div class="field required">
 		<label>Email</label>
-		<input type="text" name="username" placeholder="<%= user != undefined ? user.username : Email %>" autofocus>
+		<input type="text" name="username" placeholder="Email"
+		<% if(username) { %> value="<%= username %>"<% } %>>
 	</div>
 	<div class="field required">
 		<label>Password</label>
