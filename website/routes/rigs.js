@@ -47,9 +47,6 @@ router.post("/", middleware.isLoggedIn, function(req, res) {
 
 // Show
 router.get("/:id", function(req, res) {
-	Rig
-
-
 	Rig.findById(req.params.id).populate("approvedUsers").exec(function(err, foundRig) {
 		if(err) {
 			req.flash("error", err.message);
