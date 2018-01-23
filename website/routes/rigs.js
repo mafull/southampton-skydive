@@ -1,4 +1,5 @@
-var express = require("express");
+var express 	= require("express"),
+	mongoose 	= require("mongoose");
 var router = express.Router();
 
 var middleware = require("../middleware");
@@ -90,15 +91,101 @@ router.put("/:id", middleware.isLoggedIn, function(req, res) {
 		approvedUsers: approvedUsers
 	};
 
-	Rig.findByIdAndUpdate(req.params.id, rig, function(err, updatedRig) {
+	Rig.findById(req.params.id, function(err, existingRig) {
 		if(err) {
 			req.flash("error", err.message);
 			return res.redirect("back");
 		}
-		
-		req.flash("success", "Rig successfully updated");
+
+		var prevApprovedUsers = existingRig.toJSON().approvedUsers;
+
+		// Add all new users
+		approvedUsers.forEach(function(user) {
+			var exists = false;
+
+			// Check if user was present in previous array
+			prevApprovedUsers.some(function(prevUser) {
+				if(prevUser.equals(user)) {
+					// Found user
+					exists = true;
+					return exists;
+				}
+			});
+
+			// If new user
+			if(!exists) {
+				console.log("NEW USER ADDED: ");
+				User.findById(user, function(err, foundUser) {
+					if(err) {
+						req.flash("error", err.message);
+						return res.redirect("back");
+					}
+					console.log(foundUser.surname);
+
+					console.log(foundUser.toJSON().approvedRigs.filter(e => e.equals(existingRig._id)).length);
+
+					if(!foundUser.toJSON().approvedRigs.filter(e => e.equals(existingRig._id)).length) {
+						foundUser.approvedRigs.push(existingRig._id);
+					}
+					foundUser.save(function(err) {
+						if(err) {
+							req.flash("error", err.message);
+							return res.redirect("back");
+						}
+
+					});
+				});
+			}			
+		});
+
+
+		// Update all removed users
+		prevApprovedUsers.forEach(function(prevUser) {
+			var exists = false;
+
+			// Check if user is present in new array
+			approvedUsers.some(function(user) {
+				if(prevUser.equals(user)) {
+					// Found user
+					exists = true;
+					return exists;
+				}
+			});
+
+			// If removed user
+			if(!exists) {
+				console.log("USER REMOVED: ");
+				User.findById(prevUser, function(err, foundUser) {
+					if(err) {
+						req.flash("error", err.message);
+						return res.redirect("back");
+					}
+
+					// Remove rig from user
+					var currentApproved = foundUser.toJSON().approvedRigs;
+					foundUser.approvedRigs = currentApproved.filter(e => !e.equals(existingRig._id));
+					foundUser.save(function(err) {
+						if(err) {
+							req.flash("error", err.message);
+							return res.redirect("back");
+						}
+					});
+				});
+			}			
+		});
+
+
+		existingRig.approvedUsers = approvedUsers;
+		existingRig.save(function(err) {
+			if(err) {
+				req.flash("error", err.message);
+				return res.redirect("back");
+			}
+
+			req.flash("success", "Rig successfully updated");
 		res.redirect("/rigs/" + req.params.id);
-	});	
+		});		
+	});
 });
 
 
