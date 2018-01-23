@@ -45,7 +45,7 @@
 			<div class="default text">Select users</div>
 			<div class="menu">
 				<% users.forEach(function(user) {%>
-					<div class="item selected" data-value="<%= user._id %>" selected="selected"><%= user.forename + " " + user.surname %></div>
+					<div class="item" data-value="<%= user._id %>"><%= user.forename + " " + user.surname %></div>
 				<% }); %>			
 			</div>
 		</div>
@@ -54,5 +54,13 @@
 	<button type="reset" class="ui blue inverted button">Clear</button>
 	<a href="/rigs" class="ui blue inverted button">Go back</a>
 </form>
+
+<script>
+	$(".ui.dropdown")
+		<% rig.approvedUsers.forEach(function(user) { %>
+			.dropdown("set selected", "<%= user %>")
+		<% }) %>
+	;
+</script>
 
 <% include ../partials/footer %>
