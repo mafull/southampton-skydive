@@ -15,6 +15,9 @@
 
 <header class="ui big header">Approved rigs</header>
 <div class="ui top attached segment">
+	<% if(!user.approvedRigs.length) { %>
+		<div class="item">None</div>
+	<% } %>
 	<% user.approvedRigs.forEach(function(rig) {%>
 		<div class="item">
 			<a href="/rigs/<%= rig._id %>"><%= rig.name %></a>
