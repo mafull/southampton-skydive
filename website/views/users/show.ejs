@@ -17,7 +17,7 @@
 <div class="ui top attached segment">
 	<% user.approvedRigs.forEach(function(rig) {%>
 		<div class="item">
-			<%= rig.name %>
+			<a href="/rigs/<%= rig._id %>"><%= rig.name %></a>
 		</div>
 	<% }); %>
 </div>
