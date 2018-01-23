@@ -10,7 +10,10 @@ var User = require("../models/user");
 
 // Index
 router.get("/", function(req, res) {
-	Rig.find({}, function(err, rigs) {
+	Rig.find({}).sort([
+			["main.size", -1],
+			["name", 1]
+		]).exec(function(err, rigs) {
 		if(err) {
 			// DO SOMETHING
 		}	
@@ -76,7 +79,10 @@ router.get("/:id/edit", middleware.isLoggedIn, function(req, res) {
 			return res.redirect("back");
 		}
 
-		User.find({}, function(err, users) {
+		User.find({}).sort([
+			["forename", 1],
+			["surname", 1]
+		]).exec(function(err, users) {
 			if(err) {
 				return res.render("rigs/edit", {rig: foundRig, users: []});
 			}

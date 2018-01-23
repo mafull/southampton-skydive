@@ -11,7 +11,11 @@ var User = require("../models/user");
 
 // Index
 router.get("/", function(req, res) {
-	CommitteePosition.find({}).populate("user").exec(function(err, foundPositions) {
+	CommitteePosition.find({})
+		.populate("user")
+		.sort([
+			["tier", 1]
+		]).exec(function(err, foundPositions) {
 		if(err) {
 			req.flash("error", err.message);
 			return res.redirect("back");
@@ -24,7 +28,11 @@ router.get("/", function(req, res) {
 
 // New
 router.get("/new", middleware.isLoggedIn, function(req, res) {
-	User.find({isCommittee: false}, function(err, foundUsers) {
+	User.find({isCommittee: false})
+		.sort([
+			["forename", 1],
+			["surname", 1]
+		]).exec(function(err, foundUsers) {
 		if(err) {
 			req.flash("error", err.message);
 			return res.redirect("back");
@@ -37,12 +45,14 @@ router.get("/new", middleware.isLoggedIn, function(req, res) {
 
 // Create
 router.post("/", middleware.isLoggedIn, function(req, res) {
-	var tier = 3;
+	var tier = 4;
 	var nameLow = req.body.name.toLowerCase();
 	if((nameLow == "president") || (nameLow.indexOf("chair") >= 0)) {
 		tier = 1;
 	} else if(nameLow.indexOf("vice") >= 0) {
 		tier = 2;
+	} else if(nameLow == "treasurer") {
+		tier = 3;
 	}
 
 	var user = req.body.user.length ? req.body.user : null;
@@ -91,7 +101,10 @@ router.get("/:id/edit", middleware.isLoggedIn, function(req, res) {
 				{isCommittee: false},
 				{committeePosition: foundPosition._id}
 			]
-		}, function(err, foundUsers) {
+		}).sort([
+			["forename", 1],
+			["surname", 1]
+		]).exec(function(err, foundUsers) {
 			if(err) {
 				return res.render("committee/edit", {position: foundPosition, users: []});
 			}
@@ -156,12 +169,14 @@ router.put("/:id", middleware.isLoggedIn, function(req, res) {
 		}
 
 		// Find the position tier
-		var tier = 3;
+		var tier = 4;
 		var nameLow = req.body.name.toLowerCase();
 		if((nameLow == "president") || (nameLow.indexOf("chair") >= 0)) {
 			tier = 1;
 		} else if(nameLow.indexOf("vice") >= 0) {
 			tier = 2;
+		} else if(nameLow == "treasurer") {
+			tier = 3;
 		}
 
 		// Update position

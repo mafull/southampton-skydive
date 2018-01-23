@@ -9,25 +9,15 @@ var Rig = require("../models/rig");
 
 // Index
 router.get("/", function(req, res) {
-	User.find({}, function(err, users) {
+	User.find({}).sort([
+			["forename", 1],
+			["surname", 1]
+		]).exec(function(err, users) {
 		if(err) {
 			// DO SOMEHING
 		}
 
 		res.render("users/index", {users: users});
-	});	
-});
-
-
-// Committee index
-router.get("/committee", function(req, res) {
-	User.find({isCommittee: true}).populate("committeeRole").exec(function(err, users) {
-		if(err) {
-			req.flash("error", err.message);
-			return res.redirect("back");
-		}
-
-		res.render("committee/index", {users: users});
 	});	
 });
 
