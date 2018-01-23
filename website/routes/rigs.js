@@ -80,12 +80,14 @@ router.get("/:id/edit", middleware.isLoggedIn, function(req, res) {
 
 // Update
 router.put("/:id", middleware.isLoggedIn, function(req, res) {
+	var approvedUsers = req.body.approvedUsers.length ? req.body.approvedUsers.split(',') : [];
+
 	var rig = {
 		name: req.body.name,
 		modified: Date.now(),
 		main: req.body.main,
 		reserve: req.body.reserve,
-		approvedUsers: req.body.approvedUsers.split(',')
+		approvedUsers: approvedUsers
 	};
 
 	Rig.findByIdAndUpdate(req.params.id, rig, function(err, updatedRig) {

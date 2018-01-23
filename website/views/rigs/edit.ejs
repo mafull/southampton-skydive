@@ -57,6 +57,7 @@
 
 <script>
 	$(".ui.dropdown")
+		.dropdown()
 		<% rig.approvedUsers.forEach(function(user) { %>
 			.dropdown("set selected", "<%= user %>")
 		<% }) %>
