@@ -1,6 +1,6 @@
 <% include ../partials/header %>
 
-<header class="ui huge header">Edit <%= rig.name %></header>
+<header class="ui huge header"><i class="setting icon"></i> Edit <%= rig.name %></header>
 
 <form action="/rigs/<%= rig._id %>?_method=PUT" method="POST" class="ui form">
 	<div class="field required">

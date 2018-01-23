@@ -1,6 +1,6 @@
 <% include ../partials/header %>
 
-<header class="ui huge header"><%= user.forename + " " + user.surname %></header>
+<header class="ui huge header"><i class="user icon"></i> <%= user.forename + " " + user.surname %></header>
 
 <header class="ui small header">Date created</header>
 <span><%= user.created.toDateString() %></span>
