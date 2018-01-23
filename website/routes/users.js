@@ -20,15 +20,14 @@ router.get("/", function(req, res) {
 
 // Show
 router.get("/:id", function(req, res) {
-	Rig.findById(req.params.id, function(err, foundUser) {
+	Rig.findById(req.params.id).populate("approvedRigs").exec(function(err, foundUser) {
 		if(err) {
-			req.flash("error", "User not found!");
-			res.redirect("/users");
+			req.flash("error", err.message);
+			return res.redirect("/users");
 		}
 
-		res.render("users/show", {rig: foundUser});
-	});
-	
+		res.render("users/show", {user: foundUser});
+	});	
 });
 
 module.exports = router;

@@ -50,12 +50,11 @@ router.get("/:id", function(req, res) {
 	Rig.findById(req.params.id).populate("approvedUsers").exec(function(err, foundRig) {
 		if(err) {
 			req.flash("error", err.message);
-			return res.redirect("back");
+			return res.redirect("/rigs");
 		}
 
 		res.render("rigs/show", {rig: foundRig});			
-	});
-	
+	});	
 });
 
 
