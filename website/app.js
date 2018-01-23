@@ -5,9 +5,10 @@ var express 				= require("express"),
 	methodOverride 			= require("method-override");
 
 // Require routes
-var indexRoutes = require("./routes/index"),
-	userRoutes	= require("./routes/users"),
-	rigRoutes	= require("./routes/rigs");
+var indexRoutes 	= require("./routes/index"),
+	committeeRoutes = require("./routes/committee"),
+	userRoutes		= require("./routes/users"),
+	rigRoutes		= require("./routes/rigs");
 
 
 // ----- App config ----- 
@@ -30,6 +31,7 @@ app.use(methodOverride("_method"));
 
 // ----- RESTful routes -----
 app.use(indexRoutes);
+app.use("/committee", committeeRoutes);
 app.use("/users", userRoutes);
 app.use("/rigs", rigRoutes);
 

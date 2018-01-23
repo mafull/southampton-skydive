@@ -6,21 +6,34 @@
 <table class="ui celled table">
 	<thead>
 		<tr>
-			<th>Role</th>
+			<th>Position</th>
 			<th>Name</th>
 			<th>Email</th>
 		</tr>	
 	</thead>
 	<tbody>
-		<% users.forEach(function(user) { %>
+		<% committeePositions.forEach(function(position) { %>
 			<tr>
-				<td><%= user.committeeRole %></td>
-				<td><a href="/users/<%= user._id %>"><%= user.forename + " " + user.surname %></td></a>
-				<td><%= user.email %></td>
+				<td>
+					<a href="/committee/<%= position._id %>"><%= position.name %></a>
+				</td>
+				<td>
+					<% if(position.user) { %>
+						<a href="/users/<%= position.user._id %>"><%= position.user.forename + " " + position.user.surname %></a>
+					<% } %>
+				</td>
+				<td>
+					<% if(position.user) { %>
+						<%= position.user.email %>
+					<% } %>
+				</td>
 			</tr>
 		<% }); %>
 	</tbody>
-	
 </table>
+
+<% if(currentUser && (currentUser.isAdmin || currentUser.isCommittee)) { %>
+	<a class="ui green button" href="/committee/new">Add comittee role</a>
+<% } %>
 
 <% include ../partials/footer %>

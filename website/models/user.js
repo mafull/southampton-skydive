@@ -1,6 +1,7 @@
 var mongoose 				= require("mongoose"),
 	passportLocalMongoose 	= require("passport-local-mongoose");
 
+var CommitteePosition = require("./committeePosition");
 var Rig = require("./rig");
 
 var userSchema = new mongoose.Schema({
@@ -16,7 +17,10 @@ var userSchema = new mongoose.Schema({
 	// User level
 	isAdmin: {type: Boolean, default: false},
 	isCommittee: {type: Boolean, default: false},
-	committeeRole: String,
+	committeePosition: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: "CommitteePosition"
+	},
 
 	// Membership
 	hasMembership: {type: Boolean, default: false},

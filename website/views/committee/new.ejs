@@ -1,0 +1,42 @@
+<% include ../partials/header %>
+
+<header class="ui huge header"><i class="plus icon"></i> Add a new committee position</header>
+
+<div class="ui segment">
+	<form action="/committee" method="POST" class="ui form">
+		<div class="field required">
+			<label>Position name</label>
+			<input type="text" name="name" placeholder="Position name" autofocus>
+		</div>
+		<div class="field">
+			<label>User</label>
+			<div class="ui fluid search selection dropdown">
+				<input type="hidden" name="user">
+				<i class="dropdown icon"></i>
+				<div class="default text">Select user</div>
+				<div class="menu">
+					<div class="item" data-value="">None</div>
+					<% users.forEach(function(user) {%>
+						<div class="item" data-value="<%= user._id %>"><%= user.forename + " " + user.surname %></div>
+					<% }); %>			
+				</div>
+			</div>			
+		</div>
+		<div class="field">
+			<label>Description</label>
+			<textarea type="text" name="description" placeholder="Description and responsibilities of the position"></textarea>
+		</div>
+		<button type="submit" class="ui fluid blue big button">Add</button>
+	</form>
+</div>
+
+<a href="/committee" class="ui blue inverted button">Go back</a>
+
+
+
+<script>
+	$(".ui.dropdown")
+		.dropdown();
+</script>
+
+<% include ../partials/footer %>

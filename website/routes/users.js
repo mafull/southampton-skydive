@@ -21,9 +21,10 @@ router.get("/", function(req, res) {
 
 // Committee index
 router.get("/committee", function(req, res) {
-	User.find({isCommittee: true}, function(err, users) {
+	User.find({isCommittee: true}).populate("committeeRole").exec(function(err, users) {
 		if(err) {
-			// DO SOMEHING
+			req.flash("error", err.message);
+			return res.redirect("back");
 		}
 
 		res.render("committee/index", {users: users});

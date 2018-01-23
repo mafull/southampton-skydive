@@ -188,7 +188,7 @@ router.put("/:id", middleware.isLoggedIn, function(req, res) {
 			}
 
 			req.flash("success", "Rig successfully updated");
-		res.redirect("/rigs/" + req.params.id);
+			res.redirect("/rigs/" + req.params.id);
 		});		
 	});
 });
