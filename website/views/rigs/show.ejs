@@ -21,7 +21,7 @@
 <div class="ui top attached segment">
 	<% rig.approvedUsers.forEach(function(user) {%>
 		<div class="item">
-			<%= user.forename + " " + user.surname %>
+			<a href="/users/<%= user._id %>"><%= user.forename + " " + user.surname %>
 		</div>
 	<% }); %>
 </div>

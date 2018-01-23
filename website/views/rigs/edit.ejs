@@ -37,6 +37,19 @@
 			<input type="text" name="reserve[size]" value="<%= rig.reserve.size %>">
 		</div>
 	</div>
+	<div class="field">
+		<label>Approved users</label>
+		<div class="ui fluid multiple search selection dropdown">
+			<input type="hidden" name="approvedUsers">
+			<i class="dropdown icon"></i>
+			<div class="default text">Select users</div>
+			<div class="menu">
+				<% users.forEach(function(user) {%>
+					<div class="item selected" data-value="<%= user._id %>" selected="selected"><%= user.forename + " " + user.surname %></div>
+				<% }); %>			
+			</div>
+		</div>
+	</div>
 	<button type="submit" class="ui fluid blue big button">Save</button>
 	<button type="reset" class="ui blue inverted button">Clear</button>
 	<a href="/rigs" class="ui blue inverted button">Go back</a>

@@ -12,6 +12,6 @@ i.icon {
 	text-align: center;
 }
 
-.menu {
+.menu.fixed {
 	height: 40px;
 }

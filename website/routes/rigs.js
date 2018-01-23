@@ -4,7 +4,7 @@ var router = express.Router();
 var middleware = require("../middleware");
 
 var Rig = require("../models/rig");
-var User = require("../models/rig");
+var User = require("../models/user");
 
 
 // Index
@@ -53,7 +53,7 @@ router.get("/:id", function(req, res) {
 			return res.redirect("/rigs");
 		}
 
-		res.render("rigs/show", {rig: foundRig});			
+		res.render("rigs/show", {rig: foundRig});					
 	});	
 });
 
@@ -65,8 +65,14 @@ router.get("/:id/edit", middleware.isLoggedIn, function(req, res) {
 			req.flash("error", err.message);
 			return res.redirect("back");
 		}
-			
-		res.render("rigs/edit", {rig: foundRig});
+
+		User.find({}, function(err, users) {
+			if(err) {
+				return res.render("rigs/edit", {rig: foundRig, users: []});
+			}
+
+			res.render("rigs/edit", {rig: foundRig, users: users});
+		});
 	});
 	
 });
@@ -78,7 +84,8 @@ router.put("/:id", middleware.isLoggedIn, function(req, res) {
 		name: req.body.name,
 		modified: Date.now(),
 		main: req.body.main,
-		reserve: req.body.reserve
+		reserve: req.body.reserve,
+		approvedUsers: req.body.approvedUsers.split(',')
 	};
 
 	Rig.findByIdAndUpdate(req.params.id, rig, function(err, updatedRig) {
