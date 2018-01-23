@@ -2,15 +2,12 @@
 
 <header class="ui huge header"><i class="user icon"></i> <%= user.forename + " " + user.surname %></header>
 
-<header class="ui small header">Date created</header>
-<span><%= user.created.toDateString() %></span>
-
-<header class="ui small header">Last modified</header>
-<span><%= user.modified.toDateString() %></span>
-
-<header class="ui big header">Contents</header>
-<div class="ui top attached segment">
-	
+<header class="ui big header">General info</header>
+<div class="ui segment">
+	<header class="ui header">Username</header>
+	<div class="item"><%= user.username %></div>
+	<header class="ui header">Email</header>
+	<div class="item"><%= user.email %></div>
 </div>
 
 <header class="ui big header">Approved rigs</header>
@@ -25,7 +22,13 @@
 	<% }); %>
 </div>
 
+<div class="ui segment">
+	<header class="ui small header">Date created</header>
+	<span><%= user.created.toDateString() %></span>
 
+	<header class="ui small header">Last modified</header>
+	<span><%= user.modified.toDateString() %></span>
+</div>
 
 <a href="/users" class="ui blue inverted button">Go back</a>
 

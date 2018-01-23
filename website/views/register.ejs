@@ -1,29 +1,32 @@
 <% include ./partials/header %>
 
-<div class="ui huge header">Sign up</div>
+<div class="ui huge header"><i class="add user icon"></i> Sign up</div>
 
-<form action="/register" method="POST" class="ui form">
-	<div class="field required" autofocus>
-		<label>First name</label>
-		<input type="text" name="user[forename]" placeholder="First name"
-		<% if(user && user.forename) { %>value="<%= user.forename %>"<% } %>>
-	</div>
-	<div class="field required">
-		<label>Surname</label>
-		<input type="text" name="user[surname]" placeholder="Surname"
-		<% if(user && user.surname) { %>value="<%= user.surname %>"<% } %>>
-	</div>
-	<div class="field required" autofocus>
-		<label>Email</label>
-		<input type="text" name="user[email]" placeholder="Email"
-		<% if(user && user.email) { %>value="<%= user.email %>"<% } %>>
-	</div>
-	<div class="field required">
-		<label>Password</label>
-		<input type="password" name="password" placeholder="********">
-	</div>
-	<button type="submit" class="ui fluid blue big button">Register</button>
-</form>
-<a href="/" class="">Go back</a>
+<div class="ui segment">
+	<form action="/register" method="POST" class="ui form">
+		<div class="field required" autofocus>
+			<label>First name</label>
+			<input type="text" name="user[forename]" placeholder="First name"
+			<% if(user && user.forename) { %>value="<%= user.forename %>"<% } %>>
+		</div>
+		<div class="field required">
+			<label>Surname</label>
+			<input type="text" name="user[surname]" placeholder="Surname"
+			<% if(user && user.surname) { %>value="<%= user.surname %>"<% } %>>
+		</div>
+		<div class="field required" autofocus>
+			<label>Email</label>
+			<input type="text" name="user[email]" placeholder="Email"
+			<% if(user && user.email) { %>value="<%= user.email %>"<% } %>>
+		</div>
+		<div class="field required">
+			<label>Password</label>
+			<input type="password" name="password" placeholder="********">
+		</div>
+		<button type="submit" class="ui fluid blue big button">Register</button>
+	</form>
+</div>
+
+<a href="/" class="ui blue inverted button">Go back</a>
 
 <% include ./partials/footer %>
