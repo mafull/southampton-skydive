@@ -19,6 +19,18 @@ router.get("/", function(req, res) {
 });
 
 
+// Committee index
+router.get("/committee", function(req, res) {
+	User.find({isCommittee: true}, function(err, users) {
+		if(err) {
+			// DO SOMEHING
+		}
+
+		res.render("committee/index", {users: users});
+	});	
+});
+
+
 // Show
 router.get("/:id", function(req, res) {
 	User.findById(req.params.id).populate({

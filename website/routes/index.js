@@ -42,7 +42,6 @@ router.get("/", function(req, res) {
 	res.render("landing");
 });
 
-
 // New
 router.get("/register", function(req, res) {
 	res.render("register", {user: null});

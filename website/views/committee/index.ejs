@@ -1,0 +1,26 @@
+<% include ../partials/header %>
+
+<div class="ui huge header"><i class="users icon"></i> Committee</div>
+<p>View the current committee</p>
+
+<table class="ui celled table">
+	<thead>
+		<tr>
+			<th>Role</th>
+			<th>Name</th>
+			<th>Email</th>
+		</tr>	
+	</thead>
+	<tbody>
+		<% users.forEach(function(user) { %>
+			<tr>
+				<td><%= user.committeeRole %></td>
+				<td><a href="/users/<%= user._id %>"><%= user.forename + " " + user.surname %></td></a>
+				<td><%= user.email %></td>
+			</tr>
+		<% }); %>
+	</tbody>
+	
+</table>
+
+<% include ../partials/footer %>
