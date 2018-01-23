@@ -114,15 +114,11 @@ router.put("/:id", middleware.isLoggedIn, function(req, res) {
 
 			// If new user
 			if(!exists) {
-				console.log("NEW USER ADDED: ");
 				User.findById(user, function(err, foundUser) {
 					if(err) {
 						req.flash("error", err.message);
 						return res.redirect("back");
 					}
-					console.log(foundUser.surname);
-
-					console.log(foundUser.toJSON().approvedRigs.filter(e => e.equals(existingRig._id)).length);
 
 					if(!foundUser.toJSON().approvedRigs.filter(e => e.equals(existingRig._id)).length) {
 						foundUser.approvedRigs.push(existingRig._id);
@@ -191,14 +187,34 @@ router.put("/:id", middleware.isLoggedIn, function(req, res) {
 
 // Destroy
 router.delete("/:id", middleware.isLoggedIn, function(req, res) {
-	Rig.findByIdAndRemove(req.params.id, function(err) {
+	Rig.findById(req.params.id).populate("approvedUsers").exec(function(err, foundRig) {
 		if(err) {
 			req.flash("error", err.message);
-			return res.redirect("back");			
+			return res.redirect("back");
 		}
-		
-		req.flash("success", "Rig successfully deleted");
-		res.redirect("/rigs");
+
+		// Delete all instances of the rig in approved users
+		foundRig.approvedUsers.forEach(function(user) {
+			var currentApproved = user.toJSON().approvedRigs;
+			user.approvedRigs = currentApproved.filter(e => !e.equals(foundRig._id));
+			user.save(function(err) {
+				if(err) {
+					req.flash("error", err.message);
+					return res.redirect("back");
+				}
+			});
+		});
+
+		// Delete the rig
+		foundRig.remove(function(err) {
+			if(err) {
+				req.flash("error", err.message);
+				return res.redirect("back");
+			}
+
+			req.flash("success", "Rig successfully deleted");
+			res.redirect("/rigs");
+		});
 	});
 });
 
