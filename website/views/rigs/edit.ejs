@@ -56,14 +56,53 @@
 </div>
 
 
-<form action="/rigs/<%= rig._id %>?_method=DELETE" method="POST">
-	<a href="/rigs" class="ui blue inverted button">Go back</a>
-	<button class="ui negative button ">Delete</button>
-</form>
+
+	<a href="/rigs/<%= rig._id %>" class="ui blue inverted button">Go back</a>
+	<a class="ui negative button" id="deleteButton">Delete</a>
+
+
+
+<div class="ui mini modal" id="deleteModal">
+	<div class="ui icon header">
+		<i class="warning icon"></i>
+		Are you sure you want to delete <%= rig.name %>?
+	</div>
+	<div class="content">
+		<form action="/rigs/<%= rig._id %>?_method=DELETE" method="POST" id="modalForm">
+		</form>		
+		<p>All saved information will be lost.<br><strong>This cannot be undone!</strong></p>
+	</div>
+	<div class="actions">
+		<div class="ui green cancel inverted button">
+			<i class="remove icon"></i>
+			Cancel
+		</div>
+		<div class="ui red ok inverted button" onClick="javascript:document.forms['modalForm'].submit();">
+			<i class="checkmark icon"></i>
+			Delete
+		</div>
+	</div>
+</div>
+
+
+
+
 
 
 
 <script>
+	$(document).ready(function() {
+		$("#deleteButton").click(function() {
+			$("#deleteModal")
+				.modal({
+					closable: 	false
+				})
+				.modal('show')
+			;
+		});
+	});
+
+
 	$(".ui.dropdown")
 		.dropdown()
 		<% rig.approvedUsers.forEach(function(user) { %>
