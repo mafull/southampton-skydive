@@ -14,7 +14,10 @@ var indexRoutes = require("./routes/index"),
 var app = express();
 
 // Connect to the database
-mongoose.connect("mongodb://localhost/skydive_website");
+//var url = process.env.SKYDIVE_DATABASE_URL;
+//mongoose.connect(url);
+//mongoose.connect("mongodb://localhost/skydive_website");
+mongoose.connect("mongodb://UoSAdmin:admin123@ds211588.mlab.com:11588/uos_skydive_website");
 
 // Set up view engine and public directory
 app.set("view engine", "ejs");
