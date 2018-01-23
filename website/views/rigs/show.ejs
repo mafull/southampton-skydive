@@ -36,9 +36,6 @@
 
 <% if(currentUser && (currentUser.isAdmin || currentUser.canEditRigs)) { %>
 	<a href="/rigs/<%= rig.id %>/edit" class="ui yellow button">Edit</a>
-	<form action="/rigs/<%= rig._id %>?_method=DELETE" method="POST">
-		<button class="ui negative button ">Delete</button>
-	</form>
 <% } %>
 
 <% include ../partials/footer %>

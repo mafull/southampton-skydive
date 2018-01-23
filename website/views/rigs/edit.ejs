@@ -54,6 +54,9 @@
 	<button type="reset" class="ui blue inverted button">Clear</button>
 	<a href="/rigs" class="ui blue inverted button">Go back</a>
 </form>
+<form action="/rigs/<%= rig._id %>?_method=DELETE" method="POST">
+	<button class="ui negative button ">Delete</button>
+</form>
 
 <script>
 	$(".ui.dropdown")
