@@ -13,8 +13,45 @@
 
 <header class="ui big header">Calendar</header>
 <div class="ui segment">
+	<header class="ui small header">
+		Green = available<br>
+		Orange = booked<br>
+		Red = out of action
+	</header>
+	<table class="ui seven column large celled table" id="calendarTable">
+		<thead>
+			<tr>
+				<th colspan="9"><div class="ui ribbon label"><span id="monthLabel">?</span></div></th>
+			</tr>
+			<tr class="center aligned">
+				<th>Mon</th>
+				<th>Tue</th>
+				<th>Wed</th>
+				<th>Thu</th>
+				<th>Fri</th>
+				<th>Sat</th>
+				<th>Sun</th>
+			</tr>
+		</thead>
+		<tbody>
+			<% for(var row = 0; row < 5; row++) { %>
+				<tr>
+					<% for(var col = 0; col < 7; col++) { %>
+						<td class="selectable positive center aligned"><a>?</a></td>
+					<% } %>
+				</tr>				
+			<% } %>
+		</tbody>
+		<tfoot>
+			<tr>
+				<th colspan="7">
 
-
+				</th>
+			</tr>
+		</tfoot>
+	</table>
+	<!-- <div class="ui calendar">
+	</div> -->
 </div>
 
 <header class="ui big header">Approved users</header>
@@ -43,5 +80,61 @@
 <% if(currentUser && (currentUser.isAdmin || currentUser.canEditRigs)) { %>
 	<a href="/rigs/<%= rig.id %>/edit" class="ui yellow button">Edit</a>
 <% } %>
+
+
+
+
+
+<script>
+	var today = new Date();
+    $(".ui.calendar")
+    	.calendar({
+        	type: "date",
+        	inline: true,
+        	minDate: new Date(today.getFullYear(), today.getMonth(), today.getDate()),
+        	maxDate: new Date(today.getFullYear() + 1, today.getMonth(), today.getDate())
+        });
+
+    function daysInMonth(iMonth, iYear)
+	{
+		return 32 - new Date(iYear, iMonth, 32).getDate();
+	}
+
+    $(document).ready(function() {
+    	var monthStrings = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+    	var table = $("#calendarTable")[0];
+
+    	$("#monthLabel")[0].textContent = monthStrings[today.getMonth()];
+
+    	var totalDaysPrev = daysInMonth(today.getMonth() - 1, today.getFullYear());
+    	var totalDays = daysInMonth(today.getMonth(), today.getFullYear());
+
+    	var startDayOfWeek = (new Date(today.getFullYear(), today.getMonth(), 1)).getDay() - 1;
+
+    	var index = 0;
+    	var num;
+	    for(var row = 0; row < 5; row++) {
+	    	for(var col = 0; col < 7; col++) {
+	    		if(row == 0 && (col < startDayOfWeek)) {
+    				num = (totalDaysPrev - (startDayOfWeek - (col + 1)));
+    			} else {
+    				num = index + 1;
+    				
+    				if(++index >= totalDays) {
+	    				index = 0;
+	    			}
+	    		}
+
+	    		table.tBodies[0].rows[row].cells[col].innerHTML = "<a>"+num+"</a>";
+	    	}
+	    }
+    });
+
+
+
+
+
+</script>
 
 <% include ../partials/footer %>
