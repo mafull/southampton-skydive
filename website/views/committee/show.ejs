@@ -37,7 +37,7 @@
 
 <a href="/committee" class="ui blue inverted button">Go back</a>
 
-<% if(currentUser && (currentUser.isAdmin || currentUser.canEditRigs)) { %>
+<% if(currentUser && (currentUser.isAdmin || currentUser.isCommittee)) { %>
 	<a href="/committee/<%= position._id %>/edit" class="ui yellow button">Edit</a>
 <% } %>
 
