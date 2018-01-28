@@ -37,7 +37,7 @@
 			<% for(var row = 0; row < 5; row++) { %>
 				<tr>
 					<% for(var col = 0; col < 7; col++) { %>
-						<td class="selectable positive center aligned"><a>?</a></td>
+						<td class="selectable positive center aligned" onClick="calendarDayClicked(this.getAttribute('day'), this.getAttribute('month'), this.getAttribute('year'))"><a>?</a></td>
 					<% } %>
 				</tr>				
 			<% } %>
@@ -105,33 +105,45 @@
 
     	var table = $("#calendarTable")[0];
 
-    	$("#monthLabel")[0].textContent = monthStrings[today.getMonth()];
+    	var selectedMonth = today.getMonth() + 1;
 
-    	var totalDaysPrev = daysInMonth(today.getMonth() - 1, today.getFullYear());
-    	var totalDays = daysInMonth(today.getMonth(), today.getFullYear());
+    	$("#monthLabel")[0].textContent = monthStrings[selectedMonth];
 
-    	var startDayOfWeek = (new Date(today.getFullYear(), today.getMonth(), 1)).getDay() - 1;
+    	var totalDaysPrev = daysInMonth(selectedMonth - 1, today.getFullYear());
+    	var totalDays = daysInMonth(selectedMonth, today.getFullYear());
+
+    	var startDayOfWeek = (new Date(today.getFullYear(), selectedMonth, 1)).getDay() - 1;
 
     	var index = 0;
-    	var num;
+    	var day, month;
 	    for(var row = 0; row < 5; row++) {
 	    	for(var col = 0; col < 7; col++) {
 	    		if(row == 0 && (col < startDayOfWeek)) {
-    				num = (totalDaysPrev - (startDayOfWeek - (col + 1)));
+	    			month = selectedMonth - 1;
+    				day = (totalDaysPrev - (startDayOfWeek - (col + 1)));
     			} else {
-    				num = index + 1;
+    				month = selectedMonth;
+    				day = index + 1;
     				
     				if(++index >= totalDays) {
+    					selectedMonth++;
 	    				index = 0;
 	    			}
 	    		}
 
-	    		table.tBodies[0].rows[row].cells[col].innerHTML = "<a>"+num+"</a>";
+	    		var cell = table.tBodies[0].rows[row].cells[col];
+	    		cell.innerHTML = "<a>"+day+"</a>";
+	    		cell.setAttribute("day", day);
+	    		cell.setAttribute("month", month);
+	    		cell.setAttribute("year", 2018);
 	    	}
 	    }
     });
 
 
+    function calendarDayClicked(day, month, year) {
+    	alert("Calendar day clicked... " + day + "-" + month + "-" + year);
+    }
 
 
 
