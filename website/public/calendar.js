@@ -2,33 +2,138 @@ const monthStrings = ["January", "February", "March", "April", "May", "June", "J
 const today = new Date();
 
 class Calendar {
-	constructor() {
+	static createAll() {
+		let containers = $(".calendar-container");
+		let calendars = [];
+
+		for(var i = 0; i < containers.length; i++) {
+			calendars.push(new Calendar(containers[i]));
+		}
+
+		return calendars;
+	}
+
+
+	constructor(container) {
+		this.container = container;
+
 		console.log("Creating calendar...");
 
-		this.table = $("#calendarTable")[0];
-		if(!this.table) {
-			return console.log("No object with id 'calendarTable' found!");
-		}
+		this.create();
 
-		this.yearLabel = $("#calendarYearLabel")[0];
-		if(!this.yearLabel) {
-			return console.log("No object with id 'calendarYearLabel' found!");
-		}
+		// this.table = $("#calendarTable")[0];
+		// if(!this.table) {
+		// 	return console.log("No object with id 'calendarTable' found!");
+		// }
 
-		this.monthLabel = $("#calendarMonthLabel")[0];
-		if(!this.monthLabel) {
-			return console.log("No object with id 'calendarMonthLabel' found!");
-		}
+		// this.yearLabel = $("#calendarYearLabel")[0];
+		// if(!this.yearLabel) {
+		// 	return console.log("No object with id 'calendarYearLabel' found!");
+		// }
 
+		// this.monthLabel = $("#calendarMonthLabel")[0];
+		// if(!this.monthLabel) {
+		// 	return console.log("No object with id 'calendarMonthLabel' found!");
+		// }
 
 		this.selectedMonth = today.getMonth();
 		this.selectedYear = today.getFullYear();
 
 		this.dayClickedCallback = null;
 
+
 		this.update();
 
 		console.log("Calendar created.");
+	}
+
+
+	create() {
+		// Create the table
+		this.table = document.createElement("table");
+		this.table.className = "ui seven column large celled table";
+		this.container.appendChild(this.table);
+
+		// Create head, body, foot
+		let thead = document.createElement("thead");
+		let tbody = document.createElement("tbody");
+		let tfoot = document.createElement("tfoot");
+		this.table.appendChild(thead);
+		this.table.appendChild(tbody);
+		this.table.appendChild(tfoot);
+
+		// Create head rows and headers
+		let rowHTop = document.createElement("tr");
+		let rowHBottom = document.createElement("tr");
+		rowHBottom.className = "center aligned";
+		thead.appendChild(rowHTop);
+		thead.appendChild(rowHBottom);
+		let thTop = document.createElement("th");
+		thTop.colSpan = 9;
+		thTop.className = "center aligned";
+		rowHTop.appendChild(thTop);
+
+		// Create year and month labels
+		let divYear = document.createElement("div");
+		divYear.className = "ui ribbon label";
+		divYear.style = "float: left;";
+		thTop.appendChild(divYear);
+		this.yearLabel = document.createElement("span");
+		this.yearLabel.innerText = "?";
+		divYear.appendChild(this.yearLabel);
+		this.monthLabel = document.createElement("span");
+		this.monthLabel.style = "margin-right: 10%;";
+		this.monthLabel.textContent = "?";
+		thTop.appendChild(this.monthLabel);
+
+		// Create day of week labels
+		let dayLabels = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+		for(var d = 0; d < 7; d++) {
+			let th = document.createElement("th");
+			th.innerText = dayLabels[d];
+			rowHBottom.appendChild(th);
+		}
+
+		// Create day cells
+		for(var row = 0; row < 6; row++) {
+			// Create the row
+			let row = document.createElement("tr");
+			tbody.appendChild(row);
+
+			// Create each cell
+			for(var col = 0; col < 7; col++) {
+				let cell = document.createElement("td");
+				cell.className = "selectable center aligned";
+				cell.onClick = this.dayClicked(0,0,0);
+
+				let anch = document.createElement("a");
+				anch.innerText = "?";
+				cell.appendChild(anch);
+
+				row.appendChild(cell);
+			}
+		}
+
+		// Create foot elements
+		let tr = document.createElement("tr");
+		tfoot.appendChild(tr);
+		let th = document.createElement("th");
+		th.colSpan = 7;
+		let buttonPrev = document.createElement("button");
+		buttonPrev.className = "ui tiny left floated icon button";
+		buttonPrev.onClick = this.changeMonthClicked(false);
+		let i = document.createElement("i");
+		i.className = "left chevron icon";
+		buttonPrev.appendChild(i);
+		th.appendChild(buttonPrev);
+		let buttonNext = document.createElement("button");
+		buttonNext.className = "ui tiny right floated icon button";
+		buttonNext.onClick = this.changeMonthClicked(true);
+		i = document.createElement("i");
+		i.className = "right chevron icon";
+		buttonNext.appendChild(i);
+		th.appendChild(buttonNext);
+		tr.appendChild(th);
 	}
 
 
@@ -140,11 +245,10 @@ class Calendar {
 };
 
 
-var calendar;
 $(document).ready(function() {
-	calendar = new Calendar();
+	var calendars = Calendar.createAll();	
 
-	calendar.dayClickedCallback = function(day, month, year) {
+	calendars[0].dayClickedCallback = function(day, month, year) {
 		alert("Calendar day clicked... " + day + "-" + (month+1) + "-" + year);
 	};
 });

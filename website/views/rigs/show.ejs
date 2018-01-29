@@ -19,48 +19,8 @@
 		Red = out of action<br>
 		White = non-jumping day
 	</header>
-	<table class="ui seven column large celled table" id="calendarTable">
-		<thead>
-			<tr>
-				<th colspan="9" class="center aligned">
-					<div class="ui ribbon label" style="float: left;"><span id="calendarYearLabel">?</span></div>
-					<span id="calendarMonthLabel" style="margin-right: 10%;">?</span>
-				</th>
-			</tr>
-			<tr class="center aligned">
-				<th>Mon</th>
-				<th>Tue</th>
-				<th>Wed</th>
-				<th>Thu</th>
-				<th>Fri</th>
-				<th>Sat</th>
-				<th>Sun</th>
-			</tr>
-		</thead>
-		<tbody>
-			<% for(var row = 0; row < 6; row++) { %>
-				<tr>
-					<% for(var col = 0; col < 7; col++) { %>
-						<td class="selectable center aligned" onClick="calendar.dayClicked(this.getAttribute('day'), this.getAttribute('month'), this.getAttribute('year'))"><a>?</a></td>
-					<% } %>
-				</tr>				
-			<% } %>
-		</tbody>
-		<tfoot>
-			<tr>
-				<th colspan="7">
-					<button class="ui tiny left floated icon button" onClick="calendar.changeMonthClicked(false)">
-						<i class="left chevron icon"></i>
-					</button>
-					<button class="ui tiny right floated icon button" onClick="calendar.changeMonthClicked(true)">
-						<i class="right chevron icon"></i>
-					</button>
-				</th>
-			</tr>
-		</tfoot>
-	</table>
-	<!-- <div class="ui calendar">
-	</div> -->
+	<div class="calendar-container">
+	</div>
 </div>
 
 <header class="ui big header">Approved users</header>
