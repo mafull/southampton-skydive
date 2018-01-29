@@ -23,8 +23,8 @@
 		<thead>
 			<tr>
 				<th colspan="9" class="center aligned">
-					<div class="ui ribbon label" style="float: left;"><span id="yearLabel">?</span></div>
-					<span id="monthLabel" style="margin-right: 10%;">?</span>
+					<div class="ui ribbon label" style="float: left;"><span id="calendarYearLabel">?</span></div>
+					<span id="calendarMonthLabel" style="margin-right: 10%;">?</span>
 				</th>
 			</tr>
 			<tr class="center aligned">
@@ -41,7 +41,7 @@
 			<% for(var row = 0; row < 6; row++) { %>
 				<tr>
 					<% for(var col = 0; col < 7; col++) { %>
-						<td class="selectable center aligned" onClick="calendarDayClicked(this.getAttribute('day'), this.getAttribute('month'), this.getAttribute('year'))"><a>?</a></td>
+						<td class="selectable center aligned" onClick="calendar.dayClicked(this.getAttribute('day'), this.getAttribute('month'), this.getAttribute('year'))"><a>?</a></td>
 					<% } %>
 				</tr>				
 			<% } %>
@@ -49,10 +49,10 @@
 		<tfoot>
 			<tr>
 				<th colspan="7">
-					<button class="ui tiny left floated icon button" onClick="changeMonthClicked(false)">
+					<button class="ui tiny left floated icon button" onClick="calendar.changeMonthClicked(false)">
 						<i class="left chevron icon"></i>
 					</button>
-					<button class="ui tiny right floated icon button" onClick="changeMonthClicked(true)">
+					<button class="ui tiny right floated icon button" onClick="calendar.changeMonthClicked(true)">
 						<i class="right chevron icon"></i>
 					</button>
 				</th>
@@ -91,135 +91,6 @@
 <% } %>
 
 
-
-
-
-<script>
-	var today = new Date();
-	var selectedMonth = today.getMonth();
-	var selectedYear = today.getFullYear();
-
-    $(".ui.calendar")
-    	.calendar({
-        	type: "date",
-        	inline: true,
-        	minDate: new Date(today.getFullYear(), today.getMonth(), today.getDate()),
-        	maxDate: new Date(today.getFullYear() + 1, today.getMonth(), today.getDate())
-        });
-
-    
-    function daysInMonth(iMonth, iYear)
-	{
-		return 32 - new Date(iYear, iMonth, 32).getDate();
-	}
-
-
-	function changeMonthClicked(up) {
-		selectedMonth += up ? 1 : -1;
-		if(selectedMonth == 12) {
-			selectedYear++;
-			selectedMonth = 0;
-		} else if(selectedMonth == -1) {
-			selectedYear--;
-			selectedMonth = 11;
-		}
-		updateCalendar();
-	}
-
-
-	function updateMonthLabel() {
-		var monthStrings = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-		$("#monthLabel")[0].textContent = monthStrings[selectedMonth];
-	}
-
-
-	function updateYearLabel() {
-		$("#yearLabel")[0].textContent = selectedYear;
-	}
-
-
-	function updateCalendar() {
-		var table = $("#calendarTable")[0];
-
-    	updateMonthLabel();
-    	updateYearLabel();
-
-    	var totalDaysPrev = daysInMonth(selectedMonth - 1, selectedYear);
-    	var totalDays = daysInMonth(selectedMonth, selectedYear);
-
-    	var startDayOfWeek = (new Date(selectedYear, selectedMonth, 1)).getDay() - 1;
-
-    	var index = 0;
-    	var counter = 0;
-    	var day, month, year;
-    	var currMonth = selectedMonth;
-    	var currYear = selectedYear;
-	    for(var row = 0; row < 6; row++) {
-	    	for(var col = 0; col < 7; col++) {
-	    		if(row == 0 && (col < startDayOfWeek)) {
-	    			month = currMonth - 1;
-	    			if(month == -1) {
-	    				month = 11;
-	    				year = currYear - 1;
-	    			} else {
-	    				year = currYear;
-	    			}
-    				day = (totalDaysPrev - (startDayOfWeek - (col + 1)));
-    			} else {
-    				year = currYear;
-    				month = currMonth;
-    				day = index + 1;
-    				
-    				if(++index == totalDays) {
-    					currMonth++;
-    					if(currMonth == 12) {
-    						currMonth = 0;
-    						currYear++;
-    					}
-	    				index = 0;
-	    			}
-	    		}
-
-	    		var html
-	    		if((counter == 0 && index >= today.getDate()) ||
-	    		   (counter != 0 && counter < 6)) {
-	    			counter++;
-	    			html = "<a><strong>"+day+"</strong></a>";
-	    		} else {
-	    			html = "<a><em>"+day+"</em></a>";
-	    		}
-
-	    		var cell = table.tBodies[0].rows[row].cells[col];
-	    		cell.innerHTML = html;
-	    		cell.setAttribute("day", day);
-	    		cell.setAttribute("month", month);
-	    		cell.setAttribute("year", year);
-
-	    		switch(col) {
-	    			case 0: case 1: case 3:
-	    				// Non-jumping days - Blank
-	    				break;
-	    			default:
-	    				// Jumping days - Green
-	    				cell.classList.add("positive");	
-	    		}
-	    	}
-	    }
-	}
-
-
-    $(document).ready(function() {
-    	updateCalendar();
-    });
-
-
-    function calendarDayClicked(day, month, year) {
-    	month = parseInt(month);
-    	alert("Calendar day clicked... " + day + "-" + (month+1) + "-" + year);
-    }
-
-
-
-</script>
+<script type="text/javascript" src="/calendar.js"></script>
 
 <% include ../partials/footer %>
