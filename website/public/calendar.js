@@ -113,14 +113,14 @@ class Calendar {
 		th.colSpan = 7;
 		let buttonPrev = document.createElement("button");
 		buttonPrev.className = "ui tiny left floated icon button";
-		buttonPrev.onclick = function() { _this.changeMonthClicked(false); };
+		buttonPrev.onmousedown = function() { _this.changeMonthClicked(false); };
 		let i = document.createElement("i");
 		i.className = "left chevron icon";
 		buttonPrev.appendChild(i);
 		th.appendChild(buttonPrev);
 		let buttonNext = document.createElement("button");
 		buttonNext.className = "ui tiny right floated icon button";
-		buttonNext.onclick = function() { _this.changeMonthClicked(true); };
+		buttonNext.onmousedown = function() { _this.changeMonthClicked(true); };
 		i = document.createElement("i");
 		i.className = "right chevron icon";
 		buttonNext.appendChild(i);
