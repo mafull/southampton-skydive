@@ -16,7 +16,8 @@
 	<header class="ui small header">
 		Green = available<br>
 		Orange = booked<br>
-		Red = out of action
+		Red = out of action<br>
+		White = non-jumping day
 	</header>
 	<table class="ui seven column large celled table" id="calendarTable">
 		<thead>
@@ -37,7 +38,7 @@
 			<% for(var row = 0; row < 5; row++) { %>
 				<tr>
 					<% for(var col = 0; col < 7; col++) { %>
-						<td class="selectable positive center aligned" onClick="calendarDayClicked(this.getAttribute('day'), this.getAttribute('month'), this.getAttribute('year'))"><a>?</a></td>
+						<td class="selectable center aligned" onClick="calendarDayClicked(this.getAttribute('day'), this.getAttribute('month'), this.getAttribute('year'))"><a>?</a></td>
 					<% } %>
 				</tr>				
 			<% } %>
@@ -45,7 +46,12 @@
 		<tfoot>
 			<tr>
 				<th colspan="7">
-
+					<button class="ui tiny left floated icon button">
+						<i class="left chevron icon"></i>
+					</button>
+					<button class="ui tiny right floated icon button">
+						<i class="right chevron icon"></i>
+					</button>
 				</th>
 			</tr>
 		</tfoot>
@@ -105,7 +111,7 @@
 
     	var table = $("#calendarTable")[0];
 
-    	var selectedMonth = today.getMonth() + 1;
+    	var selectedMonth = today.getMonth();
 
     	$("#monthLabel")[0].textContent = monthStrings[selectedMonth];
 
@@ -115,6 +121,7 @@
     	var startDayOfWeek = (new Date(today.getFullYear(), selectedMonth, 1)).getDay() - 1;
 
     	var index = 0;
+    	var counter = 0;
     	var day, month;
 	    for(var row = 0; row < 5; row++) {
 	    	for(var col = 0; col < 7; col++) {
@@ -125,17 +132,35 @@
     				month = selectedMonth;
     				day = index + 1;
     				
-    				if(++index >= totalDays) {
+    				if(++index == totalDays) {
     					selectedMonth++;
 	    				index = 0;
 	    			}
 	    		}
 
+	    		var html
+	    		if((counter == 0 && index >= today.getDate())
+	    			|| (counter != 0 && counter < 6)) {
+	    			counter++;
+	    			html = "<a><strong>"+day+"</strong></a>";
+	    		} else {
+	    			html = "<a><em>"+day+"</em></a>";
+	    		}
+
 	    		var cell = table.tBodies[0].rows[row].cells[col];
-	    		cell.innerHTML = "<a>"+day+"</a>";
+	    		cell.innerHTML = html;
 	    		cell.setAttribute("day", day);
 	    		cell.setAttribute("month", month);
 	    		cell.setAttribute("year", 2018);
+
+	    		switch(col) {
+	    			case 0: case 1: case 3:
+	    				// Non-jumping days - Blank
+	    				break;
+	    			default:
+	    				// Jumping days - Green
+	    				cell.classList.add("positive");	
+	    		}
 	    	}
 	    }
     });
