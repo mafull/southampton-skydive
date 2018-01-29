@@ -35,7 +35,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			<% for(var row = 0; row < 5; row++) { %>
+			<% for(var row = 0; row < 6; row++) { %>
 				<tr>
 					<% for(var col = 0; col < 7; col++) { %>
 						<td class="selectable center aligned" onClick="calendarDayClicked(this.getAttribute('day'), this.getAttribute('month'), this.getAttribute('year'))"><a>?</a></td>
@@ -114,7 +114,7 @@
 		selectedMonth += change;
 		selectedMonth = (selectedMonth > 11) ? selectedMonth - 12 : selectedMonth;
 		selectedMonth = (selectedMonth < 0) ? selectedMonth + 12 : selectedMonth;
-		updateMonthLabel();
+		updateCalendar();
 	}
 
 
@@ -123,10 +123,9 @@
 		$("#monthLabel")[0].textContent = monthStrings[selectedMonth];
 	}
 
-    $(document).ready(function() {
-    	
 
-    	var table = $("#calendarTable")[0];
+	function updateCalendar() {
+		var table = $("#calendarTable")[0];
 
     	updateMonthLabel();
 
@@ -139,7 +138,7 @@
     	var counter = 0;
     	var day, month;
     	var currMonth = selectedMonth;
-	    for(var row = 0; row < 5; row++) {
+	    for(var row = 0; row < 6; row++) {
 	    	for(var col = 0; col < 7; col++) {
 	    		if(row == 0 && (col < startDayOfWeek)) {
 	    			month = currMonth - 1;
@@ -179,6 +178,11 @@
 	    		}
 	    	}
 	    }
+	}
+
+
+    $(document).ready(function() {
+    	updateCalendar();    	
     });
 
 
