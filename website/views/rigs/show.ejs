@@ -22,7 +22,10 @@
 	<table class="ui seven column large celled table" id="calendarTable">
 		<thead>
 			<tr>
-				<th colspan="9"><div class="ui ribbon label"><span id="monthLabel">?</span></div></th>
+				<th colspan="9" class="center aligned">
+					<div class="ui ribbon label" style="float: left;"><span id="yearLabel">?</span></div>
+					<span id="monthLabel" style="margin-right: 10%;">?</span>
+				</th>
 			</tr>
 			<tr class="center aligned">
 				<th>Mon</th>
@@ -116,11 +119,9 @@
 		if(selectedMonth == 12) {
 			selectedYear++;
 			selectedMonth = 0;
-			console.log("next year " + selectedYear);
 		} else if(selectedMonth == -1) {
 			selectedYear--;
 			selectedMonth = 11;
-			console.log("prev year " + selectedYear);
 		}
 		updateCalendar();
 	}
@@ -132,10 +133,16 @@
 	}
 
 
+	function updateYearLabel() {
+		$("#yearLabel")[0].textContent = selectedYear;
+	}
+
+
 	function updateCalendar() {
 		var table = $("#calendarTable")[0];
 
     	updateMonthLabel();
+    	updateYearLabel();
 
     	var totalDaysPrev = daysInMonth(selectedMonth - 1, selectedYear);
     	var totalDays = daysInMonth(selectedMonth, selectedYear);
