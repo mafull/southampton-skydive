@@ -98,14 +98,6 @@ router.get("/:id/edit", middleware.isLoggedIn, function(req, res) {
 router.put("/:id", middleware.isLoggedIn, function(req, res) {
 	var approvedUsers = req.body.approvedUsers.length ? req.body.approvedUsers.split(',') : [];
 
-	var rig = {
-		name: req.body.name,
-		modified: Date.now(),
-		main: req.body.main,
-		reserve: req.body.reserve,
-		approvedUsers: approvedUsers
-	};
-
 	Rig.findById(req.params.id, function(err, existingRig) {
 		if(err) {
 			req.flash("error", err.message);
@@ -184,8 +176,11 @@ router.put("/:id", middleware.isLoggedIn, function(req, res) {
 				});
 			}			
 		});
-
-
+		
+		existingRig.name = req.body.name;
+		existingRig.modified = Date.now();
+		existingRig.main = req.body.main;
+		existingRig.reserve = req.body.reserve;
 		existingRig.approvedUsers = approvedUsers;
 		existingRig.save(function(err) {
 			if(err) {
