@@ -21,26 +21,10 @@ class Calendar {
 
 		this.create();
 
-		// this.table = $("#calendarTable")[0];
-		// if(!this.table) {
-		// 	return console.log("No object with id 'calendarTable' found!");
-		// }
-
-		// this.yearLabel = $("#calendarYearLabel")[0];
-		// if(!this.yearLabel) {
-		// 	return console.log("No object with id 'calendarYearLabel' found!");
-		// }
-
-		// this.monthLabel = $("#calendarMonthLabel")[0];
-		// if(!this.monthLabel) {
-		// 	return console.log("No object with id 'calendarMonthLabel' found!");
-		// }
-
 		this.selectedMonth = today.getMonth();
 		this.selectedYear = today.getFullYear();
 
 		this.dayClickedCallback = null;
-
 
 		this.update();
 
@@ -49,6 +33,9 @@ class Calendar {
 
 
 	create() {
+		// Reference for use in callback functions
+		let _this = this;
+
 		// Create the table
 		this.table = document.createElement("table");
 		this.table.className = "ui seven column large celled table";
@@ -104,7 +91,12 @@ class Calendar {
 			for(var col = 0; col < 7; col++) {
 				let cell = document.createElement("td");
 				cell.className = "selectable center aligned";
-				cell.onClick = this.dayClicked(0,0,0);
+				cell.onclick = function() {
+					_this.dayClicked(
+						this.getAttribute("day"),
+						this.getAttribute("month"),
+						this.getAttribute("year"));
+				};
 
 				let anch = document.createElement("a");
 				anch.innerText = "?";
@@ -121,14 +113,14 @@ class Calendar {
 		th.colSpan = 7;
 		let buttonPrev = document.createElement("button");
 		buttonPrev.className = "ui tiny left floated icon button";
-		buttonPrev.onClick = this.changeMonthClicked(false);
+		buttonPrev.onclick = function() { _this.changeMonthClicked(false); };
 		let i = document.createElement("i");
 		i.className = "left chevron icon";
 		buttonPrev.appendChild(i);
 		th.appendChild(buttonPrev);
 		let buttonNext = document.createElement("button");
 		buttonNext.className = "ui tiny right floated icon button";
-		buttonNext.onClick = this.changeMonthClicked(true);
+		buttonNext.onclick = function() { _this.changeMonthClicked(true); };
 		i = document.createElement("i");
 		i.className = "right chevron icon";
 		buttonNext.appendChild(i);
