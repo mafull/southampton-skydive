@@ -46,10 +46,10 @@
 		<tfoot>
 			<tr>
 				<th colspan="7">
-					<button class="ui tiny left floated icon button" onClick="changeMonthClicked(-1)">
+					<button class="ui tiny left floated icon button" onClick="changeMonthClicked(false)">
 						<i class="left chevron icon"></i>
 					</button>
-					<button class="ui tiny right floated icon button" onClick="changeMonthClicked(1)">
+					<button class="ui tiny right floated icon button" onClick="changeMonthClicked(true)">
 						<i class="right chevron icon"></i>
 					</button>
 				</th>
@@ -94,6 +94,7 @@
 <script>
 	var today = new Date();
 	var selectedMonth = today.getMonth();
+	var selectedYear = today.getFullYear();
 
     $(".ui.calendar")
     	.calendar({
@@ -110,10 +111,17 @@
 	}
 
 
-	function changeMonthClicked(change) {
-		selectedMonth += change;
-		selectedMonth = (selectedMonth > 11) ? selectedMonth - 12 : selectedMonth;
-		selectedMonth = (selectedMonth < 0) ? selectedMonth + 12 : selectedMonth;
+	function changeMonthClicked(up) {
+		selectedMonth += up ? 1 : -1;
+		if(selectedMonth == 12) {
+			selectedYear++;
+			selectedMonth = 0;
+			console.log("next year " + selectedYear);
+		} else if(selectedMonth == -1) {
+			selectedYear--;
+			selectedMonth = 11;
+			console.log("prev year " + selectedYear);
+		}
 		updateCalendar();
 	}
 
@@ -129,26 +137,38 @@
 
     	updateMonthLabel();
 
-    	var totalDaysPrev = daysInMonth(selectedMonth - 1, today.getFullYear());
-    	var totalDays = daysInMonth(selectedMonth, today.getFullYear());
+    	var totalDaysPrev = daysInMonth(selectedMonth - 1, selectedYear);
+    	var totalDays = daysInMonth(selectedMonth, selectedYear);
 
-    	var startDayOfWeek = (new Date(today.getFullYear(), selectedMonth, 1)).getDay() - 1;
+    	var startDayOfWeek = (new Date(selectedYear, selectedMonth, 1)).getDay() - 1;
 
     	var index = 0;
     	var counter = 0;
-    	var day, month;
+    	var day, month, year;
     	var currMonth = selectedMonth;
+    	var currYear = selectedYear;
 	    for(var row = 0; row < 6; row++) {
 	    	for(var col = 0; col < 7; col++) {
 	    		if(row == 0 && (col < startDayOfWeek)) {
 	    			month = currMonth - 1;
+	    			if(month == -1) {
+	    				month = 11;
+	    				year = currYear - 1;
+	    			} else {
+	    				year = currYear;
+	    			}
     				day = (totalDaysPrev - (startDayOfWeek - (col + 1)));
     			} else {
+    				year = currYear;
     				month = currMonth;
     				day = index + 1;
     				
     				if(++index == totalDays) {
     					currMonth++;
+    					if(currMonth == 12) {
+    						currMonth = 0;
+    						currYear++;
+    					}
 	    				index = 0;
 	    			}
 	    		}
@@ -166,7 +186,7 @@
 	    		cell.innerHTML = html;
 	    		cell.setAttribute("day", day);
 	    		cell.setAttribute("month", month);
-	    		cell.setAttribute("year", 2018);
+	    		cell.setAttribute("year", year);
 
 	    		switch(col) {
 	    			case 0: case 1: case 3:
@@ -182,12 +202,13 @@
 
 
     $(document).ready(function() {
-    	updateCalendar();    	
+    	updateCalendar();
     });
 
 
     function calendarDayClicked(day, month, year) {
-    	alert("Calendar day clicked... " + day + "-" + month + "-" + year);
+    	month = parseInt(month);
+    	alert("Calendar day clicked... " + day + "-" + (month+1) + "-" + year);
     }
 
 
