@@ -46,10 +46,10 @@
 		<tfoot>
 			<tr>
 				<th colspan="7">
-					<button class="ui tiny left floated icon button">
+					<button class="ui tiny left floated icon button" onClick="changeMonthClicked(-1)">
 						<i class="left chevron icon"></i>
 					</button>
-					<button class="ui tiny right floated icon button">
+					<button class="ui tiny right floated icon button" onClick="changeMonthClicked(1)">
 						<i class="right chevron icon"></i>
 					</button>
 				</th>
@@ -93,6 +93,8 @@
 
 <script>
 	var today = new Date();
+	var selectedMonth = today.getMonth();
+
     $(".ui.calendar")
     	.calendar({
         	type: "date",
@@ -101,19 +103,32 @@
         	maxDate: new Date(today.getFullYear() + 1, today.getMonth(), today.getDate())
         });
 
+    
     function daysInMonth(iMonth, iYear)
 	{
 		return 32 - new Date(iYear, iMonth, 32).getDate();
 	}
 
+
+	function changeMonthClicked(change) {
+		selectedMonth += change;
+		selectedMonth = (selectedMonth > 11) ? selectedMonth - 12 : selectedMonth;
+		selectedMonth = (selectedMonth < 0) ? selectedMonth + 12 : selectedMonth;
+		updateMonthLabel();
+	}
+
+
+	function updateMonthLabel() {
+		var monthStrings = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+		$("#monthLabel")[0].textContent = monthStrings[selectedMonth];
+	}
+
     $(document).ready(function() {
-    	var monthStrings = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    	
 
     	var table = $("#calendarTable")[0];
 
-    	var selectedMonth = today.getMonth();
-
-    	$("#monthLabel")[0].textContent = monthStrings[selectedMonth];
+    	updateMonthLabel();
 
     	var totalDaysPrev = daysInMonth(selectedMonth - 1, today.getFullYear());
     	var totalDays = daysInMonth(selectedMonth, today.getFullYear());
@@ -123,24 +138,25 @@
     	var index = 0;
     	var counter = 0;
     	var day, month;
+    	var currMonth = selectedMonth;
 	    for(var row = 0; row < 5; row++) {
 	    	for(var col = 0; col < 7; col++) {
 	    		if(row == 0 && (col < startDayOfWeek)) {
-	    			month = selectedMonth - 1;
+	    			month = currMonth - 1;
     				day = (totalDaysPrev - (startDayOfWeek - (col + 1)));
     			} else {
-    				month = selectedMonth;
+    				month = currMonth;
     				day = index + 1;
     				
     				if(++index == totalDays) {
-    					selectedMonth++;
+    					currMonth++;
 	    				index = 0;
 	    			}
 	    		}
 
 	    		var html
-	    		if((counter == 0 && index >= today.getDate())
-	    			|| (counter != 0 && counter < 6)) {
+	    		if((counter == 0 && index >= today.getDate()) ||
+	    		   (counter != 0 && counter < 6)) {
 	    			counter++;
 	    			html = "<a><strong>"+day+"</strong></a>";
 	    		} else {
