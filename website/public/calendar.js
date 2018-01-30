@@ -240,9 +240,10 @@ class Calendar {
 
 
 $(document).ready(function() {
-	var calendars = Calendar.createAll();	
+	let calendars = Calendar.createAll();	
 
-	calendars[0].dayClickedCallback = function(day, month, year) {
-		alert("Calendar day clicked... " + day + "-" + (month+1) + "-" + year);
-	};
+	if(typeof configureCalendars === "function") {
+		configureCalendars(calendars);
+		console.log("Calendars configured.");
+	}
 });

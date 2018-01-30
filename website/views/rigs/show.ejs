@@ -20,6 +20,7 @@
 		White = non-jumping day
 	</header>
 	<div class="calendar-container"></div>
+	<div class="rig-booking-modal"></div>
 </div>
 
 <header class="ui big header">Approved users</header>
@@ -51,5 +52,27 @@
 
 
 <script type="text/javascript" src="/calendar.js"></script>
+<script type="text/javascript" src="/rigBookingModal.js"></script>
+
+<script type="text/javascript">
+	let rigBookingModals = [];
+	let calendars = [];
+
+	configureRigBookingModals = function(modals) {
+		rigBookingModals = modals;
+	};
+
+	configureCalendars = function(calendars) {
+		this.calendars = calendars;
+
+		// Open rig booking modal on day click
+		this.calendars[0].dayClickedCallback = function(day, month, year) {
+			rigBookingModals[0].show();
+		}
+	};
+
+
+	
+</script>
 
 <% include ../partials/footer %>
