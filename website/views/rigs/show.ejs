@@ -67,7 +67,8 @@
 
 		// Open rig booking modal on day click
 		this.calendars[0].dayClickedCallback = function(day, month, year) {
-			rigBookingModals[0].show();
+			let date = new Date(year, month, day);
+			rigBookingModals[0].show(date);
 		}
 	};
 

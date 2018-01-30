@@ -38,23 +38,27 @@ class RigBookingModal {
 		this.docObject.appendChild(header);
 
 		// Create content
-		let content = document.createElement("div");
-		content.className = "content";
-		content.innerText = "Content goes here";
-		this.docObject.appendChild(content);
+		this.content = document.createElement("div");
+		this.content.className = "content";
+		this.content.innerText = "Content goes here";
+		this.docObject.appendChild(this.content);
 
 		// Create actions
 		let actions = document.createElement("div");
 		actions.className = "actions";
 		let buttonDone = document.createElement("div");
-		buttonDone.className = "ui yellow inverted ok button";
+		buttonDone.className = "ui primary ok button";
 		buttonDone.innerText = "Done";
 		actions.appendChild(buttonDone);
 		this.docObject.appendChild(actions);
 	}
 
 
-	show() {
+	show(date) {
+		this.date = date;
+		this.content.innerHTML = "Date is: <strong>" + this.date.toDateString() + "</strong>";
+		//this.update();
+
 		// Have to call modal() on array of modals ??
 		$(".rig-booking-modal").modal("show");
 	}
