@@ -58,6 +58,12 @@
 	let rigBookingModals = [];
 	let calendars = [];
 
+	let rig = <%- JSON.stringify(rig) %>;
+	let currentUser = null;
+	<% if(currentUser) { %>
+		currentUser = <%- JSON.stringify(currentUser) %>;
+	<% } %>
+
 	configureRigBookingModals = function(modals) {
 		rigBookingModals = modals;
 	};
@@ -68,7 +74,7 @@
 		// Open rig booking modal on day click
 		this.calendars[0].dayClickedCallback = function(day, month, year) {
 			let date = new Date(year, month, day);
-			rigBookingModals[0].show(date);
+			rigBookingModals[0].show(currentUser, rig, date);
 		}
 	};
 

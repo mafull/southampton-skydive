@@ -26,7 +26,25 @@ var rigSchema = new mongoose.Schema({
 			type: mongoose.Schema.Types.ObjectId,
 			ref: "User"
 		}
-	]
+	],
+
+	// Booking info
+	status: {
+		isOnline: {type: Boolean, default: false},
+		offlineNote: {type: String, default: ""},
+
+		bookings: [
+			{
+				date: Date,
+				user: {
+					type: mongoose.Schema.Types.ObjectId,
+					ref: "User"
+				},
+				requirement: {type: String, default: ""},
+				priority: {type: Number, default: 0}
+			}
+		]
+	}
 });
 
 module.exports = mongoose.model("Rig", rigSchema);

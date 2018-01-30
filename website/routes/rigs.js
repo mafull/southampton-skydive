@@ -51,23 +51,26 @@ router.post("/", middleware.isLoggedIn, function(req, res) {
 
 // Show
 router.get("/:id", function(req, res) {
-	Rig.findById(req.params.id).populate({
-		path: "approvedUsers",
-		options: {
-			// Sort alphabetically by first name then surname
-			sort: {
-				"forename": 1,
-				"surname": 1
+	Rig.findById(req.params.id)
+		.populate({
+			path: "approvedUsers",
+			options: {
+				// Sort alphabetically by first name then surname
+				sort: {
+					"forename": 1,
+					"surname": 1
+				}
 			}
-		}
-	}).exec(function(err, foundRig) {
-		if(err) {
-			req.flash("error", err.message);
-			return res.redirect("/rigs");
-		}
+		})
+		.populate("status.bookings.user")
+		.exec(function(err, foundRig) {
+			if(err) {
+				req.flash("error", err.message);
+				return res.redirect("/rigs");
+			}
 
-		res.render("rigs/show", {rig: foundRig});					
-	});	
+			res.render("rigs/show", {rig: foundRig});					
+		});	
 });
 
 
