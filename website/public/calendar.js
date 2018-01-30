@@ -63,13 +63,13 @@ class Calendar {
 		// Create year and month labels
 		let divYear = document.createElement("div");
 		divYear.className = "ui ribbon label";
-		divYear.style = "float: left;";
+		divYear.style.float = "left";
 		thTop.appendChild(divYear);
 		this.yearLabel = document.createElement("span");
 		this.yearLabel.innerText = "?";
 		divYear.appendChild(this.yearLabel);
 		this.monthLabel = document.createElement("span");
-		this.monthLabel.style = "margin-right: 10%;";
+		this.monthLabel.style.marginRight ="10%";
 		this.monthLabel.textContent = "?";
 		thTop.appendChild(this.monthLabel);
 
