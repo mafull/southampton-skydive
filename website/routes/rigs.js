@@ -1,6 +1,8 @@
 var express 	= require("express"),
-	mongoose 	= require("mongoose");
+	mongoose 	= require("mongoose"),
+	multer		= require("multer");
 var router = express.Router();
+var upload = multer();
 
 var middleware = require("../middleware");
 
@@ -230,5 +232,45 @@ router.delete("/:id", middleware.isLoggedIn, function(req, res) {
 		});
 	});
 });
+
+
+// ----- Rig booking -----
+// Create
+router.post("/:id/booking", middleware.isLoggedIn, upload.fields([]), function(req, res) {
+	var booking = {
+		date: req.body.date,
+		user: req.body.user,
+		requirement: req.body.requirement,
+		priority: 0		
+	}
+
+	// HANDLE PRIORITY
+
+	Rig.findById(req.params.id, function(err, existingRig) {
+		if(err) {
+			console.log(err);
+			req.flash("error", err.message);
+			return res.redirect("back");
+		}
+		
+		existingRig.status.bookings.push(booking);
+		existingRig.save(function(err, data) {
+			if(err) {
+				console.log(err);
+				req.flash("error", err.message);
+				return res.redirect("back");
+			}
+
+			req.flash("success", "Booking successfully added");
+			res.redirect("/rigs/" + req.params.id);
+		});
+
+		
+	});
+
+	// // res.redirect("/rigs/" + req.params.id);
+	// res.sendStatus(200);
+});
+
 
 module.exports = router;

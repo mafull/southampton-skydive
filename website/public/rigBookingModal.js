@@ -23,6 +23,8 @@ class RigBookingModal {
 
 
 	create() {
+		let _this = this;
+
 		// Create modal div
 		this.docObject.className += " ui mini modal";
 
@@ -57,16 +59,17 @@ class RigBookingModal {
 		this.manageText.style.display = "none";
 		this.manageContainer.appendChild(this.manageText);
 		content.appendChild(this.manageContainer);
+
 		// New booking form
 		this.newForm = document.createElement("form");
 		this.newForm.className = "ui form";
 		this.newForm.style.display = "none";
+		this.newForm.method = "POST";
 		// T&C checkbox
 		let divCb = document.createElement("div");
 		divCb.className = "ui checkbox";
 		this.agreeCheckbox = document.createElement("input");
 		this.agreeCheckbox.type = "checkbox";
-		let _this = this;
 		this.agreeCheckbox.onchange = function() {
 			if(this.checked) {
 				field.classList.remove("disabled");
@@ -92,6 +95,7 @@ class RigBookingModal {
 		field.appendChild(labelField);
 		this.requirementDropdown = document.createElement("select");
 		this.requirementDropdown.className = "ui selection dropdown";
+		this.requirementDropdown.name = "requirement";
 		let option = document.createElement("option");
 		option.value = "Fun jumping";
 		option.innerText = "Fun jumping";
@@ -110,8 +114,9 @@ class RigBookingModal {
 		this.buttonBook = document.createElement("button");
 		this.buttonBook.className = "ui disabled fluid positive button";
 		this.buttonBook.innerText = "Book";
+		this.buttonBook.type = "button";
+		this.buttonBook.onclick = function() {_this.addBookingButtonClicked()};
 		this.newForm.appendChild(this.buttonBook);
-
 
 		// Cancel booking form
 		this.cancelForm = document.createElement("form");
@@ -120,22 +125,10 @@ class RigBookingModal {
 		this.manageContainer.appendChild(this.cancelForm);
 		// Button
 		this.buttonCancel = document.createElement("button");
-		this.buttonCancel.className = "ui disabled fluid negative button";
+		this.buttonCancel.className = "ui fluid negative button";
 		this.buttonCancel.innerText = "Cancel";
+		this.buttonCancel.type = "submit";
 		this.cancelForm.appendChild(this.buttonCancel);
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 		// Create actions
 		let actions = document.createElement("div");
@@ -147,7 +140,6 @@ class RigBookingModal {
 		this.docObject.appendChild(actions);
 
 		$(".ui.dropdown").dropdown();
-		//$(".ui.checkbox").checkbox();
 	}
 
 
@@ -175,7 +167,7 @@ class RigBookingModal {
 		let html = "";
 		// Current bookings
 		let existingBooking = false;
-		html += "<header class=\"ui center aligned small header\">Current booking priority:</header>";
+		html += "<header class=\"ui center aligned small header\">Current booking priority</header>";
 		html += "<div class=\"ui center aligned segment\">";
 		let currentBookings = this.getCurrentBookings();
 		if(currentBookings.length === 0) {
@@ -186,10 +178,10 @@ class RigBookingModal {
 			currentBookings.forEach((booking) => {
 				if(this.user && (booking.user._id === this.user._id)) {
 					existingBooking = true;
+					html += "<em>";
 				}
 
-				html += (existingBooking ? "<em>" : "")
-					+ "<div class=\"item\">"
+				html += "<div class=\"item\">"
 					+ "<span style=\"float: left;\">" + (booking.priority+1) + "</span>"
 					+ "<div class=\"content\">"
 					+ "<a class=\"header\" href=\"/users/" + booking.user._id + "\">" + booking.user.forename + " " + booking.user.surname + "</a>"
@@ -198,8 +190,11 @@ class RigBookingModal {
 					+ (booking.requirement !== "" ? (", " + booking.requirement) : "")
 					+ "</div>"
 					+ "</div>"
-					+ (existingBooking ? "</em>" : "")
 					+ "</div>";
+
+				if(this.user && (booking.user._id === this.user._id)) {
+					html += "</em>";
+				}
 			});
 			html += "</div></div>";
 		}
@@ -224,6 +219,7 @@ class RigBookingModal {
 
 			} else {
 				// No existing booking - give option to book
+				this.newForm.action = "/rigs/" + this.rig._id + "/booking";
 				this.manageText.style.display = "none";
 				this.cancelForm.style.display = "none";
 				this.newForm.style.display = "block";
@@ -252,6 +248,20 @@ class RigBookingModal {
 		currentBookings.sort(function(a, b) {return (a.priority < b.priority) ? -1 : ((b.priority < a.priority) ? 1 : 0);});
 
 		return currentBookings;
+	}
+
+
+	addBookingButtonClicked() {
+		var formData = new FormData();
+		formData.append("date", this.date);
+		formData.append("user", this.user._id);
+		formData.append("requirement", this.requirementDropdown.value);
+
+		var request = new XMLHttpRequest();
+		request.open(
+			"POST",
+			"/rigs/" + this.rig._id + "/booking");
+		request.send(formData);
 	}
 };
 
