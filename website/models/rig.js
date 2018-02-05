@@ -35,6 +35,7 @@ var rigSchema = new mongoose.Schema({
 
 		bookings: [
 			{
+				created: {type: Date, default: Date.now},
 				date: Date,
 				user: {
 					type: mongoose.Schema.Types.ObjectId,
