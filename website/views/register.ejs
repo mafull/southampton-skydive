@@ -4,17 +4,17 @@
 
 <div class="ui segment">
 	<form action="/register" method="POST" class="ui form">
-		<div class="field required" autofocus>
+		<div class="field required">
 			<label>First name</label>
 			<input type="text" name="user[forename]" placeholder="First name"
-			<% if(user && user.forename) { %>value="<%= user.forename %>"<% } %>>
+			<% if(user && user.forename) { %>value="<%= user.forename %>"<% } %> autofocus>
 		</div>
 		<div class="field required">
 			<label>Surname</label>
 			<input type="text" name="user[surname]" placeholder="Surname"
 			<% if(user && user.surname) { %>value="<%= user.surname %>"<% } %>>
 		</div>
-		<div class="field required" autofocus>
+		<div class="field required">
 			<label>Email</label>
 			<input type="text" name="user[email]" placeholder="Email"
 			<% if(user && user.email) { %>value="<%= user.email %>"<% } %>>
