@@ -26,6 +26,7 @@ app.use(express.static("public"));
 
 // Configure body parser and method override
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
 app.use(methodOverride("_method"));
 
 
