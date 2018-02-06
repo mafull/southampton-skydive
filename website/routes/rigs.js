@@ -237,47 +237,32 @@ router.delete("/:id", middleware.isLoggedIn, function(req, res) {
 // ----- Rig booking -----
 // Create
 router.post("/:id/booking", middleware.isLoggedIn, function(req, res) {
-	let booking = req.body;
+	const newBooking = req.body;
 	
 
 	// HANDLE PRIORITY
 
 	Rig.findById(req.params.id, function(err, existingRig) {
 		if(err) {
-			console.log(err);
 			req.flash("error", err.message);
 			return res.redirect("back");
 		}
 		
-		existingRig.status.bookings.push(booking);
+		existingRig.status.bookings.push(newBooking);
 		existingRig.save(function(err, data) {
 			if(err) {
-				console.log(err);
 				req.flash("error", err.message);
 				return res.redirect("back");
 			}
 
-			console.log("Rig saved: " + data);
-
 			Rig.findById(req.params.id)
-			.populate({
-				path: "status.bookings.user",
-				options: {
-					// Sort by priority
-					// sort: {
-					// 	"priority": 1
-					// }
-				}
-			})
+			.populate("status.bookings.user")
 			.exec(function(err, foundRig) {
 				if(err) {
-					console.log("Failed to find rig");
-					console.log(err);
 					req.flash("error", err.message);
 					return res.redirect("/rigs/" + req.params.id);
 				}
 
-				console.log("Populated");
 				res.json(foundRig.status.bookings);						
 			});
 		});		

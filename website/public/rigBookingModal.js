@@ -252,30 +252,13 @@ class RigBookingModal {
 
 
 	addBookingButtonClicked() {
-		/*var formData = new FormData();
-		formData.append("date", this.date);
-		formData.append("user", this.user._id);
-		formData.append("requirement", this.requirementDropdown.value);
-
-		var request = new XMLHttpRequest();
-		//request.onreadystatechange = () => { if(request.readyState == XMLHttpRequest.DONE) alert(request.responseText)};
-		request.open(
-			"POST",
-			"/rigs/" + this.rig._id + "/booking");
-		request.send(formData);*/
-
 		var newBooking = {
 			date: this.date,
 			user: this.user._id,
 			requirement: this.requirementDropdown.value,
 			priority: -1
 		};
-		console.log("New booking: " + newBooking);
 
-		// var data = new FormData();
-		// data.append("json", JSON.stringify(newBooking));
-
-		console.log("Fetching: " + "/rigs/" + this.rig._id + "/booking");
 		fetch("/rigs/" + this.rig._id + "/booking",
 			{
 				method: "POST",
@@ -286,12 +269,12 @@ class RigBookingModal {
 				},
 				credentials: "same-origin"
 			})
-			.then((res) => {
-				console.log(res)
-				return res;
-			})
-			.then((res) => console.log(res.json()));//return res.json())
-			//.then((data) => alert(JSON.stringify(data)));
+			.then((res) => res.json())
+			.then((data) => {
+				// Update modal with new booking
+				this.rig.status.bookings = data;
+				this.update();
+			});
 	}
 };
 
