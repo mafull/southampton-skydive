@@ -238,15 +238,70 @@ router.delete("/:id", middleware.isLoggedIn, function(req, res) {
 // Create
 router.post("/:id/booking", middleware.isLoggedIn, function(req, res) {
 	const newBooking = req.body;
-	
-
-	// HANDLE PRIORITY
 
 	Rig.findById(req.params.id, function(err, existingRig) {
 		if(err) {
 			req.flash("error", err.message);
 			return res.redirect("back");
 		}
+
+
+		// -------------------------------------------------------
+		let bookingsOnDay = existingRig.status.bookings.filter(a => a.date.toISOString() === newBooking.date);
+		bookingsOnDay.sort((a, b) => (a.priority < b.priority) ? -1 : ((b.priority < a.priority) ? 1 : 0));
+
+		const newReqPriority = (newBooking.requirement === "Fun jumping" ? 2 : newBooking.requirement === "Coaching" ? 1 : 0);
+		for(let i = 0; i < bookingsOnDay.length; i++) {
+			const reqPriority = (bookingsOnDay[i].requirement === "Fun jumping" ? 2 : bookingsOnDay[i].requirement === "Coaching" ? 1 : 0);
+
+			if(newReqPriority < reqPriority) {
+				// New booking has a higher priority
+
+				// New booking takes the currently-selected priority
+				newBooking.priority = bookingsOnDay[i].priority;
+
+				// Other priorities are incremented
+				for(let j = i; j < bookingsOnDay.length; j++) {
+					bookingsOnDay[j].priority++;
+				}
+
+				// Done
+				break;
+
+			} else if(newReqPriority === reqPriority) {
+				// Priorities are the same
+
+				// Check membership status etc.
+				// TODO - IMPLEMENT THIS
+				if(true /*SOMETHING*/) {
+					// New booking has lower membership priority
+					continue;
+				} else {
+					// New booking has higher membership priority
+
+					// DO SOMETHING
+
+					// New booking takes the currently-selected priority
+					newBooking.priority = bookingsOnDay[i].priority;
+
+					// Other priorities are incremented
+					for(let j = i; j < bookingsOnDay.length; j++) {
+						bookingsOnDay[j].priority++;
+					}
+
+					break;
+				}
+
+			} else {
+				// New booking has a lower priority
+				continue;
+			}
+		}
+
+		newBooking.priority = (newBooking.priority === -1) ? bookingsOnDay[bookingsOnDay.length-1].priority : newBooking.priority;
+
+
+		// -------------------------------------------------------
 		
 		existingRig.status.bookings.push(newBooking);
 		existingRig.save(function(err, data) {
