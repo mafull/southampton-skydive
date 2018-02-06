@@ -127,7 +127,8 @@ class RigBookingModal {
 		this.buttonCancel = document.createElement("button");
 		this.buttonCancel.className = "ui fluid negative button";
 		this.buttonCancel.innerText = "Cancel";
-		this.buttonCancel.type = "submit";
+		this.buttonCancel.type = "button";
+		this.buttonCancel.onclick = function() {_this.cancelBookingButtonClicked()};
 		this.cancelForm.appendChild(this.buttonCancel);
 
 		// Create actions
@@ -263,6 +264,31 @@ class RigBookingModal {
 			{
 				method: "POST",
 				body: JSON.stringify(newBooking),
+				headers: {
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				credentials: "same-origin"
+			})
+			.then((res) => res.json())
+			.then((data) => {
+				// Update modal with new booking
+				this.rig.status.bookings = data;
+				this.update();
+			});
+	}
+
+
+	cancelBookingButtonClicked() {
+		var data = {
+			userToCancel: this.user._id,
+			bookingDate: this.date
+		};
+
+		fetch("/rigs/" + this.rig._id + "/booking?_method=DELETE",
+			{
+				method: "POST",
+				body: JSON.stringify(data),
 				headers: {
 					"Accept": "application/json",
 					"Content-Type": "application/json"

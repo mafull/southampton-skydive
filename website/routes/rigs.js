@@ -298,7 +298,11 @@ router.post("/:id/booking", middleware.isLoggedIn, function(req, res) {
 			}
 		}
 
-		newBooking.priority = (newBooking.priority === -1) ? bookingsOnDay[bookingsOnDay.length-1].priority : newBooking.priority;
+		if(newBooking.priority === -1) {
+			newBooking.priority = (bookingsOnDay.length > 0) ? 
+				bookingsOnDay[bookingsOnDay.length-1].priority + 1 : 0;
+		}
+		
 
 
 		// -------------------------------------------------------
@@ -321,6 +325,96 @@ router.post("/:id/booking", middleware.isLoggedIn, function(req, res) {
 				res.json(foundRig.status.bookings);						
 			});
 		});		
+	});
+});
+
+
+// Destroy
+router.delete("/:id/booking", middleware.isLoggedIn, function(req, res) {
+	const userToCancel = req.body.userToCancel;
+	const bookingDate = req.body.bookingDate;
+
+	Rig.findById(req.params.id).exec(function(err, existingRig) {
+		if(err) {
+			req.flash("error", err.message);
+			return res.redirect("back");
+		}
+
+		// Find indices of all bookings for this date
+		let iBookingsOnDate = [];
+		for(let i = 0; i < existingRig.status.bookings.length; i++) {
+			if(existingRig.status.bookings[i].date.toISOString() === bookingDate) {
+				iBookingsOnDate.push(i);
+			}
+		}
+
+		// Find index of booking to cancel
+		let iBookingToCancel;
+		iBookingsOnDate.some(i => {
+			if(existingRig.status.bookings[i].user.equals(userToCancel)) {
+				iBookingToCancel = i;
+				return true;
+			}
+		});
+
+		// Decrement priorities of other bookings where necessary
+		const cancelledBookingPriority = existingRig.status.bookings[iBookingToCancel].priority;
+		iBookingsOnDate.forEach(i => {
+			if(existingRig.status.bookings[i].priority > cancelledBookingPriority) {
+				existingRig.status.bookings[i].priority--;
+			}
+		});
+
+		// Remove booking		
+		existingRig.status.bookings.splice(iBookingToCancel, 1);
+		
+
+		// Save the updated bookings
+		existingRig.save(function(err, data) {
+			if(err) {
+				req.flash("error", err.message);
+				return res.redirect("back");
+			}
+
+			Rig.findById(req.params.id)
+			.populate("status.bookings.user")
+			.exec(function(err, foundRig) {
+				if(err) {
+					req.flash("error", err.message);
+					return res.redirect("/rigs/" + req.params.id);
+				}
+
+				res.json(foundRig.status.bookings);			
+			});
+		});
+
+
+
+
+
+
+		// Delete all instances of the rig in approved users
+		// foundRig.approvedUsers.forEach(function(user) {
+		// 	var currentApproved = user.toJSON().approvedRigs;
+		// 	user.approvedRigs = currentApproved.filter(e => !e.equals(foundRig._id));
+		// 	user.save(function(err) {
+		// 		if(err) {
+		// 			req.flash("error", err.message);
+		// 			return res.redirect("back");
+		// 		}
+		// 	});
+		// });
+
+		// // Delete the rig
+		// foundRig.remove(function(err) {
+		// 	if(err) {
+		// 		req.flash("error", err.message);
+		// 		return res.redirect("back");
+		// 	}
+
+		// 	req.flash("success", "Rig successfully deleted");
+		// 	res.redirect("/rigs");
+		// });
 	});
 });
 
