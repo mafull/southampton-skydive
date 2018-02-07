@@ -3,6 +3,7 @@ var mongoose 				= require("mongoose"),
 
 var CommitteePosition = require("./committeePosition");
 var Rig = require("./rig");
+var RigBooking = require("./rigBooking");
 
 var userSchema = new mongoose.Schema({
 	// General info
@@ -34,7 +35,16 @@ var userSchema = new mongoose.Schema({
 			type: mongoose.Schema.Types.ObjectId,
 			ref: "Rig"
 		}
+	],
+
+	// Current active rig bookings
+	rigBookings: [
+		{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: "RigBooking"
+		}
 	]
+
 });
 userSchema.plugin(passportLocalMongoose);
 

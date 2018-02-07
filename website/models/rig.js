@@ -1,5 +1,6 @@
 var mongoose = require("mongoose");
 
+var RigBooking = require("./rigBooking");
 var User = require("./user");
 
 var rigSchema = new mongoose.Schema({
@@ -28,24 +29,17 @@ var rigSchema = new mongoose.Schema({
 		}
 	],
 
-	// Booking info
-	status: {
-		isOnline: {type: Boolean, default: false},
-		offlineNote: {type: String, default: ""},
+	// General status
+	isOnline: {type: Boolean, default: false},
+	offlineNote: {type: String, default: ""},
 
-		bookings: [
-			{
-				created: {type: Date, default: Date.now},
-				date: Date,
-				user: {
-					type: mongoose.Schema.Types.ObjectId,
-					ref: "User"
-				},
-				requirement: {type: String, default: ""},
-				priority: {type: Number, default: 0}
-			}
-		]
-	}
+	// Bookings
+	bookings: [
+		{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: "RigBooking"
+		}
+	]
 });
 
 module.exports = mongoose.model("Rig", rigSchema);

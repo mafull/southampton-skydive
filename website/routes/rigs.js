@@ -7,6 +7,7 @@ var upload = multer();
 var middleware = require("../middleware");
 
 var Rig = require("../models/rig");
+var RigBooking = require("../models/rigBooking");
 var User = require("../models/user");
 
 
@@ -53,7 +54,9 @@ router.post("/", middleware.isLoggedIn, function(req, res) {
 
 // Show
 router.get("/:id", function(req, res) {
+	// Find the rig
 	Rig.findById(req.params.id)
+		// Populate approved users
 		.populate({
 			path: "approvedUsers",
 			options: {
@@ -64,7 +67,15 @@ router.get("/:id", function(req, res) {
 				}
 			}
 		})
-		.populate("status.bookings.user")
+		// Populate bookings
+		.populate({
+			path: "bookings",
+			options: {
+				sort: {"priority": 1}
+			},
+			// Populate bookings' user
+			populate: {path: "user"}
+		})
 		.exec(function(err, foundRig) {
 			if(err) {
 				req.flash("error", err.message);
@@ -220,6 +231,9 @@ router.delete("/:id", middleware.isLoggedIn, function(req, res) {
 			});
 		});
 
+		// TODO - Delete all instances of the rig in rig bookings
+		// + those bokings from users
+
 		// Delete the rig
 		foundRig.remove(function(err) {
 			if(err) {
@@ -237,32 +251,37 @@ router.delete("/:id", middleware.isLoggedIn, function(req, res) {
 // ----- Rig booking -----
 // Create
 router.post("/:id/booking", middleware.isLoggedIn, function(req, res) {
+	// Create the new booking (local) object
 	const newBooking = req.body;
 
-	Rig.findById(req.params.id, function(err, existingRig) {
+	// Find all existing bookings for this day and rig
+	RigBooking.find({
+		"date": newBooking.date,
+		"rig": newBooking.rig
+	})
+	// Sort by priority
+	.sort([["priority", 1]])
+	// Populate the user fields
+	.populate("user").exec((err, foundBookings) => {
 		if(err) {
-			req.flash("error", err.message);
-			return res.redirect("back");
+			// HANDLE ERROR
+			return console.log(err);
 		}
 
-
-		// -------------------------------------------------------
-		let bookingsOnDay = existingRig.status.bookings.filter(a => a.date.toISOString() === newBooking.date);
-		bookingsOnDay.sort((a, b) => (a.priority < b.priority) ? -1 : ((b.priority < a.priority) ? 1 : 0));
-
+		// --- Calculate and adjust priorities ---
 		const newReqPriority = (newBooking.requirement === "Fun jumping" ? 2 : newBooking.requirement === "Coaching" ? 1 : 0);
-		for(let i = 0; i < bookingsOnDay.length; i++) {
-			const reqPriority = (bookingsOnDay[i].requirement === "Fun jumping" ? 2 : bookingsOnDay[i].requirement === "Coaching" ? 1 : 0);
+		for(let i = 0; i < foundBookings.length; i++) {
+			const reqPriority = (foundBookings[i].requirement === "Fun jumping" ? 2 : foundBookings[i].requirement === "Coaching" ? 1 : 0);
 
 			if(newReqPriority < reqPriority) {
 				// New booking has a higher priority
 
 				// New booking takes the currently-selected priority
-				newBooking.priority = bookingsOnDay[i].priority;
+				newBooking.priority = foundBookings[i].priority;
 
 				// Other priorities are incremented
-				for(let j = i; j < bookingsOnDay.length; j++) {
-					bookingsOnDay[j].priority++;
+				for(let j = i; j < foundBookings.length; j++) {
+					foundBookings[j].priority++;
 				}
 
 				// Done
@@ -282,13 +301,14 @@ router.post("/:id/booking", middleware.isLoggedIn, function(req, res) {
 					// DO SOMETHING
 
 					// New booking takes the currently-selected priority
-					newBooking.priority = bookingsOnDay[i].priority;
+					newBooking.priority = foundBookings[i].priority;
 
 					// Other priorities are incremented
-					for(let j = i; j < bookingsOnDay.length; j++) {
-						bookingsOnDay[j].priority++;
+					for(let j = i; j < foundBookings.length; j++) {
+						foundBookings[j].priority++;
 					}
 
+					// Done
 					break;
 				}
 
@@ -298,33 +318,47 @@ router.post("/:id/booking", middleware.isLoggedIn, function(req, res) {
 			}
 		}
 
+		// Lowest priority on chosen the day (or only booking)
 		if(newBooking.priority === -1) {
-			newBooking.priority = (bookingsOnDay.length > 0) ? 
-				bookingsOnDay[bookingsOnDay.length-1].priority + 1 : 0;
+			newBooking.priority = (foundBookings.length > 0) ? foundBookings[foundBookings.length-1].priority + 1 : 0;
 		}
-		
 
 
-		// -------------------------------------------------------
-		
-		existingRig.status.bookings.push(newBooking);
-		existingRig.save(function(err, data) {
+		// Create a document for the new booking
+		RigBooking.create(newBooking, (err, createdBooking) => {
 			if(err) {
-				req.flash("error", err.message);
-				return res.redirect("back");
+				// HANDLE ERROR
+				return console.log(err.msg);
 			}
 
-			Rig.findById(req.params.id)
-			.populate("status.bookings.user")
-			.exec(function(err, foundRig) {
-				if(err) {
-					req.flash("error", err.message);
-					return res.redirect("/rigs/" + req.params.id);
-				}
+			// Update the existing bookings
+			foundBookings.forEach((booking) => booking.save().catch(err => console.log(err.message)));
 
-				res.json(foundRig.status.bookings);						
+			// Add the new booking to the relevant rig
+			Rig.update(
+				{_id: req.params.id},
+				{$push: {"bookings": createdBooking}},
+				{safe: true, upsert: true, new: true})
+				.catch(err => console.log(err.message));
+
+			// Add the new booking to the relevant user
+			User.update(
+				{_id: newBooking.user},
+				{$push: {"rigBookings": createdBooking}},
+				{safe: true, upsert: true, new: true})
+				.catch(err => console.log(err.message));
+
+
+			// Add the updated bookings to the response
+			RigBooking.findById(createdBooking._id).populate("user").exec((err, populated) => {
+				if(err) {
+					// HANDLE ERROR
+					return console.log(err.message);
+				}
+				foundBookings.push(populated);
+				res.json(foundBookings);				
 			});
-		});		
+		});
 	});
 });
 
@@ -334,89 +368,70 @@ router.delete("/:id/booking", middleware.isLoggedIn, function(req, res) {
 	const userToCancel = req.body.userToCancel;
 	const bookingDate = req.body.bookingDate;
 
-	Rig.findById(req.params.id).exec(function(err, existingRig) {
+	// Find all bookings for this day and rig
+	RigBooking.find({
+		"date": bookingDate,
+		"rig": req.params.id
+	})
+	// Sort by priority
+	.sort([["priority", 1]])
+	// Populate the user fields
+	.populate("user").exec((err, foundBookings) => {
 		if(err) {
-			req.flash("error", err.message);
-			return res.redirect("back");
+			// TODO - HANDLE ERROR
+			return console.log(err.message);
 		}
 
-		// Find indices of all bookings for this date
-		let iBookingsOnDate = [];
-		for(let i = 0; i < existingRig.status.bookings.length; i++) {
-			if(existingRig.status.bookings[i].date.toISOString() === bookingDate) {
-				iBookingsOnDate.push(i);
-			}
-		}
+		let bookingToDelete = null;
+		for(let i = 0; i < foundBookings.length; i++) {
+			if(foundBookings[i].user._id.equals(userToCancel)) {
+				bookingToDelete = foundBookings[i];
 
-		// Find index of booking to cancel
-		let iBookingToCancel;
-		iBookingsOnDate.some(i => {
-			if(existingRig.status.bookings[i].user.equals(userToCancel)) {
-				iBookingToCancel = i;
-				return true;
-			}
-		});
+				// Decrement the remaining priorities
+				for(let j = i+1; j < foundBookings.length; j++) {
+					foundBookings[j].priority--;
 
-		// Decrement priorities of other bookings where necessary
-		const cancelledBookingPriority = existingRig.status.bookings[iBookingToCancel].priority;
-		iBookingsOnDate.forEach(i => {
-			if(existingRig.status.bookings[i].priority > cancelledBookingPriority) {
-				existingRig.status.bookings[i].priority--;
-			}
-		});
-
-		// Remove booking		
-		existingRig.status.bookings.splice(iBookingToCancel, 1);
-		
-
-		// Save the updated bookings
-		existingRig.save(function(err, data) {
-			if(err) {
-				req.flash("error", err.message);
-				return res.redirect("back");
-			}
-
-			Rig.findById(req.params.id)
-			.populate("status.bookings.user")
-			.exec(function(err, foundRig) {
-				if(err) {
-					req.flash("error", err.message);
-					return res.redirect("/rigs/" + req.params.id);
+					foundBookings[j].save().catch(err => console.log(err.message));
 				}
+			}
+		}
 
-				res.json(foundRig.status.bookings);			
-			});
+		if(bookingToDelete === null) {
+			// SOMETHING IS WRONG
+			return console.log("bookingToDelete is null...");
+		}
+
+		// Remove the booking from the rig it is associated with
+		Rig.findById(bookingToDelete.rig, (err, foundRig) => {
+			if(err) {
+				// TODO - HANDLE ERROR
+				return console.log(err.message);
+			}
+
+			foundRig.bookings = foundRig.bookings.filter(e => !e.equals(bookingToDelete._id));
+			foundRig.save().catch(err => console.log(err.message));
 		});
 
+		// Remove the booking from the user it is associated with
+		User.findById(bookingToDelete.user._id, (err, foundUser) => {
+			if(err) {
+				// TODO - HANDLE ERROR
+				return console.log(err.message);
+			}
 
+			foundUser.rigBookings = foundUser.rigBookings.filter(e => !e.equals(bookingToDelete._id));
+			foundUser.save().catch(err => console.log(err.message));
+		});
 
+		// Remove the booking from the array
+		foundBookings = foundBookings.filter(e => !e._id.equals(bookingToDelete._id));
 
+		// Delete the actual booking
+		bookingToDelete.remove().catch(err => console.log(err.message));
 
-
-		// Delete all instances of the rig in approved users
-		// foundRig.approvedUsers.forEach(function(user) {
-		// 	var currentApproved = user.toJSON().approvedRigs;
-		// 	user.approvedRigs = currentApproved.filter(e => !e.equals(foundRig._id));
-		// 	user.save(function(err) {
-		// 		if(err) {
-		// 			req.flash("error", err.message);
-		// 			return res.redirect("back");
-		// 		}
-		// 	});
-		// });
-
-		// // Delete the rig
-		// foundRig.remove(function(err) {
-		// 	if(err) {
-		// 		req.flash("error", err.message);
-		// 		return res.redirect("back");
-		// 	}
-
-		// 	req.flash("success", "Rig successfully deleted");
-		// 	res.redirect("/rigs");
-		// });
+		// Return he updated array
+		res.json(foundBookings);
 	});
 });
-
 
 module.exports = router;

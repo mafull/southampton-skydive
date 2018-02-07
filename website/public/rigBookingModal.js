@@ -233,7 +233,7 @@ class RigBookingModal {
 		let currentBookings = [];
 
 		// Grab all bookings for the selected date
-		this.rig.status.bookings.forEach((booking) => {
+		this.rig.bookings.forEach((booking) => {
 			// Convert to date format
 			booking.date = new Date(booking.date);
 
@@ -256,6 +256,7 @@ class RigBookingModal {
 		var newBooking = {
 			date: this.date,
 			user: this.user._id,
+			rig: this.rig._id,
 			requirement: this.requirementDropdown.value,
 			priority: -1
 		};
@@ -273,7 +274,7 @@ class RigBookingModal {
 			.then((res) => res.json())
 			.then((data) => {
 				// Update modal with new booking
-				this.rig.status.bookings = data;
+				this.rig.bookings = data;
 				this.update();
 			});
 	}
@@ -298,7 +299,7 @@ class RigBookingModal {
 			.then((res) => res.json())
 			.then((data) => {
 				// Update modal with new booking
-				this.rig.status.bookings = data;
+				this.rig.bookings = data;
 				this.update();
 			});
 	}
