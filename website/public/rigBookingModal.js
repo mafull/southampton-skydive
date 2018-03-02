@@ -16,6 +16,11 @@ class RigBookingModal {
 
 		console.log("Creating rig booking modal...");
 
+		// Clear any existing html elements
+		while(this.docObject.firstChild) {
+			this.docObject.removeChild(this.docObject.firstChild);
+		}
+
 		this.create();
 
 		console.log("Rig booking modal created.");
@@ -212,18 +217,31 @@ class RigBookingModal {
 		} else {
 			// Logged in and approved
 
-			if(existingBooking) {
-				// Existing booking - give option to cancel
-				this.manageText.style.display = "none";
-				this.cancelForm.style.display = "block";
-				this.newForm.style.display = "none";
+			let today = new Date();
+			today.setHours(0, 0, 0, 0);
+
+			if(this.date >= today) {
+				// Date is in the future - manage booking enabled
+				if(existingBooking) {
+					// Existing booking
+					this.manageText.style.display = "none";
+					this.cancelForm.style.display = "block";
+					this.newForm.style.display = "none";
+				} else {
+					
+					// No existing booking - give option to book
+					this.newForm.action = "/rigs/" + this.rig._id + "/booking";
+					this.manageText.style.display = "none";
+					this.cancelForm.style.display = "none";
+					this.newForm.style.display = "block";
+				}
 
 			} else {
-				// No existing booking - give option to book
-				this.newForm.action = "/rigs/" + this.rig._id + "/booking";
-				this.manageText.style.display = "none";
+				// Dats is in the past - manage booking disabled
+				this.manageText.innerHTML = "Selected date is in the past - booking management disabled";
+				this.manageText.style.display = "block";
 				this.cancelForm.style.display = "none";
-				this.newForm.style.display = "block";
+				this.newForm.style.display = "none";
 			}
 		}
 	}
