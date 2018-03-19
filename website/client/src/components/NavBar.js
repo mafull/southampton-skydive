@@ -1,5 +1,10 @@
 import React, { Component } from "react";
-import { Link } 			from "react-router-dom"
+import { Link }				from "react-router-dom";
+import { 
+	Menu,
+	Container,
+	Icon
+}							from "semantic-ui-react";
 
 
 // RIGHT ITEM
@@ -16,20 +21,21 @@ import { Link } 			from "react-router-dom"
 class NavBar extends Component {
 	render() {
 		return (
-			<div className="ui fixed inverted blue menu">
-				<div className="ui container">
-					<div className="header item"><i className="child icon"></i>UoS Skydive</div>
+			<Menu inverted fixed="top" color="blue" style={{ height: "40px" }}>
+				<Container>
+					<Menu.Item className="header"><Icon name="child"></Icon>UoS Skydive</Menu.Item>
 					<Link to="/" className="item">Home</Link>
 					<Link to="/rigs" className="item">Rig booking</Link>
-					<Link to="" className="item">Calendar</Link>
+					<Link to="/calendar" className="item">Calendar</Link>
 					<Link to="/users" className="item">Users</Link>
 					<Link to="/committee" className="item">Committee</Link>
 
-					<div className="right item">
-						
-					</div>
-				</div>
-			</div>
+					<Menu.Item position="right">
+						<Link to="/login" className="item">Login</Link>
+						<Link to="/register" className="item">Sign up</Link>
+					</Menu.Item>
+				</Container>
+			</Menu>
 		);
 	}
 
