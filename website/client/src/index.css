@@ -1,0 +1,22 @@
+body {
+	margin: 0;
+	padding: 0;
+}
+
+i.icon {
+	font-size: 2em;
+}
+
+.container.main {
+	margin-top: 7.0em;
+}
+
+.field {
+	margin: 1%;
+	padding: 10px;
+	text-align: center;
+}
+
+.menu.fixed {
+	height: 40px;
+}
