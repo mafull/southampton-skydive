@@ -1,14 +1,16 @@
-import React, { Component } from "react"
-import { Link } 			from "react-router-dom"
+import React, { Component } from "react";
+import { Link } 			from "react-router-dom";
 import {
 	Header,
 	Icon,
 	Form,
 	Button
-}							from "semantic-ui-react"
-import Validator			from "validator"
-import PropTypes			from "prop-types"
-import InlineError			from "./InlineError"
+}							from "semantic-ui-react";
+import Validator			from "validator";
+import PropTypes			from "prop-types";
+import { connect }			from "react-redux";
+import InlineError			from "./InlineError";
+import { login }			from "../actions/auth";
 
 // Email input
 /*
@@ -18,7 +20,11 @@ import InlineError			from "./InlineError"
 
 class Login extends Component {
 	static propTypes = {
-		submit: PropTypes.func.isRequired
+		history: PropTypes.shape({
+			push: PropTypes.func.isRequired
+		}).isRequired,
+
+		login: PropTypes.func.isRequired
 	};
 
 
@@ -42,8 +48,12 @@ class Login extends Component {
 		const errors = this.validate(this.state.data);
 		this.setState({errors});
 		if(Object.keys(errors).length === 0) {
-			//this.props.submit(this.state.data);
-			console.log(this.state.data);
+			this.setState({ loading: true });
+			this.props.login(this.state.data)
+				.then(() => this.props.history.push("/"))
+				.catch(err =>
+					this.setState({ loading: false })
+				);
 		}
 	}
 
@@ -57,13 +67,13 @@ class Login extends Component {
 
 
 	render() {
-		const { data, errors } = this.state;
+		const { data, errors, loading } = this.state;
 
 		return (
 			<div>
 				<Header size="huge"><Icon name="sign in" /> Log in</Header>
 
-				<Form onSubmit={this.onSubmit}>
+				<Form onSubmit={this.onSubmit} loading={loading}>
 					<Form.Field required error={!!errors.email}>
 						<label>Email</label>
 						<input
@@ -98,4 +108,4 @@ class Login extends Component {
 }
 
 
-export default Login;
+export default connect(null, {login})(Login);
