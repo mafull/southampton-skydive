@@ -32,7 +32,7 @@ class RigList extends Component {
 
 
 	render() {
-		const rigListElements = this.rigs ? this.rigs.map(r => <RigListElement {...r} key={r.name} />) : null;
+		const rigListElements = this.rigs ? this.rigs.map(r => <RigListElement {...r} key={r._id} />) : null;
 		
 		return (
 			<div>

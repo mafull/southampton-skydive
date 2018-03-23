@@ -27,7 +27,7 @@ class UserList extends Component {
 
 
 	render() {
-		const userListElements = (this.users) ? this.users.map(u => <UserListElement {...u} key={u.email} />) : null;
+		const userListElements = (this.users) ? this.users.map(u => <UserListElement {...u} key={u._id} />) : null;
 
 		return (
 			<div>
