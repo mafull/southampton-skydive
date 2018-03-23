@@ -28,7 +28,7 @@ class UserListElement extends Component {
 			<Table.Row>
 				<Table.Cell>{title}</Table.Cell>
 				<Table.Cell><Link to="/#">{name}</Link></Table.Cell>
-				<Table.Cell>{email}</Table.Cell>
+				<Table.Cell><a href={"mailto:" + email}>{email}</a></Table.Cell>
 			</Table.Row>
 		);
 	}
