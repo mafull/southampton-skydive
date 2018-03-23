@@ -29,8 +29,6 @@ class CommitteeList extends Component {
 					};
 				});
 
-				console.log(positions);
-
 				const newState = Object.assign(
 					{},
 					this.state,

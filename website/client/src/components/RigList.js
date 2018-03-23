@@ -29,8 +29,6 @@ class RigList extends Component {
 					};
 				});
 
-				console.log(rigs);
-
 				const newState = Object.assign(
 					{},
 					this.state,
