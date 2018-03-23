@@ -1,31 +1,35 @@
-import React, { Component } from "react"
-import PropTypes 			from "prop-types"
+import React, { Component } from "react";
+import PropTypes 			from "prop-types";
+import { Link }				from "react-router-dom";
+import {
+	Table
+}							from "semantic-ui-react";
 
 
 class UserListElement extends Component {
 	static propTypes = {
-		position: PropTypes.string.isRequired,
-		name: PropTypes.string.isRequired,
-		email: PropTypes.string.isRequired
+		title: PropTypes.string.isRequired,
+		name: PropTypes.string,
+		email: PropTypes.string
 	};
 
 
 	static defaultProps = {
-		position: "n/a",
-		name: "n/a",
-		email: "n/a"
+		title: "n/a",
+		name: "",
+		email: ""
 	};
 
 
 	render() {
-		const {position, name, email} = this.props;
+		const {title, name, email} = this.props;
 
 		return (
-			<tr>
-				<td>{position}</td>
-				<td><a href="/#">{name}</a></td>
-				<td>{email}</td>
-			</tr>
+			<Table.Row>
+				<Table.Cell>{title}</Table.Cell>
+				<Table.Cell><Link to="/#">{name}</Link></Table.Cell>
+				<Table.Cell>{email}</Table.Cell>
+			</Table.Row>
 		);
 	}
 }
