@@ -72,7 +72,7 @@ class Login extends Component {
 		return (
 			<div>
 				<Header size="huge"><Icon name="sign in" /> Log in</Header>
-
+				
 				<Form onSubmit={this.onSubmit} loading={loading}>
 					<Form.Field required error={!!errors.email}>
 						<label>Email</label>
@@ -101,7 +101,13 @@ class Login extends Component {
 					<Button type="submit" fluid size="big" color="blue">Log in</Button>
 				</Form>
 
-				<Button as={Link} to="/" color="blue" inverted>Go back</Button>
+				<Button
+					color="blue"
+					inverted
+					style={{marginTop: "10px"}}
+					as={Link} 
+						to="/">Go back</Button>
+			
 			</div>
 		);
 	}

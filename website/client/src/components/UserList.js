@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import axios				from "axios";
 import UserListElement 		from "./UserListElement";
 import {
 	Header,
@@ -23,6 +24,19 @@ class UserList extends Component {
 				email: "one@poo.com"
 			}
 		];
+	}
+
+
+	componentDidMount() {
+		axios
+			.get("localhost:3001:/users")
+			.then(response =>
+				console.log(response)
+			)
+			.catch(error =>
+				console.log(error)
+			);
+
 	}
 
 

@@ -45,7 +45,11 @@ class RigList extends Component {
 					<Grid.Column width="4" verticalAlign="middle">
 						<Item>
 							<Item.Content>
-								<Button size="big" color="green" as={Link} to="/rigs/new">Add rig</Button>
+								<Button
+									size="large"
+									color="green"
+									as={Link}
+										to="/rigs/new">Add rig</Button>
 							</Item.Content>
 						</Item>
 					</Grid.Column>

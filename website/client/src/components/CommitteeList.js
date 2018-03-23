@@ -55,8 +55,12 @@ class CommitteeList extends Component {
 					</Table.Body>
 				</Table>
 
-				<Button color="green" as={Link} to="/committee/new">Add committee position</Button>
-
+				<Button
+					color="green"
+					as={Link}
+						to="/committee/new">
+					Add committee position
+				</Button>
 			</div>
 		);
 	}
