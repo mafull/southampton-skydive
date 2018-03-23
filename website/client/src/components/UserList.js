@@ -9,6 +9,11 @@ import {
 
 
 class UserList extends Component {
+	state = {
+		users: []
+	};
+
+
 	constructor(props) {
 		super(props);
 
@@ -29,19 +34,33 @@ class UserList extends Component {
 
 	componentDidMount() {
 		axios
-			.get("localhost:3001:/users")
-			.then(response =>
-				console.log(response)
-			)
+			.get("/users")
+			.then(response => {
+				const users = response.data.map(u => {
+					return {
+						_id: u._id,
+						name: u.forename + " " + u.surname,
+						email: u.email
+					}
+				});
+				
+				const newState = Object.assign(
+					{},
+					this.state, 
+					{users}
+				);
+				this.setState(newState);
+
+			})
 			.catch(error =>
-				console.log(error)
+				console.log(error.response)
 			);
 
 	}
 
 
 	render() {
-		const userListElements = (this.users) ? this.users.map(u => <UserListElement {...u} key={u._id} />) : null;
+		const userListElements = (this.state.users) ? this.state.users.map(u => <UserListElement {...u} key={u._id} />) : null;
 
 		return (
 			<div>

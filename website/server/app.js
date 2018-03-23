@@ -41,7 +41,7 @@ app.get("*", function(req, res) {
 });
 
 
-// ----- Listen for requests ----- 
-app.listen(3000, "localhost", function() {
+// ----- Listen for requests -----
+app.listen(3001, "localhost", function() {
 	console.log(" -- Server started -- ");
 });
