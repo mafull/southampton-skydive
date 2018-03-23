@@ -1,28 +1,48 @@
 import React, { Component } from "react";
-import UserListElement 		from "./UserListElement"
+import UserListElement 		from "./UserListElement";
+import {
+	Header,
+	Icon,
+	Table
+}							from "semantic-ui-react";
 
 
 class UserList extends Component {
+	constructor(props) {
+		super(props);
+
+		this.users = [
+			{
+				name: "Max",
+				email: "one@two.com"
+			},
+			{
+				name: "Ben",
+				email: "one@poo.com"
+			}
+		];
+	}
+
+
 	render() {
-		const userListElements = (this.props.users) ? this.props.users.map(u => <UserListElement {...u} key={u.email} />) : [];
+		const userListElements = (this.users) ? this.users.map(u => <UserListElement {...u} key={u.email} />) : null;
 
 		return (
 			<div>
-				<div className="ui huge header"><i className="users icon"></i> Users</div>
+				<Header size="huge"><Icon name="users" /> Users</Header>
 				<p>View all registered users</p>
 
-				<table className="ui striped celled table">
-					<thead>
-						<tr>
-							<th>Name</th>
-							<th>Email</th>
-						</tr>	
-					</thead>
-					<tbody>
+				<Table striped celled>
+					<Table.Header>
+						<Table.Row>
+							<Table.HeaderCell>Name</Table.HeaderCell>
+							<Table.HeaderCell>Email</Table.HeaderCell>
+						</Table.Row>	
+					</Table.Header>
+					<Table.Body>
 						{userListElements}
-					</tbody>
-					
-				</table>
+					</Table.Body>					
+				</Table>
 			</div>
 		);
 	}
