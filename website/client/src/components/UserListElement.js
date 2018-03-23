@@ -1,11 +1,15 @@
-import React, { Component } from "react"
-import PropTypes 			from "prop-types"
+import React, { Component } from "react";
+import PropTypes 			from "prop-types";
+import { Link }				from "react-router-dom";
+import {
+	Table
+}							from "semantic-ui-react";
 
 
 class UserListElement extends Component {
 	static propTypes = {
 		name: PropTypes.string.isRequired,
-		email: PropTypes.string.isRequired
+		email: PropTypes.string
 	};
 
 
@@ -19,10 +23,10 @@ class UserListElement extends Component {
 		const {name, email} = this.props;
 
 		return (
-			<tr>
-				<td><a href="/#">{name}</a></td>
-				<td>{email}</td>
-			</tr>
+			<Table.Row>
+				<Table.Cell><Link to="/#">{name}</Link></Table.Cell>
+				<Table.Cell>{email}</Table.Cell>
+			</Table.Row>
 		);
 	}
 }
