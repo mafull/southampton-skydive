@@ -42,12 +42,10 @@ class RigList extends Component {
 				<Grid stackable as={Container}>
 					{rigListElements}
 
-					<Grid.Column size="4">
+					<Grid.Column width="4" verticalAlign="middle">
 						<Item>
 							<Item.Content>
-								<Item.Extra>
-									<Button size="big" color="green" as={Link} to="/rigs/new">Add rig</Button>
-								</Item.Extra>
+								<Button size="big" color="green" as={Link} to="/rigs/new">Add rig</Button>
 							</Item.Content>
 						</Item>
 					</Grid.Column>

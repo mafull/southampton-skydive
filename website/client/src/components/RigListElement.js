@@ -38,7 +38,7 @@ class RigListElement extends Component {
 		const { _id, name, equipment: { main } } = this.props;
 
 		return (
-			<Grid.Column width="4">
+			<Grid.Column width="4" verticalAlign="middle">
 				<Item>
 					<Item.Content>
 						<Header size="huge" as={Link} to={"/rigs/" + _id}>{name}</Header>
@@ -48,9 +48,6 @@ class RigListElement extends Component {
 						<Item.Description>
 
 						</Item.Description>
-						<Item.Extra>
-							<Button basic color="blue" as={Link} to={"/rigs/" + _id}>Select</Button>
-						</Item.Extra>
 					</Item.Content>
 				</Item>
 			</Grid.Column>
