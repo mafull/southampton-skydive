@@ -16,6 +16,7 @@ class RigList extends Component {
 
 		this.rigs = [
 			{
+				_id: "ab0",
 				name: "rig1",
 
 				equipment: {

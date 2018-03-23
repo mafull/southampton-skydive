@@ -15,14 +15,17 @@ class CommitteeList extends Component {
 
 		this.committeePositions = [
 			{
+				_id: "1a",
 				title: "Pres",
 				name: "Max F",
 				email: "one@two.com"
 			},
 			{
+				_id: "2a",
 				title: "VP",
 			},
 			{
+				_id: "3b",
 				title: "Dog",
 				name: "Ben",
 				email: "one@poo.com"
@@ -32,7 +35,7 @@ class CommitteeList extends Component {
 
 
 	render() {
-		const committeeListElements = this.committeePositions ? this.committeePositions.map(p => <CommitteeListElement {...p} key={p.title} />) : null;
+		const committeeListElements = this.committeePositions ? this.committeePositions.map(p => <CommitteeListElement {...p} key={p._id} />) : null;
 		
 		return (
 			<div>

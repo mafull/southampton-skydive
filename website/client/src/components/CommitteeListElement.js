@@ -8,6 +8,7 @@ import {
 
 class UserListElement extends Component {
 	static propTypes = {
+		_id: PropTypes.string.isRequired,
 		title: PropTypes.string.isRequired,
 		name: PropTypes.string,
 		email: PropTypes.string
@@ -15,6 +16,7 @@ class UserListElement extends Component {
 
 
 	static defaultProps = {
+		_id: "",
 		title: "n/a",
 		name: "",
 		email: ""
@@ -22,11 +24,11 @@ class UserListElement extends Component {
 
 
 	render() {
-		const {title, name, email} = this.props;
+		const { _id, title, name, email } = this.props;
 
 		return (
 			<Table.Row>
-				<Table.Cell>{title}</Table.Cell>
+				<Table.Cell><Link to={"/committee/" + _id}>{title}</Link></Table.Cell>
 				<Table.Cell><Link to="/#">{name}</Link></Table.Cell>
 				<Table.Cell><a href={"mailto:" + email}>{email}</a></Table.Cell>
 			</Table.Row>

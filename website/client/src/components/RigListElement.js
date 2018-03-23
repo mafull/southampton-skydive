@@ -11,6 +11,7 @@ import {
 
 class RigListElement extends Component {
 	static propTypes = {
+		_id: PropTypes.string.isRequired,
 		name: PropTypes.string.isRequired,
 		equipment: PropTypes.shape({
 			main: PropTypes.shape({
@@ -22,6 +23,7 @@ class RigListElement extends Component {
 
 
 	static defaultProps = {
+		_id: "",
 		name: "n/a",
 		equipment: {
 			main: {
@@ -33,13 +35,13 @@ class RigListElement extends Component {
 
 
 	render() {
-		const { id = 69, name, equipment: { main } } = this.props;
+		const { _id, name, equipment: { main } } = this.props;
 
 		return (
 			<Grid.Column width="4">
 				<Item>
 					<Item.Content>
-						<Header size="huge" as={Link} to={"/rigs/" + id}>{name}</Header>
+						<Header size="huge" as={Link} to={"/rigs/" + _id}>{name}</Header>
 						<Item.Meta>
 							<span>{main.model} {main.size}</span>
 						</Item.Meta>
@@ -47,7 +49,7 @@ class RigListElement extends Component {
 
 						</Item.Description>
 						<Item.Extra>
-							<Button basic color="blue" as={Link} to={"/rigs/" + id}>Select</Button>
+							<Button basic color="blue" as={Link} to={"/rigs/" + _id}>Select</Button>
 						</Item.Extra>
 					</Item.Content>
 				</Item>

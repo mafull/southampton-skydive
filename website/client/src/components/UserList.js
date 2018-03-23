@@ -13,10 +13,12 @@ class UserList extends Component {
 
 		this.users = [
 			{
+				_id: "bd0",
 				name: "Max",
 				email: "one@two.com"
 			},
 			{
+				_id: "sdh2",
 				name: "Ben",
 				email: "one@poo.com"
 			}
