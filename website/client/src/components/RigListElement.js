@@ -47,7 +47,7 @@ class RigListElement extends Component {
 
 						</Item.Description>
 						<Item.Extra>
-							<Button as={Link} to={"/rigs/" + id} basic color="blue">Select</Button>
+							<Button basic color="blue" as={Link} to={"/rigs/" + id}>Select</Button>
 						</Item.Extra>
 					</Item.Content>
 				</Item>
