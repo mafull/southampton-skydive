@@ -10,19 +10,21 @@ var User = require("../models/user");
 
 
 // Index
-router.get("/", function(req, res) {
-	CommitteePosition.find({})
+router.get("/", (req, res) => {
+	CommitteePosition
+		.find({})
 		.populate("user")
 		.sort([
 			["tier", 1]
-		]).exec(function(err, foundPositions) {
-		if(err) {
-			req.flash("error", err.message);
-			return res.redirect("back");
-		}
+		])
+		.exec(function(err, foundPositions) {
+			if(err) {
+				return res.status(404).send("Unable to retrieve committee position data");
+			}
 
-		res.render("committee/index", {committeePositions: foundPositions});
-	});
+			// Return committee position data
+			res.json(foundPositions);
+		});
 });
 
 

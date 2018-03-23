@@ -1,6 +1,7 @@
 import React, { Component } from "react";
+import axios				from "axios";
 import CommitteeListElement from "./CommitteeListElement";
-import { Link } 				from "react-router-dom";
+import { Link } 			from "react-router-dom";
 import {
 	Header,
 	Icon,
@@ -10,32 +11,41 @@ import {
 
 
 class CommitteeList extends Component {
-	constructor(props) {
-		super(props);
+	state = {
+		positions: []
+	};
 
-		this.committeePositions = [
-			{
-				_id: "1a",
-				title: "Pres",
-				name: "Max F",
-				email: "one@two.com"
-			},
-			{
-				_id: "2a",
-				title: "VP",
-			},
-			{
-				_id: "3b",
-				title: "Dog",
-				name: "Ben",
-				email: "one@poo.com"
-			}
-		];
+
+	componentDidMount() {
+		axios
+			.get("/committee")
+			.then(response => {
+				const positions = response.data.map(p => {
+					return {
+						_id: p._id,
+						title: p.name,
+						name: p.user.forename + " " + p.user.surname,
+						email: p.user.email
+					};
+				});
+
+				console.log(positions);
+
+				const newState = Object.assign(
+					{},
+					this.state,
+					{ positions }
+				);
+				this.setState(newState);
+			})
+			.catch(error => {
+				console.log(error.response);
+			});
 	}
 
 
 	render() {
-		const committeeListElements = this.committeePositions ? this.committeePositions.map(p => <CommitteeListElement {...p} key={p._id} />) : null;
+		const committeeListElements = this.state.positions ? this.state.positions.map(p => <CommitteeListElement {...p} key={p._id} />) : null;
 		
 		return (
 			<div>
