@@ -12,29 +12,19 @@ class RigListElement extends Component {
 	static propTypes = {
 		_id: PropTypes.string.isRequired,
 		name: PropTypes.string.isRequired,
-		equipment: PropTypes.shape({
-			main: PropTypes.shape({
-				model: PropTypes.string,
-				size: PropTypes.number
-			})
-		})
+		summary: PropTypes.string
 	};
 
 
 	static defaultProps = {
 		_id: "",
 		name: "n/a",
-		equipment: {
-			main: {
-				model :"",
-				size: ""
-			}
-		}
+		summary: ""
 	};
 
 
 	render() {
-		const { _id, name, equipment: { main } } = this.props;
+		const { _id, name, summary } = this.props;
 
 		return (
 			<Grid.Column width="4" verticalAlign="middle">
@@ -42,7 +32,7 @@ class RigListElement extends Component {
 					<Item.Content>
 						<Header size="huge" as={Link} to={"/rigs/" + _id}>{name}</Header>
 						<Item.Meta>
-							<span>{main.model} {main.size}</span>
+							<span>{summary}</span>
 						</Item.Meta>
 						<Item.Description>
 

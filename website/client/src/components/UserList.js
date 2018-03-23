@@ -14,24 +14,6 @@ class UserList extends Component {
 	};
 
 
-	constructor(props) {
-		super(props);
-
-		this.users = [
-			{
-				_id: "bd0",
-				name: "Max",
-				email: "one@two.com"
-			},
-			{
-				_id: "sdh2",
-				name: "Ben",
-				email: "one@poo.com"
-			}
-		];
-	}
-
-
 	componentDidMount() {
 		axios
 			.get("/users")
@@ -41,13 +23,13 @@ class UserList extends Component {
 						_id: u._id,
 						name: u.forename + " " + u.surname,
 						email: u.email
-					}
+					};
 				});
 				
 				const newState = Object.assign(
 					{},
 					this.state, 
-					{users}
+					{ users }
 				);
 				this.setState(newState);
 

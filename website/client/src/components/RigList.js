@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import axios 				from "axios";
 import RigListElement 		from "./RigListElement";
 import { Link }				from "react-router-dom";
 import {
@@ -11,28 +12,40 @@ import {
 
 
 class RigList extends Component {
-	constructor(props) {
-		super(props);
+	state = {
+		rigs: []
+	};
 
-		this.rigs = [
-			{
-				_id: "ab0",
-				name: "rig1",
 
-				equipment: {
-					main: {
-						make: "PS",
-						model: "V",
-						size: 10
-					}
-				}
-			}
-		];
+	componentDidMount() {
+		axios
+			.get("/rigs")
+			.then(response => {
+				const rigs = response.data.map(r => {
+					return {
+						_id: r._id,
+						name: r.name,
+						summary: r.main.model + " " + r.main.size
+					};
+				});
+
+				console.log(rigs);
+
+				const newState = Object.assign(
+					{},
+					this.state,
+					{ rigs }
+				);
+				this.setState(newState);
+			})
+			.catch(error => {
+				console.log(error.response);
+			});
 	}
 
 
 	render() {
-		const rigListElements = this.rigs ? this.rigs.map(r => <RigListElement {...r} key={r._id} />) : null;
+		const rigListElements = this.state.rigs ? this.state.rigs.map(r => <RigListElement {...r} key={r._id} />) : null;
 		
 		return (
 			<div>

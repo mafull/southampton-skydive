@@ -17,9 +17,10 @@ router.get("/", (req, res) => {
 		])
 		.exec((err, users) => {
 			if(err) {
-				// DO SOMEHING
+				return res.status(404).send("Unable to retrieve user data");
 			}
 
+			// Return user data
 			res.json(users);
 		});	
 });
@@ -41,12 +42,13 @@ router.get("/:id", (req, res) => {
 		})
 		.exec((err, foundUser) => {
 			if(err) {
-				req.flash("error", err.message);
-				return res.redirect("/users");
+				return res.status(404).send("Unable to retrieve user data");
 			}
 
-			res.render("users/show", {user: foundUser});
+			// Return user data
+			res.json(foundUser);
 		});	
 });
+
 
 module.exports = router;

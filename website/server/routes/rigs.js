@@ -12,28 +12,26 @@ var User = require("../models/user");
 
 
 // Index
-router.get("/", function(req, res) {
-	Rig.find({}).sort([
+router.get("/", (req, res) => {
+	Rig
+		.find({})
+		.sort([
 			["main.size", -1],
 			["name", 1]
-		]).exec(function(err, rigs) {
-		if(err) {
-			// DO SOMETHING
-		}	
+		])
+		.exec((err, rigs) => {
+			if(err) {
+				return res.status(404).send("Unable to retrieve rig data");
+			}	
 
-		res.render("rigs/index", {rigs: rigs});	
-	});	
-});
-
-
-// New
-router.get("/new", middleware.isLoggedIn, function(req, res) {
-	res.render("rigs/new");
+			// Return rig data
+			res.json(rigs);	
+		});	
 });
 
 
 // Create
-router.post("/", middleware.isLoggedIn, function(req, res) {
+router.post("/", middleware.isLoggedIn, (req, res) => {
 	var rig = {
 		name: req.body.name,
 		main: req.body.main,
@@ -53,58 +51,56 @@ router.post("/", middleware.isLoggedIn, function(req, res) {
 
 
 // Show
-router.get("/:id", function(req, res) {
-	// Find the rig
-	Rig.findById(req.params.id)
-		// Populate approved users
-		.populate({
+router.get("/:id", (req, res) => {
+	Rig
+		.findById(req.params.id)						// Find the rig
+		.populate({										// Populate approved users
 			path: "approvedUsers",
 			options: {
-				// Sort alphabetically by first name then surname
-				sort: {
+				sort: {									// Sort alphabetically by first name then surname
 					"forename": 1,
 					"surname": 1
 				}
 			}
 		})
-		// Populate bookings
-		.populate({
+		.populate({										// Populate bookings
 			path: "bookings",
 			options: {
-				sort: {"priority": 1}
+				sort: { "priority": 1 }
 			},
-			// Populate bookings' user
-			populate: {path: "user"}
+			populate: { path: "user" }					// Populate bookings' user
 		})
-		.exec(function(err, foundRig) {
+		.exec((err, foundRig) => {
 			if(err) {
-				req.flash("error", err.message);
-				return res.redirect("/rigs");
+				return res.status(404).send("Unable to retrieve rig data");
 			}
 
-			res.render("rigs/show", {rig: foundRig});					
+			// Return rig data
+			res.json(foundRig);					
 		});	
 });
 
 
 // Edit
-router.get("/:id/edit", middleware.isLoggedIn, function(req, res) {
-	Rig.findById(req.params.id, function(err, foundRig) {
+router.get("/:id/edit", middleware.isLoggedIn, (req, res) => {
+	Rig.findById(req.params.id, (err, foundRig) => {
 		if(err) {
-			req.flash("error", err.message);
-			return res.redirect("back");
+			return res.status(404).send("Unable to retrieve rig data");
 		}
 
-		User.find({}).sort([
-			["forename", 1],
-			["surname", 1]
-		]).exec(function(err, users) {
-			if(err) {
-				return res.render("rigs/edit", {rig: foundRig, users: []});
-			}
+		User
+			.find({})
+			.sort([
+				["forename", 1],
+				["surname", 1]
+			])
+			.exec((err, users) => {
+				if(err) {
+					return res.status(404).send("Unable to retrieve rig data");
+				}
 
-			res.render("rigs/edit", {rig: foundRig, users: users});
-		});
+				res.render("rigs/edit", {rig: foundRig, users: users});
+			});
 	});
 	
 });
