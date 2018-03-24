@@ -4,13 +4,15 @@ import UserListElement 		from "./UserListElement";
 import {
 	Header,
 	Icon,
-	Table
+	Table,
+	Segment
 }							from "semantic-ui-react";
 
 
 class UserList extends Component {
 	state = {
-		users: []
+		users: [],
+		loaded: false
 	};
 
 
@@ -29,7 +31,7 @@ class UserList extends Component {
 				const newState = Object.assign(
 					{},
 					this.state, 
-					{ users }
+					{ users, loaded: true }
 				);
 				this.setState(newState);
 
@@ -37,12 +39,12 @@ class UserList extends Component {
 			.catch(error =>
 				console.log(error.response)
 			);
-
 	}
 
 
 	render() {
-		const userListElements = (this.state.users) ? this.state.users.map(u => <UserListElement {...u} key={u._id} />) : null;
+		const { loaded, users } = this.state;
+		const userListElements = users.length ? users.map(u => <UserListElement {...u} key={u._id} />) : <Segment basic loading={!loaded}><i>No users found</i></Segment>;
 
 		return (
 			<div>
