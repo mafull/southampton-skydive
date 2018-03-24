@@ -24,6 +24,7 @@ class CommitteeList extends Component {
 					return {
 						_id: p._id,
 						title: p.name,
+						userId: p.user._id,
 						name: p.user.forename + " " + p.user.surname,
 						email: p.user.email
 					};
