@@ -7,13 +7,15 @@ import {
 	Grid,
 	Container,
 	Item,
+	Segment,
 	Button
 }							from "semantic-ui-react";
 
 
 class RigList extends Component {
 	state = {
-		rigs: []
+		rigs: [],
+		loaded: false
 	};
 
 
@@ -32,7 +34,7 @@ class RigList extends Component {
 				const newState = Object.assign(
 					{},
 					this.state,
-					{ rigs }
+					{ rigs, loaded: true }
 				);
 				this.setState(newState);
 			})
@@ -43,7 +45,9 @@ class RigList extends Component {
 
 
 	render() {
-		const rigListElements = this.state.rigs ? this.state.rigs.map(r => <RigListElement {...r} key={r._id} />) : null;
+		const { loaded, rigs } = this.state;
+
+		const rigListElements = rigs.length ? rigs.map(r => <RigListElement {...r} key={r._id} />) : <Segment basic loading={!loaded}><i>No rigs found</i></Segment>;
 		
 		return (
 			<div>
