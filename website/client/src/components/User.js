@@ -12,7 +12,8 @@ import {
 
 class User extends Component {
 	state = {
-		_id: this.props.match.params._id
+		_id: this.props.match.params._id,
+		loaded: false
 	};
 
 
@@ -25,7 +26,7 @@ class User extends Component {
 				const newState = Object.assign(
 					{},
 					this.state,
-					{ ...user }
+					{ ...user, loaded: true }
 				);
 				this.setState(newState);
 			})
@@ -37,6 +38,8 @@ class User extends Component {
 
 	render() {
 		const {
+			loaded,
+
 			forename,
 			surname,
 			email,
@@ -45,32 +48,44 @@ class User extends Component {
 			modified
 		} = this.state;
 
-		const approvedRigsItems = approvedRigs && approvedRigs.length ? approvedRigs.map(r => <Item key={r._id}><Link to={"/rigs/" + r._id}>{r.name}</Link></Item>) : <Item>None</Item>;
-
-		const createdDate = created ? new Date(created).toDateString() : null;
-		const modifiedDate = modified ? new Date(modified).toDateString() : null;
-		
-		return (
+		const nameContent = loaded ? (forename + " " + surname) : "";
+		const generalInfoContent = loaded ?  
 			<div>
-				<Header size="huge"><Icon name="user" />{forename + " " + surname}</Header>
-				
-				<Header size="large">General info</Header>
-				<Segment>
-					<Header>Username</Header>
-					<Item>{email}</Item>
-					<Header>Email</Header>
-					<Item>{email}</Item>
-				</Segment>
+				<Header>Username</Header>
+				<Item>{email}</Item>
+				<Header>Email</Header>
+				<Item>{email}</Item>
+			</div>
+			: <Item>.</Item>;
 
-				<Header size="large">Approved rigs</Header>
-				<Segment>
-					{approvedRigsItems}
-				</Segment>
+		const approvedRigsContent = approvedRigs && approvedRigs.length ? approvedRigs.map(r => <Item key={r._id}><Link to={"/rigs/" + r._id}>{r.name}</Link></Item>) : <Item>None</Item>;
 
+		const createdDate = created ? new Date(created).toDateString() : "Unknown";
+		const modifiedDate = modified ? new Date(modified).toDateString() : "Unknown";
+		const datesContent = (created || modified) ?
+			<div>
 				<Header size="small">Date created</Header>
 				<Item>{createdDate}</Item>
 				<Header size="small">Last modified</Header>
 				<Item>{modifiedDate}</Item>
+			</div>
+			: null;
+		
+		return (
+			<div>
+				<Header size="huge"><Icon name="user" />{nameContent}</Header>
+				
+				<Header size="large">General info</Header>
+				<Segment loading={!loaded}>
+					{generalInfoContent}
+				</Segment>
+
+				<Header size="large">Approved rigs</Header>
+				<Segment loading={!loaded}>
+					{approvedRigsContent}
+				</Segment>
+
+				{datesContent}
 
 				<Button
 					color="blue"
@@ -80,7 +95,6 @@ class User extends Component {
 						to="/users/">
 					Go back
 				</Button>
-
 			</div>
 		);
 	}
