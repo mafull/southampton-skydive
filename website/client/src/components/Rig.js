@@ -52,8 +52,8 @@ class Rig extends Component {
 			reserve
 		} = equipment ? equipment : {};
 
-		const mainContent = main ? <p>{main.make} <strong>{main.model + " " + main.size}</strong></p> : "Unknown";
-		const reserveContent = reserve ? <p>{reserve.make} <strong>{reserve.model + " " + reserve.size}</strong></p> : "Unknown";
+		const mainContent = (main && main.make && main.model && main.size) ? <p>{main.make} <strong>{main.model + " " + main.size}</strong></p> : <p><i>Unknown</i></p>;
+		const reserveContent = (reserve && reserve.make && reserve.model && reserve.size) ? <p>{reserve.make} <strong>{reserve.model + " " + reserve.size}</strong></p> : <p><i>Unknown</i></p>;
 		const equipmentContent = (main || reserve) ?
 			<div>
 				<Header>Main</Header>
