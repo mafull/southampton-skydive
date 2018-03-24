@@ -12,14 +12,14 @@ class RigListElement extends Component {
 	static propTypes = {
 		_id: PropTypes.string.isRequired,
 		name: PropTypes.string.isRequired,
-		summary: PropTypes.string
+		summary: PropTypes.string.isRequired
 	};
 
 
 	static defaultProps = {
 		_id: "",
 		name: "n/a",
-		summary: ""
+		summary: "Unknown"
 	};
 
 
