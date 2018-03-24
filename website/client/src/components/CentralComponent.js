@@ -4,6 +4,7 @@ import RigList 				from "./RigList";
 import UserList 			from "./UserList";
 import User 				from "./User";
 import CommitteeList 		from "./CommitteeList";
+import CommitteePosition 	from "./CommitteePosition";
 import Login 				from "./Login";
 import Register				from "./Register";
 import {
@@ -21,7 +22,7 @@ class CentralComponent extends Component {
 						<Route path="/users" exact component={UserList} />
 							<Route path="/users/:_id" component={User} />
 						<Route path="/committee" exact component={CommitteeList} />
-
+							<Route path="/committee/:_id" component={CommitteePosition} />
 						<Route path="/login" exact component={Login} />
 						<Route path="/register" exact component={Register} />
 					</Switch>

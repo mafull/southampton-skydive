@@ -17,7 +17,7 @@ router.get("/", (req, res) => {
 		.sort([
 			["tier", 1]
 		])
-		.exec(function(err, foundPositions) {
+		.exec((err, foundPositions) => {
 			if(err) {
 				return res.status(404).send("Unable to retrieve committee position data");
 			}
@@ -78,15 +78,18 @@ router.post("/", middleware.isLoggedIn, function(req, res) {
 
 
 // Show
-router.get("/:id", function(req, res) {
-	CommitteePosition.findById(req.params.id).populate("user").exec(function(err, foundPosition) {
-		if(err) {
-			req.flash("error", err.message);
-			return res.redirect("/committee");
-		}
+router.get("/:id", (req, res) => {
+	CommitteePosition
+		.findById(req.params.id)
+		.populate("user")
+		.exec((err, foundPosition) => {
+			if(err) {
+				return res.status(404).send("Unable to retrieve committee position data");
+			}
 
-		res.render("committee/show", {position: foundPosition});
-	});
+			// Return committee position data
+			res.json(foundPosition);
+		});
 });
 
 
