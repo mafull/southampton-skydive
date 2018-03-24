@@ -31,7 +31,7 @@ class NavBar extends Component {
 					<Link to="/committee" className="item">Committee</Link>
 
 					<Menu.Item position="right">
-						<Link to="/login" className="item">Login</Link>
+						<Link to="/login" className="item">Log in</Link>
 						<Link to="/register" className="item">Sign up</Link>
 					</Menu.Item>
 				</Container>
