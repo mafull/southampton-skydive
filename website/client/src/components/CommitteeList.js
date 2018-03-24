@@ -6,13 +6,15 @@ import {
 	Header,
 	Icon,
 	Table,
+	Segment,
 	Button
 }							from "semantic-ui-react";
 
 
 class CommitteeList extends Component {
 	state = {
-		positions: []
+		positions: [],
+		loaded: false
 	};
 
 
@@ -33,7 +35,7 @@ class CommitteeList extends Component {
 				const newState = Object.assign(
 					{},
 					this.state,
-					{ positions }
+					{ positions, loaded: true }
 				);
 				this.setState(newState);
 			})
@@ -44,7 +46,9 @@ class CommitteeList extends Component {
 
 
 	render() {
-		const committeeListElements = this.state.positions ? this.state.positions.map(p => <CommitteeListElement {...p} key={p._id} />) : null;
+		const { loaded, positions } = this.state;
+
+		const committeeListElements = positions.length ? positions.map(p => <CommitteeListElement {...p} key={p._id} />) : <Segment basic loading={!loaded}><i>No committee positions found</i></Segment>;
 		
 		return (
 			<div>
