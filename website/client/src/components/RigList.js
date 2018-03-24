@@ -27,7 +27,7 @@ class RigList extends Component {
 					return {
 						_id: r._id,
 						name: r.name,
-						summary: (r.main.model && r.main.size) ? (r.main.model + " " + r.main.size) : "Unknown"
+						summary: (r.equipment.main.model && r.equipment.main.size) ? (r.equipment.main.model + " " + r.equipment.main.size) : "Unknown"
 					};
 				});
 

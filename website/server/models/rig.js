@@ -10,16 +10,18 @@ var rigSchema = new mongoose.Schema({
 	modified: {type: Date, default: Date.now},
 
 	// Equipment
-	main: {
-		make: {type: String, default: ""},
-		model: {type: String, default: ""},
-		size: {type: Number, default: 0}
-	},
-	reserve: {
-		make: {type: String, default: ""},
-		model: {type: String, default: ""},
-		size: {type: Number, default: 0}
-	},
+	equipment: {
+		main: {
+			make: {type: String, default: ""},
+			model: {type: String, default: ""},
+			size: {type: Number, default: 0}
+		},
+		reserve: {
+			make: {type: String, default: ""},
+			model: {type: String, default: ""},
+			size: {type: Number, default: 0}
+		}
+	},	
 
 	// Users that are allowed to use the rig
 	approvedUsers: [

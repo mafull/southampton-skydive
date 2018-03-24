@@ -16,7 +16,7 @@ router.get("/", (req, res) => {
 	Rig
 		.find({})
 		.sort([
-			["main.size", -1],
+			["equipment.main.size", -1],
 			["name", 1]
 		])
 		.exec((err, rigs) => {
@@ -35,7 +35,7 @@ router.post("/", /*middleware.isLoggedIn, */(req, res) => {
 	var rig = {
 		name: req.body.name,
 		main: req.body.equipment.main,
-		reserve: req.body.equipment.reserve
+		equipment: req.body.equipment
 	};	
 
 	Rig.create(rig, function(err, rig) {
