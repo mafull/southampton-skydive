@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import { Switch, Route }	from "react-router-dom";
-import RigList 				from "./RigList";
 import Rig 					from "./Rig";
-import UserList 			from "./UserList";
+import RigList 				from "./RigList";
+import RigNew				from "./RigNew";
 import User 				from "./User";
-import CommitteeList 		from "./CommitteeList";
+import UserList 			from "./UserList";
 import CommitteePosition 	from "./CommitteePosition";
+import CommitteeList 		from "./CommitteeList";
 import Login 				from "./Login";
 import Register				from "./Register";
 import {
@@ -21,7 +22,7 @@ class CentralComponent extends Component {
 				<Segment basic>
 					<Switch>
 						<Route path="/rigs" exact component={RigList} />
-						<Route path="/rigs/new" exact component={null} />
+						<Route path="/rigs/new" exact component={RigNew} />
 						<Route path="/rigs/:_id" component={Rig} />
 				
 						<Route path="/users" exact component={UserList} />

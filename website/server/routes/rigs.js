@@ -31,21 +31,19 @@ router.get("/", (req, res) => {
 
 
 // Create
-router.post("/", middleware.isLoggedIn, (req, res) => {
+router.post("/", /*middleware.isLoggedIn, */(req, res) => {
 	var rig = {
 		name: req.body.name,
-		main: req.body.main,
-		reserve: req.body.reserve
+		main: req.body.equipment.main,
+		reserve: req.body.equipment.reserve
 	};	
 
 	Rig.create(rig, function(err, rig) {
 		if(err) {
-			req.flash("error", err.message);
-			return res.redirect("back");
+			return res.status(404).send("Unable to save rig data");
 		}
 
-		req.flash("success", "New rig created successfully");
-		res.redirect("/rigs");
+		res.json({});
 	});
 });
 
