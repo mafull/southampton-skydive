@@ -12,7 +12,8 @@ import {
 
 class Rig extends Component {
 	state = {
-		_id: this.props.match.params._id
+		_id: this.props.match.params._id,
+		loaded: false
 	};
 
 
@@ -25,7 +26,7 @@ class Rig extends Component {
 				const newState = Object.assign(
 					{},
 					this.state,
-					{ ...rig }
+					{ ...rig, loaded: true }
 				);
 				this.setState(newState);
 			})
@@ -37,6 +38,8 @@ class Rig extends Component {
 
 	render() {
 		const { 
+			loaded,
+
 			name,
 			equipment,
 			approvedUsers,
@@ -49,47 +52,52 @@ class Rig extends Component {
 			reserve
 		} = equipment ? equipment : {};
 
-		const mainText = main ? 
-			<p>{main.make} <strong>{main.model + " " + main.size}</strong></p>
+		const mainContent = main ? <p>{main.make} <strong>{main.model + " " + main.size}</strong></p> : "Unknown";
+		const reserveContent = reserve ? <p>{reserve.make} <strong>{reserve.model + " " + reserve.size}</strong></p> : "Unknown";
+		const equipmentContent = (main || reserve) ?
+			<div>
+				<Header>Main</Header>
+				{mainContent}
+				<Header>Reserve</Header>
+				{reserveContent}
+			</div>
 			: "Unknown";
 
-		const reserveText = main ? 
-			<p>{reserve.make} <strong>{reserve.model + " " + reserve.size}</strong></p>
-			: "Unknown";
-
-		const approvedUsersText = approvedUsers && approvedUsers.length ?
+		const approvedUsersContent = approvedUsers && approvedUsers.length ?
 			approvedUsers.map(u => <Item key={u._id}><Link to={"/users/" + u._id}>{u.forename + " " + u.surname}</Link></Item>)
 			: <Item>None</Item>;
 
-		const createdDate = created ? new Date(created).toDateString() : null;
-		const modifiedDate = modified ? new Date(modified).toDateString() : null;
-
+		const createdDate = created ? new Date(created).toDateString() : "Unknown";
+		const modifiedDate = modified ? new Date(modified).toDateString() : "Unknown";
+		const datesContent = (created || modified) ?
+			<div>
+				<Header size="small">Date created</Header>
+				<Item>{createdDate}</Item>
+				<Header size="small">Last modified</Header>
+				<Item>{modifiedDate}</Item>
+			</div>
+			: null;
+		
 		return (
 			<div>
 				<Header size="huge"><Icon name="umbrella" />{name}</Header>
 
 				<Header size="large">Equipment</Header>
-				<Segment>
-					<Header>Main</Header>
-					{mainText}
-					<Header>Reserve</Header>
-					{reserveText}
+				<Segment loading={!loaded}>
+					{equipmentContent}
 				</Segment>
 
 				<Header size="large">Bookings</Header>
-				<Segment>
+				<Segment loading={!loaded}>
 					CALENDAR GOES HERE
 				</Segment>
 
 				<Header size="large">Approved users</Header>
-				<Segment>
-					{approvedUsersText}
+				<Segment loading={!loaded}>
+					{approvedUsersContent}
 				</Segment>
 
-				<Header size="small">Date created</Header>
-				<Item>{createdDate}</Item>
-				<Header size="small">Last modified</Header>
-				<Item>{modifiedDate}</Item>
+				{datesContent}
 
 				<Button
 					color="blue"
