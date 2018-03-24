@@ -21,12 +21,14 @@ class CentralComponent extends Component {
 				<Segment basic>
 					<Switch>
 						<Route path="/rigs" exact component={RigList} />
+						<Route path="/rigs/new" exact component={null} />
 						<Route path="/rigs/:_id" component={Rig} />
 				
 						<Route path="/users" exact component={UserList} />
 						<Route path="/users/:_id" component={User} />
 				
 						<Route path="/committee" exact component={CommitteeList} />
+						<Route path="/committee/new" exact component={null} />
 						<Route path="/committee/:_id" component={CommitteePosition} />
 				
 						<Route path="/login" exact component={Login} />
