@@ -28,6 +28,9 @@ class User extends Component {
 					{ ...user }
 				);
 				this.setState(newState);
+			})
+			.catch(error => {
+				console.log(error.response);
 			});
 	}
 
