@@ -6,7 +6,7 @@ import {
 }							from "semantic-ui-react";
 
 
-class UserListElement extends Component {
+class CommitteePositionListElement extends Component {
 	static propTypes = {
 		_id: PropTypes.string.isRequired,
 		title: PropTypes.string.isRequired,
@@ -44,4 +44,4 @@ class UserListElement extends Component {
 }
 
 
-export default UserListElement;
+export default CommitteePositionListElement;
