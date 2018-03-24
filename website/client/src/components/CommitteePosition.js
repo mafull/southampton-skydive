@@ -12,7 +12,8 @@ import {
 
 class CommitteePosition extends Component {
 	state = {
-		_id: this.props.match.params._id
+		_id: this.props.match.params._id,
+		loaded: false
 	};
 
 
@@ -25,7 +26,7 @@ class CommitteePosition extends Component {
 				const newState = Object.assign(
 					{},
 					this.state,
-					{ ...position }
+					{ ...position, loaded: true }
 				);
 				this.setState(newState);
 			})
@@ -37,6 +38,8 @@ class CommitteePosition extends Component {
 
 	render() {
 		const {
+			loaded,
+
 			title,
 			user,
 			description,
@@ -57,27 +60,32 @@ class CommitteePosition extends Component {
 			</div>
 			: "Unassigned";
 
-		const createdDate = created ? new Date(created).toDateString() : null;
-		const modifiedDate = modified ? new Date(modified).toDateString() : null;
+		const createdDate = created ? new Date(created).toDateString() : "Unknown";
+		const modifiedDate = modified ? new Date(modified).toDateString() : "Unknown";
+		const datesContent = (created || modified) ?
+			<div>
+				<Header size="small">Date created</Header>
+				<Item>{createdDate}</Item>
+				<Header size="small">Last modified</Header>
+				<Item>{modifiedDate}</Item>
+			</div>
+			: null;
 
 		return (
 			<div>
 				<Header size="huge"><Icon name="info circle" />{title}</Header>
 				
 				<Header size="large">User</Header>
-				<Segment>
+				<Segment loading={!loaded}>
 					{userData}
 				</Segment>
 
 				<Header size="large">Description and responsibilities</Header>
-				<Segment>
+				<Segment loading={!loaded}>
 					{description ? description : "None given"}
 				</Segment>
 
-				<Header size="small">Date created</Header>
-				<Item>{createdDate}</Item>
-				<Header size="small">Last modified</Header>
-				<Item>{modifiedDate}</Item>
+				{datesContent}
 
 				<Button
 					color="blue"
