@@ -3,7 +3,8 @@ import { Link }				from "react-router-dom";
 import { 
 	Menu,
 	Container,
-	Icon
+	Icon,
+	Dropdown
 }							from "semantic-ui-react";
 
 
@@ -27,8 +28,13 @@ class NavBar extends Component {
 					<Link to="/" className="item">Home</Link>
 					<Link to="/rigs" className="item">Rig booking</Link>
 					<Link to="/calendar" className="item">Calendar</Link>
-					<Link to="/users" className="item">Users</Link>
-					<Link to="/committee" className="item">Committee</Link>
+					<Dropdown item text="Users">
+						<Dropdown.Menu>
+							<Dropdown.Item as={Link} to="/users">All users</Dropdown.Item>
+							<Dropdown.Item as={Link} to="/committee">Committee</Dropdown.Item>
+						</Dropdown.Menu>
+					</Dropdown>
+					
 
 					<Menu.Item position="right">
 						<Link to="/login" className="item">Log in</Link>
