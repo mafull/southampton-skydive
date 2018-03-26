@@ -1,14 +1,7 @@
 # University of Southampton Skydive Club - Codebase
-
----
-
 This repository hosts the codebase for the University of Southampton Website and any additional, future, applications.
 
-
 ## Website
-
----
-
 [Website link](http://localhost:3000 "UoS Skydive Website")
 
 An SPA implemented using a MERN stack.
@@ -23,9 +16,14 @@ Complete list of planned / implemented [x] / ~~scrapped~~ functionality:
 	* [ ] Committee positions
 	* [ ] Privileges (admin, committee, *Kit manager* etc.)
 * [ ] Rigs
-	* [ ] sdfsdf
-	* [ ] sdffsd
+	* [ ] Basic rig viewing
+	* [ ] Rig booking system
+	* [ ] Ability to set the rigs as **offline** for maintenance etc.
+	* [ ] Email notifications for bookings + kit manager
 * [ ] Lift sharing
+	* [ ] Car owners can offer lifts
+	* [ ] Users requiring lifts can join an offer
+	* [ ] Facebook messenger integration?
 * [ ] Weather forecasts
 * [ ] Additional dropzone information
 * [ ] Training method info
