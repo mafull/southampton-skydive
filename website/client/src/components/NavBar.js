@@ -24,13 +24,20 @@ class NavBar extends Component {
 		return (
 			<Menu inverted fixed="top" color="blue" style={{ height: "40px" }}>
 				<Container>
-					<Menu.Item className="header"><Icon name="child"></Icon>UoS Skydive</Menu.Item>
-					<Link to="/" className="item">Home</Link>
-					<Link to="/rigs" className="item">Rig booking</Link>
+					<Menu.Item
+						className="header"
+						as={Link}
+							to="/">
+							<Icon name="child" />UoS Skydive
+					</Menu.Item>
+					<Link to="/training" className="item">Training</Link>
+					<Link to="/info" className="item">DZ Info</Link>
+					<Link to="/rigs" className="item">Rig Booking</Link>
+					<Link to="/lifts" className="item">Lift Sharing</Link>
 					<Link to="/calendar" className="item">Calendar</Link>
 					<Dropdown item text="Users">
 						<Dropdown.Menu>
-							<Dropdown.Item as={Link} to="/users">All users</Dropdown.Item>
+							<Dropdown.Item as={Link} to="/users">All Users</Dropdown.Item>
 							<Dropdown.Item as={Link} to="/committee">Committee</Dropdown.Item>
 						</Dropdown.Menu>
 					</Dropdown>
