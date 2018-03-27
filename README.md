@@ -36,7 +36,7 @@ Complete list of planned / implemented [x] / ~~scrapped~~ functionality:
 A React project managed using Webpack and Babel.
 
 ```bash
-cd website/client
+cd website/frontend
 npm install
 npm start
 ```
@@ -46,7 +46,7 @@ npm start
 A Node.js base utilising the Express framework to provide a REST API for the frontend. Data is stored in a MongoDB database, hosted by [mLab](https://mlab.com "mLab").
 
 ```bash
-cd website/server
+cd website/backend
 npm install
 nodemon app.js
 
