@@ -28,27 +28,11 @@ router.get("/", (req, res) => {
 });
 
 
-// New
-router.get("/new", middleware.isLoggedIn, function(req, res) {
-	User.find({isCommittee: false})
-		.sort([
-			["forename", 1],
-			["surname", 1]
-		]).exec(function(err, foundUsers) {
-		if(err) {
-			req.flash("error", err.message);
-			return res.redirect("back");
-		}
-
-		res.render("committee/new", {users: foundUsers});
-	});
-});
-
-
 // Create
 router.post("/", /*middleware.isLoggedIn, */(req, res) => {
-	var tier = 4;
-	var titleLow = req.body.title.toLowerCase();
+	let tier = 4;
+	const titleLow = req.body.title.toLowerCase();
+
 	if((titleLow == "president") || (titleLow.indexOf("chair") >= 0)) {
 		tier = 1;
 	} else if(titleLow.indexOf("vice") >= 0) {
@@ -57,15 +41,14 @@ router.post("/", /*middleware.isLoggedIn, */(req, res) => {
 		tier = 3;
 	}
 
-	var user = req.body.userId ? req.body.userId : null;
-	position = {
+	const newPosition = {
 		title: req.body.title,
-		user: user,
+		tier: tier,
 		description: req.body.description,
-		tier: tier
+		user: req.body.user ? req.body.user : null
 	};
 
-	CommitteePosition.create(position, (err, position) => {
+	CommitteePosition.create(newPosition, (err, createdPosition) => {
 		if(err) {
 			return res.status(404).send("Unable to save committee position data");
 		}
@@ -92,59 +75,61 @@ router.get("/:id", (req, res) => {
 
 
 // Edit
-router.get("/:id/edit", middleware.isLoggedIn, function(req, res) {
-	CommitteePosition.findById(req.params.id, function(err, foundPosition) {
+router.get("/:id/edit", /*middleware.isLoggedIn, */(req, res) => {
+	CommitteePosition.findById(req.params.id, (err, foundPosition) => {
 		if(err) {
-			req.flash("error", err.message);
-			return res.redirect("back");
+			return res.status(404).send("Unable to retrieve committee position data");
 		}
 
-		User.find({
-			$or: [
-				{isCommittee: false},
-				{committeePosition: foundPosition._id}
-			]
-		}).sort([
-			["forename", 1],
-			["surname", 1]
-		]).exec(function(err, foundUsers) {
-			if(err) {
-				return res.render("committee/edit", {position: foundPosition, users: []});
-			}
+		User
+			.find({
+				$or: [
+					{isCommittee: false},
+					{committeePosition: foundPosition._id}
+				]
+			})
+			.sort([
+				["forename", 1],
+				["surname", 1]
+			])
+			.exec((err, foundUsers) => {
+				if(err) {
+					return res.status(404).send("Unable to retrieve committee position data");
+				}
 
-			res.render("committee/edit", {position: foundPosition, users: foundUsers});
-		});
+				res.json({ 
+					position: foundPosition,
+					users: foundUsers
+				});
+			});
 	});
 });
 
 
 // Update
-router.put("/:id", middleware.isLoggedIn, function(req, res) {
-	var user = req.body.user.length ? req.body.user : null;
-	CommitteePosition.findById(req.params.id, function(err, existingPosition) {
+router.put("/:id", /*middleware.isLoggedIn, */(req, res) => {
+	const user = req.body.user.length ? req.body.user : null;
+	CommitteePosition.findById(req.params.id, (err, foundPosition) => {
 		if(err) {
-			req.flash("error", err.message);
-			return res.redirect("back");
+			return res.status(404).send("Unable to retrieve committee position data");
 		}
 
-		var prevUser = existingPosition.toJSON().user;
+		const prevUser = foundPosition.toJSON().user;
 
 		// Remove position from previous user if necessary
 		if(!prevUser || prevUser.equals(user)) {
 			// Do nothing
 		} else {
-			User.findById(prevUser, function(err, prevUser) {
+			User.findById(prevUser, (err, foundUser) => {
 				if(err) {
-					req.flash("error", err.message);
-					return res.redirect("back");
+					return res.status(404).send("Unable to retrieve committee position data");
 				}
 
-				prevUser.committeePosition = null;
-				prevUser.isCommittee = false;
-				prevUser.save(function(err) {
+				foundUser.committeePosition = null;
+				foundUser.isCommittee = false;
+				foundUser.save((err) => {
 					if(err) {
-						req.flash("error", err.message);
-						return res.redirect("back");
+						return res.status(404).send("Unable to retrieve committee position data");
 					}
 				});
 			});
@@ -154,18 +139,17 @@ router.put("/:id", middleware.isLoggedIn, function(req, res) {
 		if(!user || (prevUser && prevUser.equals(user))) {
 			// Do nothing
 		} else {
-			User.findById(user, function(err, newUser) {
+			User.findById(user, (err, foundUser) => {
 				if(err) {
 					req.flash("error", err.message);
 					return res.redirect("back");
 				}
 
-				newUser.committeePosition = existingPosition._id;
-				newUser.isCommittee = true;
-				newUser.save(function(err) {
+				foundUser.committeePosition = foundPosition._id;
+				foundUser.isCommittee = true;
+				foundUser.save((err) => {
 					if(err) {
-						req.flash("error", err.message);
-						return res.redirect("back");
+						return res.status(404).send("Unable to retrieve committee position data");
 					}
 				});
 			});	
@@ -173,29 +157,27 @@ router.put("/:id", middleware.isLoggedIn, function(req, res) {
 
 		// Find the position tier
 		var tier = 4;
-		var nameLow = req.body.name.toLowerCase();
-		if((nameLow == "president") || (nameLow.indexOf("chair") >= 0)) {
+		var titleLow = req.body.title.toLowerCase();
+		if((titleLow == "president") || (titleLow.indexOf("chair") >= 0)) {
 			tier = 1;
-		} else if(nameLow.indexOf("vice") >= 0) {
+		} else if(titleLow.indexOf("vice") >= 0) {
 			tier = 2;
-		} else if(nameLow == "treasurer") {
+		} else if(titleLow == "treasurer") {
 			tier = 3;
 		}
 
 		// Update position
-		existingPosition.name = req.body.name;
-		existingPosition.user = user;
-		existingPosition.description = req.body.description;
-		existingPosition.tier = tier;
-		existingPosition.modified = Date.now();
-		existingPosition.save(function(err) {
+		foundPosition.title = req.body.title;
+		foundPosition.user = user;
+		foundPosition.description = req.body.description;
+		foundPosition.tier = tier;
+		foundPosition.modified = Date.now();
+		foundPosition.save(function(err) {
 			if(err) {
-				req.flash("error", err.message);
-				return res.redirect("back");
+				return res.status(404).send("Unable to retrieve committee position data");
 			}
 
-			req.flash("success", "Position successfully updated");
-			res.redirect("/committee/" + req.params.id);
+			res.json({});
 		});
 	});
 });

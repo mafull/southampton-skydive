@@ -18,7 +18,7 @@ class New extends Component {
 
 		title: "",
 		description: "",
-		userId: "",
+		user: "",
 
 		users: []
 	};
@@ -59,7 +59,7 @@ class New extends Component {
 		const data = {
 			title: this.state.title,
 			description: this.state.description,
-			userId: this.state.userId
+			user: this.state.user
 		};
 
 		axios
@@ -80,7 +80,7 @@ class New extends Component {
 
 			title,
 			description,
-			userId,
+			user,
 
 			users
 		} = this.state;
@@ -137,12 +137,12 @@ class New extends Component {
 					<Form.Field>
 						<label>User</label>
 						<Select						
-							name="userId"
+							name="user"
 							placeholder="User"
 							search
-							value={userId}
+							value={user}
 							options={userOptions}
-							onChange={(e, d) => onChange({ target: { name: "userId", value: d.value }})}>
+							onChange={(e, d) => onChange({ target: { name: "user", value: d.value }})}>
 						</Select>
 					</Form.Field>				
 
