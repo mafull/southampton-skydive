@@ -56,6 +56,7 @@ class CommitteePosition extends Component {
 			loaded,
 			redirect,
 
+			_id,
 			title,
 			user,
 			description,
@@ -118,6 +119,14 @@ class CommitteePosition extends Component {
 					as={Link}
 						to="/committee/">
 					Go back
+				</Button>
+
+				<Button
+					color="yellow"
+					style={{marginTop: "10px"}}
+					as={Link}
+						to={`/committee/${_id}/edit`}>
+					Edit
 				</Button>
 
 				<Button

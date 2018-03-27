@@ -7,6 +7,7 @@ import RigNew					from "./RigNew";
 import User 					from "./User";
 import UserList 				from "./UserList";
 import CommitteePosition 		from "./CommitteePosition";
+import CommitteePositionEdit 	from "./CommitteePositionEdit";
 import CommitteePositionList 	from "./CommitteePositionList";
 import CommitteePositionNew 	from "./CommitteePositionNew";
 import Login 					from "./Login";
@@ -34,6 +35,7 @@ class CentralComponent extends Component {
 				
 						<Route path="/committee" exact component={CommitteePositionList} />
 						<Route path="/committee/new" exact component={CommitteePositionNew} />
+						<Route path="/committee/:_id/edit" component={CommitteePositionEdit} />
 						<Route path="/committee/:_id" component={CommitteePosition} />
 				
 						<Route path="/login" exact component={Login} />
