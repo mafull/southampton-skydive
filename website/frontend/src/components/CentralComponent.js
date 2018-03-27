@@ -19,14 +19,14 @@ class CentralComponent extends Component {
 				<Segment basic style={{ fontSize: "1.1em" }}>
 					<Switch>
 						<Route path="/training" exact component={Training} />
-
 						<Route path="/rigs" component={Rigs} />
 						<Route path="/users" component={Users} />
 						<Route path="/committee" component={Committee} />						
 				
 						<Route path="/login" exact component={Login} />
 						<Route path="/register" exact component={Register} />
-						<Route path="*" component={<h1>Under construction!</h1>} />
+
+						<Route path="*" component={null} />
 					</Switch>
 				</Segment>
 			</Container>
