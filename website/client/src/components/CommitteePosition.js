@@ -46,7 +46,7 @@ class CommitteePosition extends Component {
 			created,
 			modified
 		} = this.state;
-
+		
 		const userData = user ? 
 			<div>
 				<Header>Name</Header>
@@ -81,7 +81,7 @@ class CommitteePosition extends Component {
 				</Segment>
 
 				<Header size="large">Description and responsibilities</Header>
-				<Segment loading={!loaded}>
+				<Segment loading={!loaded} style={{ whiteSpace: "pre-line" }}>
 					{description ? description : "None given"}
 				</Segment>
 
