@@ -26,6 +26,7 @@ class CentralComponent extends Component {
 				
 						<Route path="/login" exact component={Login} />
 						<Route path="/register" exact component={Register} />
+						<Route path="*" component={<h1>Under construction!</h1>} />
 					</Switch>
 				</Segment>
 			</Container>
