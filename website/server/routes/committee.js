@@ -46,33 +46,31 @@ router.get("/new", middleware.isLoggedIn, function(req, res) {
 
 
 // Create
-router.post("/", middleware.isLoggedIn, function(req, res) {
+router.post("/", /*middleware.isLoggedIn, */(req, res) => {
 	var tier = 4;
-	var nameLow = req.body.name.toLowerCase();
-	if((nameLow == "president") || (nameLow.indexOf("chair") >= 0)) {
+	var titleLow = req.body.title.toLowerCase();
+	if((titleLow == "president") || (titleLow.indexOf("chair") >= 0)) {
 		tier = 1;
-	} else if(nameLow.indexOf("vice") >= 0) {
+	} else if(titleLow.indexOf("vice") >= 0) {
 		tier = 2;
-	} else if(nameLow == "treasurer") {
+	} else if(titleLow == "treasurer") {
 		tier = 3;
 	}
 
-	var user = req.body.user.length ? req.body.user : null;
+	var user = req.body.userId ? req.body.userId : null;
 	position = {
-		name: req.body.name,
+		title: req.body.title,
 		user: user,
 		description: req.body.description,
 		tier: tier
 	};
 
-	CommitteePosition.create(position, function(err, position) {
+	CommitteePosition.create(position, (err, position) => {
 		if(err) {
-			req.flash("error", err.message);
-			return res.redirect("back");
+			return res.status(404).send("Unable to save committee position data");
 		}
 
-		req.flash("success", "New committee position created successfully");
-		res.redirect("/committee");
+		res.json({});
 	});
 });
 

@@ -25,10 +25,10 @@ class CommitteePositionList extends Component {
 				const positions = response.data.map(p => {
 					return {
 						_id: p._id,
-						title: p.name,
-						userId: p.user._id,
-						name: p.user.forename + " " + p.user.surname,
-						email: p.user.email
+						title: p.title,
+						userId: p.user ? p.user._id : null,
+						name: p.user ? (p.user.forename + " " + p.user.surname) : null,
+						email: p.user ? p.user.email : null
 					};
 				});
 
