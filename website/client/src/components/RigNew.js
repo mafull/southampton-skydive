@@ -10,24 +10,20 @@ import {
 
 
 class RigNew extends Component {
-	constructor(props) {
-		super(props);
+	state = {
+		sending: false,
+		redirect: false,
 
-		this.state = {
-			sending: false,
-			redirect: false,
+		name: "",
 
-			name: "",
+		mainMake: "",
+		mainModel: "",
+		mainSize: "",
 
-			mainMake: "",
-			mainModel: "",
-			mainSize: "",
-
-			reserveMake: "",
-			reserveModel: "",
-			reserveSize: ""
-		};
-	}
+		reserveMake: "",
+		reserveModel: "",
+		reserveSize: ""
+	};
 
 
 	onChange = e => {
@@ -55,7 +51,6 @@ class RigNew extends Component {
 				size: this.state.reserveSize
 			}
 		};
-		console.log(equipment);
 
 		const data = {
 			name: this.state.name,
@@ -100,7 +95,7 @@ class RigNew extends Component {
 
 		return (
 			<div>
-				<Header size="huge"><Icon name="plus" />Add a new rig</Header>
+				<Header size="huge"><Icon name="plus" /> Add a new rig</Header>
 
 				<Form loading={sending} onSubmit={onSubmit}>
 					<Form.Field required>
