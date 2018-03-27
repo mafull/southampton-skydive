@@ -9,7 +9,7 @@ import {
 }							from "semantic-ui-react";
 
 
-class RigNew extends Component {
+class New extends Component {
 	state = {
 		sending: false,
 		redirect: false,
@@ -184,4 +184,4 @@ class RigNew extends Component {
 }
 
 
-export default RigNew;
+export default New;

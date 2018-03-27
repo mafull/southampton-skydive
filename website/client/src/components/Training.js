@@ -57,7 +57,7 @@ class Training extends Component {
 				</p>
 				<p>
 					The altitude that you jump from then gradually increases, giving you more and more freefall time each jump, until you eventually start exiting the plane at <strong>15,000ft</strong>.
-					At this point, you get around <strong>60s</strong> of freefall time per jump!
+					At this point, you get around <strong>60s</strong> of freefall before deploying your canopy!
 				</p>
 				<p>
 					After a few more jumps practicing your freefall skills, you do a qualification jump. If you pass that, you receive your <strong>A licence</strong> and are then a <strong>qualified skydiver</strong>!
@@ -75,7 +75,7 @@ class Training extends Component {
 			<div>
 				<Header size="huge">Learn to Skydive Solo!</Header>
 				{introContent}
-	
+
 				<Divider horizontal section>Option A</Divider>
 
 				<Header size="medium">Category System (CS)</Header>

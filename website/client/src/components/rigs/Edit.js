@@ -1,16 +1,15 @@
 import React, { Component } from "react";
 
 
-class CommitteePositionEdit extends Component {
-
+class Edit extends Component {
 	render() {
 		return (
 			<div>
-				Edit
+				Edit rig
 			</div>
 		);
 	}
 }
 
 
-export default CommitteePositionEdit;
+export default Edit;

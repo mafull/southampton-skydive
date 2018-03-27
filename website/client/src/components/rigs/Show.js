@@ -10,7 +10,7 @@ import {
 }							from "semantic-ui-react";
 
 
-class Rig extends Component {
+class Show extends Component {
 	state = {
 		_id: this.props.match.params._id,
 		loaded: false
@@ -113,4 +113,4 @@ class Rig extends Component {
 }
 
 
-export default Rig;
+export default Show;

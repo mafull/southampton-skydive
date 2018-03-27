@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import axios 				from "axios";
-import RigListElement 		from "./RigListElement";
+import ListElement 			from "./ListElement";
 import { Link }				from "react-router-dom";
 import {
 	Header,
@@ -10,7 +10,7 @@ import {
 }							from "semantic-ui-react";
 
 
-class RigList extends Component {
+class List extends Component {
 	state = {
 		rigs: [],
 		loaded: false
@@ -46,7 +46,7 @@ class RigList extends Component {
 	render() {
 		const { loaded, rigs } = this.state;
 
-		const rigListElements = rigs.length ? rigs.map(r => <RigListElement {...r} key={r._id} />) : <Segment basic loading={!loaded}><i>No rigs found</i></Segment>;
+		const listElements = rigs.length ? rigs.map(r => <ListElement {...r} key={r._id} />) : <Segment basic loading={!loaded}><i>No rigs found</i></Segment>;
 		
 		return (
 			<div>
@@ -56,7 +56,7 @@ class RigList extends Component {
 				<Card.Group
 					centered
 					itemsPerRow="3">
-					{rigListElements}
+					{listElements}
 
 					<Card
 						color="green"
@@ -83,4 +83,4 @@ class RigList extends Component {
 }
 
 
-export default RigList;
+export default List;

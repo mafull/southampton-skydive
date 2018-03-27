@@ -11,7 +11,7 @@ import {
 }							from "semantic-ui-react";
 
 
-class CommitteePositionNew extends Component {
+class New extends Component {
 	state = {
 		sending: false,
 		redirect: false,
@@ -167,4 +167,4 @@ class CommitteePositionNew extends Component {
 }
 
 
-export default CommitteePositionNew;
+export default New;

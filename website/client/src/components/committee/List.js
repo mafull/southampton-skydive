@@ -1,6 +1,6 @@
 import React, { Component } 		from "react";
 import axios						from "axios";
-import CommitteePositionListElement from "./CommitteePositionListElement";
+import ListElement 					from "./ListElement";
 import { Link } 					from "react-router-dom";
 import {
 	Header,
@@ -11,7 +11,7 @@ import {
 }									from "semantic-ui-react";
 
 
-class CommitteePositionList extends Component {
+class List extends Component {
 	state = {
 		positions: [],
 		loaded: false
@@ -48,7 +48,7 @@ class CommitteePositionList extends Component {
 	render() {
 		const { loaded, positions } = this.state;
 
-		const listElements = positions.length ? positions.map(p => <CommitteePositionListElement {...p} key={p._id} />) : <Table.Row><Table.Cell><Segment basic loading={!loaded}><i>No committee positions found</i></Segment></Table.Cell></Table.Row>;
+		const listElements = positions.length ? positions.map(p => <ListElement {...p} key={p._id} />) : <Table.Row><Table.Cell><Segment basic loading={!loaded}><i>No committee positions found</i></Segment></Table.Cell></Table.Row>;
 		
 		return (
 			<div>
@@ -80,4 +80,4 @@ class CommitteePositionList extends Component {
 }
 
 
-export default CommitteePositionList;
+export default List;

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import axios				from "axios";
-import { Link, Redirect } 			from "react-router-dom";
+import { Link, Redirect } 	from "react-router-dom";
 import {
 	Header,
 	Icon,
@@ -10,7 +10,7 @@ import {
 }							from "semantic-ui-react";
 
 
-class CommitteePosition extends Component {
+class Show extends Component {
 	state = {
 		_id: this.props.match.params._id,
 		loaded: false,
@@ -141,4 +141,4 @@ class CommitteePosition extends Component {
 } 
 
 
-export default CommitteePosition;
+export default Show;
