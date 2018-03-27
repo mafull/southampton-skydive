@@ -4,11 +4,9 @@ import RigListElement 		from "./RigListElement";
 import { Link }				from "react-router-dom";
 import {
 	Header,
-	Grid,
-	Container,
-	Item,
-	Segment,
-	Button
+	Card,
+	Icon,
+	Segment
 }							from "semantic-ui-react";
 
 
@@ -27,7 +25,8 @@ class RigList extends Component {
 					return {
 						_id: r._id,
 						name: r.name,
-						summary: (r.equipment.main.model && r.equipment.main.size) ? (r.equipment.main.model + " " + r.equipment.main.size) : "Unknown"
+						summary: (r.equipment.main.model && r.equipment.main.size) ? (r.equipment.main.model + " " + r.equipment.main.size) : "Unknown",
+						isOnline: r.isOnline
 					};
 				});
 
@@ -54,21 +53,30 @@ class RigList extends Component {
 				<Header size="huge">Rig booking</Header>
 				<p>Book out a rig and view current rig status</p>
 
-				<Grid stackable as={Container}>
+				<Card.Group
+					centered
+					itemsPerRow="3">
 					{rigListElements}
 
-					<Grid.Column width="4" verticalAlign="middle">
-						<Item>
-							<Item.Content>
-								<Button
+					<Card
+						color="green"
+						as={Link}
+							to="/rigs/new">
+						<Card.Content textAlign="center">
+							<Card.Header>
+								<Icon
+									name="add"
 									size="large"
 									color="green"
-									as={Link}
-										to="/rigs/new">Add rig</Button>
-							</Item.Content>
-						</Item>
-					</Grid.Column>
-				</Grid>
+									circular
+									fitted />
+							</Card.Header>
+							<Card.Description>
+								Add rig
+							</Card.Description>
+						</Card.Content>
+					</Card>
+				</Card.Group>
 			</div>
 		);
 	}
