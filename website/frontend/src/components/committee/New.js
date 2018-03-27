@@ -156,11 +156,13 @@ class New extends Component {
 				</Form>
 
 				<Button
-					color="blue"
-					inverted
+					color="yellow"
+					fluid
 					style={{marginTop: "10px"}}
 					as={Link} 
-						to="/committee">Go back</Button>
+						to="/committee">
+					Cancel
+				</Button>
 			</div>
 		);
 	}

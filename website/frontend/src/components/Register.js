@@ -80,11 +80,13 @@ class Register extends Component {
 				</Form>
 				
 				<Button
-					color="blue"
-					inverted
+					color="yellow"
+					fluid
 					style={{marginTop: "10px"}}
 					as={Link} 
-						to="/">Go back</Button>
+						to="/">
+					Cancel
+				</Button>
 			</div>
 		);
 	}

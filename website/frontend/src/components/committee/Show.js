@@ -115,10 +115,11 @@ class Show extends Component {
 				<Button
 					color="blue"
 					inverted
+					fluid
 					style={{marginTop: "10px"}}
 					as={Link}
 						to="/committee/">
-					Go back
+					View all Committee Positions
 				</Button>
 
 				<Button

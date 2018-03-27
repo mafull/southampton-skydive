@@ -17,6 +17,7 @@ class Edit extends Component {
 		sending: false,
 		redirect: false,
 
+		_id: this.props.match.params._id,
 		title: "",
 		description: "",
 		user: "",
@@ -27,7 +28,7 @@ class Edit extends Component {
 
 	componentDidMount() {
 		axios
-			.get(`/committee/${this.props.match.params._id}/edit`)
+			.get(`/committee/${this.state._id}/edit`)
 			.then(response => {
 				const { position, users } = response.data;
 
@@ -64,7 +65,7 @@ class Edit extends Component {
 		};
 
 		axios
-			.put(`/committee/${this.props.match.params._id}`, data)
+			.put(`/committee/${this.state._id}`, data)
 			.then(response => {
 				this.setState({ redirect: true });
 			})
@@ -80,6 +81,7 @@ class Edit extends Component {
 			sending,
 			redirect,
 
+			_id,
 			title,
 			description,
 			user,
@@ -107,12 +109,12 @@ class Edit extends Component {
 		});
 
 		if(redirect) {
-			return <Redirect to={`/committee/${this.props.match.params._id}`} />
+			return <Redirect to={`/committee/${_id}`} />
 		}
 
 		return (
 			<div>
-				<Header size="huge"><Icon name="plus" /> Add a new committee position</Header>
+				<Header size="huge"><Icon name="edit" /> Edit committee position</Header>
 			
 				<Form loading={loading || sending} onSubmit={onSubmit}>
 					<Form.Field required>
@@ -153,16 +155,18 @@ class Edit extends Component {
 						fluid
 						size="big"
 						color="blue">
-						Add
+						Update
 					</Button>
 				</Form>
 
 				<Button
-					color="blue"
-					inverted
+					color="yellow"
+					fluid
 					style={{marginTop: "10px"}}
 					as={Link} 
-						to="/committee">Go back</Button>
+						to={`/committee/${_id}`}>
+					Cancel
+				</Button>
 			</div>
 		);
 	}

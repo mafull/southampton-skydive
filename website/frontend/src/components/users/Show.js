@@ -90,10 +90,11 @@ class User extends Component {
 				<Button
 					color="blue"
 					inverted
+					fluid
 					style={{marginTop: "10px"}}
 					as={Link}
 						to="/users/">
-					Go back
+					View all Users
 				</Button>
 			</div>
 		);
