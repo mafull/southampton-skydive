@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import axios				from "axios";
-import { Link } 			from "react-router-dom";
+import { Link, Redirect } 			from "react-router-dom";
 import {
 	Header,
 	Icon,
@@ -13,8 +13,23 @@ import {
 class CommitteePosition extends Component {
 	state = {
 		_id: this.props.match.params._id,
-		loaded: false
+		loaded: false,
+		redirect: false
 	};
+
+
+	onDelete = () => {
+		console.log("Delete");
+
+		axios
+			.delete("/committee/" + this.state._id)
+			.then(response => {
+				this.setState({ redirect: true });
+			})
+			.catch(error => {
+				console.log(error.response);
+			});
+	}
 
 
 	componentDidMount() {
@@ -39,6 +54,7 @@ class CommitteePosition extends Component {
 	render() {
 		const {
 			loaded,
+			redirect,
 
 			title,
 			user,
@@ -46,6 +62,10 @@ class CommitteePosition extends Component {
 			created,
 			modified
 		} = this.state;
+
+		const {
+			onDelete
+		} = this;
 		
 		const userData = user ? 
 			<div>
@@ -71,6 +91,10 @@ class CommitteePosition extends Component {
 			</div>
 			: null;
 
+		if(redirect) {
+			return <Redirect to="/committee" />
+		}
+
 		return (
 			<div>
 				<Header size="huge"><Icon name="info circle" />{title}</Header>
@@ -94,6 +118,13 @@ class CommitteePosition extends Component {
 					as={Link}
 						to="/committee/">
 					Go back
+				</Button>
+
+				<Button
+					color="red"
+					style={{marginTop: "10px"}}
+					onClick={onDelete}>
+					Delete
 				</Button>
 			</div>
 		);

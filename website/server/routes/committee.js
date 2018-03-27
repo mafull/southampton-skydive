@@ -202,36 +202,35 @@ router.put("/:id", middleware.isLoggedIn, function(req, res) {
 
 
 // Destroy
-router.delete("/:id", middleware.isLoggedIn, function(req, res) {
-	CommitteePosition.findById(req.params.id).populate("user").exec(function(err, foundPosition) {
-		if(err) {
-			req.flash("error", err.message);
-			return res.redirect("back");
-		}
-
-		// Remove position from currently-assigned user if necessary
-		if(foundPosition.user) {
-			foundPosition.user.committeePosition = null;
-			foundPosition.user.isCommittee = false;
-			foundPosition.user.save(function(err) {
-				if(err) {
-					req.flash("error", err.message);
-					return res.redirect("back");
-				}
-			});
-		}
-
-		// Delete the position
-		foundPosition.remove(function(err) {
+router.delete("/:id", /*middleware.isLoggedIn, */(req, res) => {
+	CommitteePosition
+		.findById(req.params.id)
+		.populate("user")
+		.exec((err, foundPosition) => {
 			if(err) {
-				req.flash("error", err.message);
-				return res.redirect("back");
+				return res.status(404).send("Unable to retrieve committee position data");
 			}
 
-			req.flash("success", "Position successfully deleted");
-			res.redirect("/committee");
+			// Remove position from currently-assigned user if necessary
+			if(foundPosition.user) {
+				foundPosition.user.committeePosition = null;
+				foundPosition.user.isCommittee = false;
+				foundPosition.user.save(err => {
+					if(err) {
+						return res.status(404).send("Unable to retrieve committee position data");
+					}
+				});
+			}
+
+			// Delete the position
+			foundPosition.remove(err => {
+				if(err) {
+					return res.status(404).send("Unable to retrieve committee position data");
+				}
+
+				res.json({});
+			});
 		});
-	});
 });
 
 module.exports = router;
