@@ -1,10 +1,7 @@
 body {
 	margin: 0;
 	padding: 0;
-}
-
-i.icon {
-	font-size: 2em;
+	text-align: center;
 }
 
 .container.main {
@@ -14,5 +11,4 @@ i.icon {
 .field {
 	margin: 1%;
 	padding: 10px;
-	text-align: center;
 }
