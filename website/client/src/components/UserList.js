@@ -44,7 +44,7 @@ class UserList extends Component {
 
 	render() {
 		const { loaded, users } = this.state;
-		const userListElements = users.length ? users.map(u => <UserListElement {...u} key={u._id} />) : <Segment basic loading={!loaded}><i>No users found</i></Segment>;
+		const userListElements = users.length ? users.map(u => <UserListElement {...u} key={u._id} />) : <Table.Row><Table.Cell><Segment basic loading={!loaded}><i>No users found</i></Segment></Table.Cell></Table.Row>;
 
 		return (
 			<div>

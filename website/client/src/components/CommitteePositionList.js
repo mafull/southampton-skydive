@@ -48,7 +48,7 @@ class CommitteePositionList extends Component {
 	render() {
 		const { loaded, positions } = this.state;
 
-		const listElements = positions.length ? positions.map(p => <CommitteePositionListElement {...p} key={p._id} />) : <Segment basic loading={!loaded}><i>No committee positions found</i></Segment>;
+		const listElements = positions.length ? positions.map(p => <CommitteePositionListElement {...p} key={p._id} />) : <Table.Row><Table.Cell><Segment basic loading={!loaded}><i>No committee positions found</i></Segment></Table.Cell></Table.Row>;
 		
 		return (
 			<div>
