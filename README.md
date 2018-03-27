@@ -16,7 +16,7 @@ Complete list of planned / implemented [x] / ~~scrapped~~ functionality:
 	* [ ] Committee positions
 	* [ ] Privileges (admin, committee, *Kit manager* etc.)
 * [ ] Rigs
-	* [ ] Basic rig viewing
+	* [x] Basic rig viewing
 	* [ ] Rig booking system
 	* [ ] Ability to set the rigs as **offline** for maintenance etc.
 	* [ ] Email notifications for bookings + kit manager
