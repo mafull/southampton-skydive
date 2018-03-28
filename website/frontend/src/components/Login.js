@@ -71,7 +71,7 @@ class Login extends Component {
 
 		return (
 			<div>
-				<Header size="huge"><Icon name="sign in" /> Log in</Header>
+				<Header size="huge"><Icon name="sign in" /> Log In</Header>
 				
 				<Form onSubmit={this.onSubmit} loading={loading}>
 					<Form.Field required error={!!errors.email}>

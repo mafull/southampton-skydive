@@ -95,11 +95,11 @@ class New extends Component {
 
 		return (
 			<div>
-				<Header size="huge"><Icon name="plus" /> Add a new rig</Header>
+				<Header size="huge"><Icon name="plus" /> Add a New Rig</Header>
 
 				<Form loading={sending} onSubmit={onSubmit}>
 					<Form.Field required>
-						<label>Rig name</label>
+						<label>Rig Name</label>
 						<input
 							type="text"
 							name="name"
@@ -108,60 +108,68 @@ class New extends Component {
 							onChange={onChange}
 							autoFocus />
 					</Form.Field>
-					<Form.Field>
-						<label>Main canopy manufacturer</label>
-						<input
-							type="text"
-							name="mainMake"
-							placeholder="Main canopy make"
-							value={mainMake}
-							onChange={onChange} />
-					</Form.Field>
-					<Form.Field>
-						<label>Main canopy model</label>
-						<input
-							type="text"
-							name="mainModel"
-							placeholder="Main canopy model"
-							value={mainModel}
-							onChange={onChange} />
-					</Form.Field>
-					<Form.Field>
-						<label>Main canopy size (ft<sup>2</sup>)</label>
-						<input
-							type="text"
-							name="mainSize"
-							placeholder="Main canopy size"
-							value={mainSize}
-							onChange={onChange} />
-					</Form.Field>
-					<Form.Field>
-						<label>Reserve canopy manufacturer</label>
-						<input
-							type="text"
-							name="reserveMake"
-							placeholder="Reserve canopy make"
-							value={reserveMake}
-							onChange={onChange} />
-					</Form.Field>
-					<Form.Field>
-						<label>Reserve canopy model</label>
-						<input
-							type="text"
-							name="reserveModel"
-							placeholder="Reserve canopy model"
-							value={reserveModel}
-							onChange={onChange} />
-					</Form.Field>
-					<Form.Field>
-						<label>Reserve canopy size (ft<sup>2</sup>)</label>
-						<input
-							type="text"
-							name="reserveSize"
-							placeholder="Reserve canopy size"
-							value={reserveSize}
-							onChange={onChange} />
-					</Form.Field>
+
+					<Header size="small">Main Canopy</Header>
+					<Form.Group widths="equal">
+						<Form.Field>
+							<label>Manufacturer</label>
+							<input
+								type="text"
+								name="mainMake"
+								placeholder="Main canopy make"
+								value={mainMake}
+								onChange={onChange} />
+						</Form.Field>
+						<Form.Field>
+							<label>Model</label>
+							<input
+								type="text"
+								name="mainModel"
+								placeholder="Main canopy model"
+								value={mainModel}
+								onChange={onChange} />
+						</Form.Field>
+						<Form.Field>
+							<label>Size (ft<sup>2</sup>)</label>
+							<input
+								type="text"
+								name="mainSize"
+								placeholder="Main canopy size"
+								value={mainSize}
+								onChange={onChange} />
+						</Form.Field>
+					</Form.Group>
+
+					<Header size="small">Reserve Canopy</Header>
+					<Form.Group widths="equal">
+						<Form.Field>
+							<label>Manufacturer</label>
+							<input
+								type="text"
+								name="reserveMake"
+								placeholder="Reserve canopy make"
+								value={reserveMake}
+								onChange={onChange} />
+						</Form.Field>
+						<Form.Field>
+							<label>Model</label>
+							<input
+								type="text"
+								name="reserveModel"
+								placeholder="Reserve canopy model"
+								value={reserveModel}
+								onChange={onChange} />
+						</Form.Field>
+						<Form.Field>
+							<label>Size (ft<sup>2</sup>)</label>
+							<input
+								type="text"
+								name="reserveSize"
+								placeholder="Reserve canopy size"
+								value={reserveSize}
+								onChange={onChange} />
+						</Form.Field>
+					</Form.Group>
 
 					<Button
 						type="submit"

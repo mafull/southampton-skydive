@@ -39,26 +39,29 @@ class Register extends Component {
 	render() {
 		return (
 			<div>
-				<Header size="huge"><Icon name="add user" /> Sign up</Header>
+				<Header size="huge"><Icon name="add user" /> Sign Up</Header>
 					
 				<Form action="/register" method="POST">
-					<Form.Field required>
-						<label>First name</label>
-						<input
-							type="text"
-							name="user[forename]"
-							placeholder="First name"
-							autoFocus
-						/>
-					</Form.Field>
-					<Form.Field required>
-						<label>Surname</label>
-						<input
-							type="text"
-							name="user[surname]"
-							placeholder="Surname"
-						/>
-					</Form.Field>
+					<Form.Group widths="equal">
+						<Form.Field required>
+							<label>First name</label>
+							<input
+								type="text"
+								name="user[forename]"
+								placeholder="First name"
+								autoFocus
+							/>
+						</Form.Field>
+						<Form.Field required>
+							<label>Surname</label>
+							<input
+								type="text"
+								name="user[surname]"
+								placeholder="Surname"
+							/>
+						</Form.Field>
+					</Form.Group>
+						
 					<Form.Field required>
 						<label>Email</label>
 						<input

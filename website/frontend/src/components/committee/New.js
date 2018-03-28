@@ -110,11 +110,11 @@ class New extends Component {
 
 		return (
 			<div>
-				<Header size="huge"><Icon name="plus" /> Add a new committee position</Header>
+				<Header size="huge"><Icon name="plus" /> Add a New Committee Position</Header>
 			
 				<Form loading={sending} onSubmit={onSubmit}>
 					<Form.Field required>
-						<label>Position title</label>
+						<label>Position Title</label>
 						<input
 							type="text"
 							name="title"

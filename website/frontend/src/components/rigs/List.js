@@ -50,7 +50,7 @@ class List extends Component {
 		
 		return (
 			<div>
-				<Header size="huge">Rig booking</Header>
+				<Header size="huge">Rig Booking</Header>
 				<p>Book out a rig and view current rig status</p>
 
 				<Card.Group

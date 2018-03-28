@@ -105,7 +105,7 @@ class Show extends Component {
 					{userData}
 				</Segment>
 
-				<Header size="large">Description and responsibilities</Header>
+				<Header size="large">Description and Responsibilities</Header>
 				<Segment loading={!loaded} style={{ whiteSpace: "pre-line" }}>
 					{description ? description : "None given"}
 				</Segment>
