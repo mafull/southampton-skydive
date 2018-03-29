@@ -114,11 +114,11 @@ class Edit extends Component {
 
 		return (
 			<div>
-				<Header size="huge"><Icon name="edit" /> Edit committee position</Header>
+				<Header size="huge"><Icon name="edit" /> Edit Committee Position</Header>
 
 				<Form loading={loading || sending} onSubmit={onSubmit}>
 					<Form.Field required>
-						<label>Position title</label>
+						<label>Position Title</label>
 						<input
 							type="text"
 							name="title"
