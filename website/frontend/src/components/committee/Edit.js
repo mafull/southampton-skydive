@@ -115,7 +115,7 @@ class Edit extends Component {
 		return (
 			<div>
 				<Header size="huge"><Icon name="edit" /> Edit committee position</Header>
-			
+
 				<Form loading={loading || sending} onSubmit={onSubmit}>
 					<Form.Field required>
 						<label>Position title</label>
@@ -140,7 +140,7 @@ class Edit extends Component {
 
 					<Form.Field>
 						<label>User</label>
-						<Select						
+						<Select
 							name="user"
 							placeholder="User"
 							search
@@ -148,7 +148,7 @@ class Edit extends Component {
 							options={userOptions}
 							onChange={(e, d) => onChange({ target: { name: "user", value: d.value }})}>
 						</Select>
-					</Form.Field>				
+					</Form.Field>
 
 					<Button
 						type="submit"
@@ -163,7 +163,7 @@ class Edit extends Component {
 					color="yellow"
 					fluid
 					style={{marginTop: "10px"}}
-					as={Link} 
+					as={Link}
 						to={`/committee/${_id}`}>
 					Cancel
 				</Button>

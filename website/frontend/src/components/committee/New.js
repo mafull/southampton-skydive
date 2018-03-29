@@ -43,7 +43,7 @@ class New extends Component {
 	}
 
 
-	onChange = e => { 
+	onChange = e => {
 		const newState = Object.assign(
 			{},
 			this.state,
@@ -111,7 +111,7 @@ class New extends Component {
 		return (
 			<div>
 				<Header size="huge"><Icon name="plus" /> Add a New Committee Position</Header>
-			
+
 				<Form loading={sending} onSubmit={onSubmit}>
 					<Form.Field required>
 						<label>Position Title</label>
@@ -136,14 +136,14 @@ class New extends Component {
 
 					<Form.Field>
 						<label>User</label>
-						<Select						
+						<Select
 							name="user"
 							placeholder="User"
 							search
 							value={user}
 							options={userOptions}
 							onChange={(e, d) => onChange({ target: { name: "user", value: d.value }})} />
-					</Form.Field>				
+					</Form.Field>
 
 					<Button
 						type="submit"
@@ -158,7 +158,7 @@ class New extends Component {
 					color="yellow"
 					fluid
 					style={{marginTop: "10px"}}
-					as={Link} 
+					as={Link}
 						to="/committee">
 					Cancel
 				</Button>

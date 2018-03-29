@@ -18,7 +18,7 @@ router.get("/", (req, res) => {
 			["tier", 1]
 		])
 		.exec((err, foundPositions) => {
-			if(err) {
+			if (err) {
 				return res.status(404).send("Unable to retrieve committee position data");
 			}
 
@@ -33,11 +33,11 @@ router.post("/", /*middleware.isLoggedIn, */(req, res) => {
 	let tier = 4;
 	const titleLow = req.body.title.toLowerCase();
 
-	if((titleLow == "president") || (titleLow.indexOf("chair") >= 0)) {
+	if ((titleLow == "president") || (titleLow.indexOf("chair") >= 0)) {
 		tier = 1;
-	} else if(titleLow.indexOf("vice") >= 0) {
+	} else if (titleLow.indexOf("vice") >= 0) {
 		tier = 2;
-	} else if(titleLow == "treasurer") {
+	} else if (titleLow == "treasurer") {
 		tier = 3;
 	}
 
@@ -49,8 +49,24 @@ router.post("/", /*middleware.isLoggedIn, */(req, res) => {
 	};
 
 	CommitteePosition.create(newPosition, (err, createdPosition) => {
-		if(err) {
+		if (err) {
 			return res.status(404).send("Unable to save committee position data");
+		}
+
+		if (createdPosition.user) {
+			User.findById(createdPosition.user, (err, foundUser) => {
+				if (err) {
+					return res.status(404).send("Unable to retrieve committee position data");
+				}
+
+				foundUser.committeePosition = createdPosition._id;
+				foundUser.isCommittee = true;
+				foundUser.save(err => {
+					if (err) {
+						return res.status(404).send("Unable to retrieve committee position data");
+					}
+				});
+			});
 		}
 
 		res.json({});
@@ -64,7 +80,7 @@ router.get("/:id", (req, res) => {
 		.findById(req.params.id)
 		.populate("user")
 		.exec((err, foundPosition) => {
-			if(err) {
+			if (err) {
 				return res.status(404).send("Unable to retrieve committee position data");
 			}
 
@@ -77,7 +93,7 @@ router.get("/:id", (req, res) => {
 // Edit
 router.get("/:id/edit", /*middleware.isLoggedIn, */(req, res) => {
 	CommitteePosition.findById(req.params.id, (err, foundPosition) => {
-		if(err) {
+		if (err) {
 			return res.status(404).send("Unable to retrieve committee position data");
 		}
 
@@ -93,11 +109,11 @@ router.get("/:id/edit", /*middleware.isLoggedIn, */(req, res) => {
 				["surname", 1]
 			])
 			.exec((err, foundUsers) => {
-				if(err) {
+				if (err) {
 					return res.status(404).send("Unable to retrieve committee position data");
 				}
 
-				res.json({ 
+				res.json({
 					position: foundPosition,
 					users: foundUsers
 				});
@@ -152,7 +168,7 @@ router.put("/:id", /*middleware.isLoggedIn, */(req, res) => {
 						return res.status(404).send("Unable to retrieve committee position data");
 					}
 				});
-			});	
+			});
 		}
 
 		// Find the position tier
