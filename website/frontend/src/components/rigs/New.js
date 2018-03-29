@@ -5,7 +5,8 @@ import {
 	Header,
 	Icon,
 	Form,
-	Button
+	Button,
+	Select
 }							from "semantic-ui-react";
 
 
@@ -22,8 +23,31 @@ class New extends Component {
 
 		reserveMake: "",
 		reserveModel: "",
-		reserveSize: ""
+		reserveSize: "",
+
+		approvedUsers: [],
+
+		users: []
 	};
+
+
+	componentDidMount() {
+		axios
+			.get("/users")
+			.then(response => {
+				const users = response.data;
+
+				const newState = Object.assign(
+					{},
+					this.state,
+					{ users }
+				);
+				this.setState(newState);
+			})
+			.catch(error => {
+				console.log(error.response);
+			});
+	}
 
 
 	onChange = e => {
@@ -54,7 +78,8 @@ class New extends Component {
 
 		const data = {
 			name: this.state.name,
-			equipment
+			equipment,
+			approvedUsers: this.state.approvedUsers
 		};
 
 		axios
@@ -80,7 +105,11 @@ class New extends Component {
 
 			reserveMake,
 			reserveModel,
-			reserveSize
+			reserveSize,
+
+			approvedUsers,
+
+			users
 		} = this.state;
 
 		const {
@@ -88,6 +117,19 @@ class New extends Component {
 			onSubmit
 		} = this;
 
+		let userOptions = [];
+		userOptions.push({
+			text: "None",
+			value: "",
+			//image: {avatar: true, src: "/assets/images/avatar/small/jenny.jpg"}
+		});
+		users.forEach(u => {
+			userOptions.push({
+				text: u.forename + " " + u.surname,
+				value: u._id,
+				//image
+			});
+		});
 
 		if(this.state.redirect) {
 			return <Redirect to="/rigs" />
@@ -170,6 +212,18 @@ class New extends Component {
 								onChange={onChange} />
 						</Form.Field>
 					</Form.Group>
+
+					<Form.Field>
+						<label>Approved Users</label>
+						<Select
+							name="approvedUsers"
+							placeholder="Approved users"
+							search
+							multiple
+							value={approvedUsers}
+							options={userOptions}
+							onChange={(e, d) => onChange({ target: { name: "approvedUsers", value: d.value }})} />
+					</Form.Field>
 
 					<Button
 						type="submit"

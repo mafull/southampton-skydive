@@ -35,7 +35,8 @@ router.post("/", /*middleware.isLoggedIn, */(req, res) => {
 	var rig = {
 		name: req.body.name,
 		main: req.body.equipment.main,
-		equipment: req.body.equipment
+		equipment: req.body.equipment,
+		approvedUsers: req.body.approvedUsers
 	};	
 
 	Rig.create(rig, function(err, rig) {

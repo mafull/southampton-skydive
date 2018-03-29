@@ -142,8 +142,7 @@ class New extends Component {
 							search
 							value={user}
 							options={userOptions}
-							onChange={(e, d) => onChange({ target: { name: "user", value: d.value }})}>
-						</Select>
+							onChange={(e, d) => onChange({ target: { name: "user", value: d.value }})} />
 					</Form.Field>				
 
 					<Button
