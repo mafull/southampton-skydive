@@ -56,9 +56,7 @@ class New extends Component {
 			this.state,
 			{ [e.target.name]: e.target.value }
 		);
-		this.setState(newState, () => {
-			console.table(this.state);
-		});
+		this.setState(newState);
 
 	}
 
