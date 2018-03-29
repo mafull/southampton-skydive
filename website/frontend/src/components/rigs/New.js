@@ -57,9 +57,9 @@ class New extends Component {
 			{ [e.target.name]: e.target.value }
 		);
 		this.setState(newState, () => {
-			console.table(this.state);	
+			console.table(this.state);
 		});
-		
+
 	}
 
 
@@ -121,11 +121,6 @@ class New extends Component {
 		} = this;
 
 		let userOptions = [];
-		userOptions.push({
-			text: "None",
-			value: "",
-			//image: {avatar: true, src: "/assets/images/avatar/small/jenny.jpg"}
-		});
 		users.forEach(u => {
 			userOptions.push({
 				text: u.forename + " " + u.surname,
@@ -225,7 +220,14 @@ class New extends Component {
 							multiple
 							value={approvedUsers}
 							options={userOptions}
-							onChange={(e, d) => onChange({ target: { name: "approvedUsers", value: d.value }})} />
+							onChange={(e, d) =>
+								onChange({
+									target: {
+										name: "approvedUsers",
+										value: d.value
+									}
+								})
+							} />
 					</Form.Field>
 
 					<Button
@@ -240,8 +242,8 @@ class New extends Component {
 				<Button
 					color="yellow"
 					fluid
-					style={{marginTop: "10px"}}
-					as={Link} 
+					style={{ marginTop: "10px" }}
+					as={Link}
 						to="/rigs">
 					Cancel
 				</Button>
