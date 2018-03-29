@@ -22,11 +22,11 @@ router.get("/", (req, res) => {
 		.exec((err, rigs) => {
 			if (err) {
 				return res.status(404).send("Unable to retrieve rig data");
-			}	
+			}
 
 			// Return rig data
-			res.json(rigs);	
-		});	
+			res.json(rigs);
+		});
 });
 
 
@@ -37,7 +37,7 @@ router.post("/", /*middleware.isLoggedIn, */(req, res) => {
 		main: req.body.equipment.main,
 		equipment: req.body.equipment,
 		approvedUsers: req.body.approvedUsers
-	};	
+	};
 
 	Rig.create(rig, (err, createdRig) => {
 		if (err) {
@@ -90,16 +90,16 @@ router.get("/:id", (req, res) => {
 			}
 
 			// Return rig data
-			res.json(foundRig);					
-		});	
+			res.json(foundRig);
+		});
 });
 
 
 // Edit
-router.get("/:id/edit", middleware.isLoggedIn, (req, res) => {
+router.get("/:id/edit", /*middleware.isLoggedIn, */(req, res) => {
 	Rig.findById(req.params.id, (err, foundRig) => {
 		if (err) {
-			return res.status(404).send("Unable to retrieve rig data");
+			return res.status(404).send("Unable to retrieve rig data 0");
 		}
 
 		User
@@ -113,10 +113,10 @@ router.get("/:id/edit", middleware.isLoggedIn, (req, res) => {
 					return res.status(404).send("Unable to retrieve rig data");
 				}
 
-				res.render("rigs/edit", {rig: foundRig, users: users});
+				res.json({ rig: foundRig, users: users });
 			});
 	});
-	
+
 });
 
 
@@ -164,7 +164,7 @@ router.put("/:id", middleware.isLoggedIn, function(req, res) {
 
 					});
 				});
-			}			
+			}
 		});
 
 
@@ -200,9 +200,9 @@ router.put("/:id", middleware.isLoggedIn, function(req, res) {
 						}
 					});
 				});
-			}			
+			}
 		});
-		
+
 		existingRig.name = req.body.name;
 		existingRig.modified = Date.now();
 		existingRig.main = req.body.main;
@@ -216,7 +216,7 @@ router.put("/:id", middleware.isLoggedIn, function(req, res) {
 
 			req.flash("success", "Rig successfully updated");
 			res.redirect("/rigs/" + req.params.id);
-		});		
+		});
 	});
 });
 
@@ -365,7 +365,7 @@ router.post("/:id/booking", middleware.isLoggedIn, function(req, res) {
 					return console.log(err.message);
 				}
 				foundBookings.push(populated);
-				res.json(foundBookings);				
+				res.json(foundBookings);
 			});
 		});
 	});
