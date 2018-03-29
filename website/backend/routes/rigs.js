@@ -39,10 +39,25 @@ router.post("/", /*middleware.isLoggedIn, */(req, res) => {
 		approvedUsers: req.body.approvedUsers
 	};	
 
-	Rig.create(rig, function(err, rig) {
-		if(err) {
+	Rig.create(rig, (err, createdRig) => {
+		if (err) {
 			return res.status(404).send("Unable to save rig data");
 		}
+
+		rig.approvedUsers.forEach(userId => {
+			User.findById(userId, (err, foundUser) => {
+				if (err) {
+					return res.status(404).send("Unable to save rig data");
+				}
+
+				foundUser.approvedRigs.push(createdRig._id);
+				foundUser.save(err => {
+					if(err) {
+						return res.status(404).send("Unable to save rig data");
+					}
+				});
+			});
+		});
 
 		res.json({});
 	});
@@ -207,39 +222,38 @@ router.put("/:id", middleware.isLoggedIn, function(req, res) {
 
 
 // Destroy
-router.delete("/:id", middleware.isLoggedIn, function(req, res) {
-	Rig.findById(req.params.id).populate("approvedUsers").exec(function(err, foundRig) {
-		if(err) {
-			req.flash("error", err.message);
-			return res.redirect("back");
-		}
-
-		// Delete all instances of the rig in approved users
-		foundRig.approvedUsers.forEach(function(user) {
-			var currentApproved = user.toJSON().approvedRigs;
-			user.approvedRigs = currentApproved.filter(e => !e.equals(foundRig._id));
-			user.save(function(err) {
-				if(err) {
-					req.flash("error", err.message);
-					return res.redirect("back");
-				}
-			});
-		});
-
-		// TODO - Delete all instances of the rig in rig bookings
-		// + those bokings from users
-
-		// Delete the rig
-		foundRig.remove(function(err) {
-			if(err) {
-				req.flash("error", err.message);
-				return res.redirect("back");
+router.delete("/:id", /*middleware.isLoggedIn, */(req, res) => {
+	Rig
+		.findById(req.params.id)
+		.populate("approvedUsers")
+		.exec((err, foundRig) => {
+			if (err) {
+				return res.status(404).send("Unable to retrieve rig data");
 			}
 
-			req.flash("success", "Rig successfully deleted");
-			res.redirect("/rigs");
+			// Delete all instances of the rig in approved users
+			foundRig.approvedUsers.forEach(user => {
+				let currentApproved = user.toJSON().approvedRigs;
+				user.approvedRigs = currentApproved.filter(e => !e.equals(foundRig._id));
+				user.save(err => {
+					if (err) {
+						return res.status(404).send("Unable to retrieve rig data");
+					}
+				});
+			});
+
+			// TODO - Delete all instances of the rig in rig bookings
+			// + those bokings from users
+
+			// Delete the rig
+			foundRig.remove(err => {
+				if(err) {
+					return res.status(404).send("Unable to retrieve rig data");
+				}
+
+				res.json({});
+			});
 		});
-	});
 });
 
 

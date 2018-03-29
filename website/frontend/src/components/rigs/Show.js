@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import axios 				from "axios";
-import { Link } 			from "react-router-dom";
+import { Link, Redirect }	from "react-router-dom";
 import {
 	Header,
 	Icon,
@@ -13,8 +13,23 @@ import {
 class Show extends Component {
 	state = {
 		_id: this.props.match.params._id,
-		loaded: false
+		loaded: false,
+		redirect: false
 	};
+
+
+	onDelete = () => {
+		console.log("Delete");
+
+		axios
+			.delete("/rigs/" + this.state._id)
+			.then(response => {
+				this.setState({ redirect: true });
+			})
+			.catch(error => {
+				console.log(error.response);
+			});
+	}
 
 
 	componentDidMount() {
@@ -39,7 +54,9 @@ class Show extends Component {
 	render() {
 		const { 
 			loaded,
+			redirect,
 
+			_id,
 			name,
 			equipment,
 			approvedUsers,
@@ -51,6 +68,10 @@ class Show extends Component {
 			main,
 			reserve
 		} = equipment ? equipment : {};
+
+		const {
+			onDelete
+		} = this;
 
 		const mainContent = (main && main.make && main.model && main.size) ? <p>{main.make} <strong>{main.model + " " + main.size}</strong></p> : <p><i>Unknown</i></p>;
 		const reserveContent = (reserve && reserve.make && reserve.model && reserve.size) ? <p>{reserve.make} <strong>{reserve.model + " " + reserve.size}</strong></p> : <p><i>Unknown</i></p>;
@@ -78,6 +99,10 @@ class Show extends Component {
 			</div>
 			: null;
 		
+		if (redirect) {
+			return <Redirect to="/rigs" />
+		}
+
 		return (
 			<div>
 				<Header size="huge"><Icon name="umbrella" />{name}</Header>
@@ -107,6 +132,21 @@ class Show extends Component {
 					as={Link}
 						to="/rigs/">
 					View all Rigs
+				</Button>
+
+				<Button
+					color="yellow"
+					style={{marginTop: "10px"}}
+					as={Link}
+						to={`/rigs/${_id}/edit`}>
+					Edit
+				</Button>
+
+				<Button
+					color="red"
+					style={{marginTop: "10px"}}
+					onClick={onDelete}>
+					Delete
 				</Button>
 			</div>
 		);
