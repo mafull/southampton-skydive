@@ -34,7 +34,6 @@ router.get("/", (req, res) => {
 router.post("/", /*middleware.isLoggedIn, */(req, res) => {
 	var rig = {
 		name: req.body.name,
-		main: req.body.equipment.main,
 		equipment: req.body.equipment,
 		approvedUsers: req.body.approvedUsers
 	};
@@ -116,7 +115,6 @@ router.get("/:id/edit", /*middleware.isLoggedIn, */(req, res) => {
 				res.json({ rig: foundRig, users: users });
 			});
 	});
-
 });
 
 
