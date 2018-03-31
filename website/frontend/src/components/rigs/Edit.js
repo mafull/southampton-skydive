@@ -45,13 +45,13 @@ class Edit extends Component {
 				const { main, reserve } = equipment;
 
 				const reformatted = {
-					mainMake: main.make,
+					mainMake: main.make ,
 					mainModel: main.model,
-					mainSize: main.size,
+					mainSize: main.size || "",
 
 					reserveMake: reserve.make,
 					reserveModel: reserve.model,
-					reserveSize: reserve.size
+					reserveSize: reserve.size || ""
 				}
 
 				const newState = Object.assign(
@@ -78,10 +78,7 @@ class Edit extends Component {
 			this.state,
 			{ [e.target.name]: e.target.value }
 		);
-		this.setState(newState, () => {
-			console.table(this.state);
-		});
-
+		this.setState(newState);
 	}
 
 
@@ -108,7 +105,7 @@ class Edit extends Component {
 		};
 
 		axios
-			.post("/rigs", data)
+			.put(`/rigs/${this.state._id}`, data)
 			.then(response => {
 				this.setState({ redirect: true });
 			})
@@ -158,7 +155,7 @@ class Edit extends Component {
 
 		return (
 			<div>
-				<Header size="huge"><Icon name="plus" /> Add a New Rig</Header>
+				<Header size="huge"><Icon name="plus" /> Edit Rig</Header>
 
 				<Form loading={loading || sending} onSubmit={onSubmit}>
 					<Form.Field required>
@@ -258,7 +255,7 @@ class Edit extends Component {
 						fluid
 						size="big"
 						color="blue">
-						Add
+						Update
 					</Button>
 				</Form>
 

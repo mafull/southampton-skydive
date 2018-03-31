@@ -119,24 +119,23 @@ router.get("/:id/edit", /*middleware.isLoggedIn, */(req, res) => {
 
 
 // Update
-router.put("/:id", middleware.isLoggedIn, function(req, res) {
-	var approvedUsers = req.body.approvedUsers.length ? req.body.approvedUsers.split(',') : [];
+router.put("/:id", /*middleware.isLoggedIn, */(req, res) => {
+	var approvedUsers = req.body.approvedUsers;
 
-	Rig.findById(req.params.id, function(err, existingRig) {
+	Rig.findById(req.params.id, (err, existingRig) => {
 		if (err) {
-			req.flash("error", err.message);
-			return res.redirect("back");
+			return res.status(404).send("Unable to retrieve rig data");
 		}
 
 		var prevApprovedUsers = existingRig.toJSON().approvedUsers;
 
 		// Add all new users
-		approvedUsers.forEach(function(user) {
+		approvedUsers.forEach(user => {
 			var exists = false;
 
 			// Check if user was present in previous array
-			prevApprovedUsers.some(function(prevUser) {
-				if (prevUser.equals(user)) {
+			prevApprovedUsers.some(u => {
+				if (u.equals(user)) {
 					// Found user
 					exists = true;
 					return exists;
@@ -145,19 +144,17 @@ router.put("/:id", middleware.isLoggedIn, function(req, res) {
 
 			// If new user
 			if (!exists) {
-				User.findById(user, function(err, foundUser) {
+				User.findById(user, (err, foundUser) => {
 					if (err) {
-						req.flash("error", err.message);
-						return res.redirect("back");
+						return res.status(404).send("Unable to retrieve rig data");
 					}
 
 					if (!foundUser.toJSON().approvedRigs.filter(e => e.equals(existingRig._id)).length) {
 						foundUser.approvedRigs.push(existingRig._id);
 					}
-					foundUser.save(function(err) {
+					foundUser.save(err => {
 						if (err) {
-							req.flash("error", err.message);
-							return res.redirect("back");
+							return res.status(404).send("Unable to retrieve rig data");
 						}
 
 					});
@@ -167,12 +164,12 @@ router.put("/:id", middleware.isLoggedIn, function(req, res) {
 
 
 		// Update all removed users
-		prevApprovedUsers.forEach(function(prevUser) {
+		prevApprovedUsers.forEach(prevUser => {
 			var exists = false;
 
 			// Check if user is present in new array
-			approvedUsers.some(function(user) {
-				if (prevUser.equals(user)) {
+			approvedUsers.some(u => {
+				if (prevUser.equals(u)) {
 					// Found user
 					exists = true;
 					return exists;
@@ -181,20 +178,17 @@ router.put("/:id", middleware.isLoggedIn, function(req, res) {
 
 			// If removed user
 			if (!exists) {
-				console.log("USER REMOVED: ");
-				User.findById(prevUser, function(err, foundUser) {
-					if(err) {
-						req.flash("error", err.message);
-						return res.redirect("back");
+				User.findById(prevUser, (err, foundUser) => {
+					if (err) {
+						return res.status(404).send("Unable to retrieve rig data");
 					}
 
 					// Remove rig from user
 					var currentApproved = foundUser.toJSON().approvedRigs;
 					foundUser.approvedRigs = currentApproved.filter(e => !e.equals(existingRig._id));
-					foundUser.save(function(err) {
-						if(err) {
-							req.flash("error", err.message);
-							return res.redirect("back");
+					foundUser.save(err => {
+						if (err) {
+							return res.status(404).send("Unable to retrieve rig data");
 						}
 					});
 				});
@@ -203,17 +197,14 @@ router.put("/:id", middleware.isLoggedIn, function(req, res) {
 
 		existingRig.name = req.body.name;
 		existingRig.modified = Date.now();
-		existingRig.main = req.body.main;
-		existingRig.reserve = req.body.reserve;
+		existingRig.equipment = req.body.equipment;
 		existingRig.approvedUsers = approvedUsers;
-		existingRig.save(function(err) {
-			if(err) {
-				req.flash("error", err.message);
-				return res.redirect("back");
+		existingRig.save(err => {
+			if (err) {
+				return res.status(404).send("Unable to retrieve rig data");
 			}
 
-			req.flash("success", "Rig successfully updated");
-			res.redirect("/rigs/" + req.params.id);
+			res.json({});
 		});
 	});
 });
