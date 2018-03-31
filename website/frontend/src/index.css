@@ -1,7 +1,13 @@
+html {
+	overflow: hidden;
+}
+
 body {
 	margin: 0;
 	padding: 0;
 	text-align: center;
+	overflow: auto;
+	height: 100%;
 }
 
 .container.main {
