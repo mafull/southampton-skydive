@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link } 			from "react-router-dom";
+//import { Link } 			from "react-router-dom";
 import {
 	Header,
 	Divider
@@ -26,13 +26,13 @@ class Training extends Component {
 				<p>
 					Once you become a <i>qualified</i> skydiver, you are presented with a BPA (British Parachute Association) licence book,
 					with which you are then permitted to turn up to almost any dropzone around the world and skydive!
-				</p> 
+				</p>
 				<p>
 					Becoming qualified means obtaining your <strong>A licence</strong>.
 					This can be done through one of two possible training methods - <strong>CS</strong> and <strong>AFF</strong>.
 				</p>
 				<p>
-					Both methods have their pros and cons but, ultimately, they both get you the same qualification and both mean you get to jump out of planes in your spare time! 
+					Both methods have their pros and cons but, ultimately, they both get you the same qualification and both mean you get to jump out of planes in your spare time!
 				</p>
 			</div>
 		);
@@ -50,7 +50,7 @@ class Training extends Component {
 					To begin with, you jump out of the plane at roughly <strong>3500-4000ft</strong>.
 					Your parachute's deployment bag is attached to the plane via a <strong>static line</strong>;
 					this opens your parachute (often called a <strong>canopy</strong>) automatically, as soon as you exit.
-					Because of this, you don't have as much to think about during the jump as your friends doing AFF, who have to remember the freefall side of things as well! 
+					Because of this, you don't have as much to think about during the jump as your friends doing AFF, who have to remember the freefall side of things as well!
 				</p>
 				<p>
 					Once you've done a few more jumps, you progress onto freefall, where you are responsible for deploying your own canopy.
@@ -80,7 +80,7 @@ class Training extends Component {
 
 				<Header size="medium">Category System (CS)</Header>
 				{csContent}
-				
+
 				<Divider horizontal section>Option B</Divider>
 
 				<Header size="large">Accelerated Freefall (AFF)</Header>
