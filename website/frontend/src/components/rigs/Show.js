@@ -19,8 +19,6 @@ class Show extends Component {
 
 
 	onDelete = () => {
-		console.log("Delete");
-
 		axios
 			.delete("/rigs/" + this.state._id)
 			.then(response => {
@@ -52,7 +50,7 @@ class Show extends Component {
 
 
 	render() {
-		const { 
+		const {
 			loaded,
 			redirect,
 
@@ -98,7 +96,7 @@ class Show extends Component {
 				<Item>{modifiedDate}</Item>
 			</div>
 			: null;
-		
+
 		if (redirect) {
 			return <Redirect to="/rigs" />
 		}
