@@ -3,8 +3,10 @@ import mongoose 			from "mongoose";
 
 import middleware 			from "../middleware";
 
-import CommitteePosition 	from "../models/committeePosition";
-import User 				from "../models/user";
+import {
+	CommitteePosition,
+	User
+} 							from "../models/all";
 
 const router = express.Router();
 

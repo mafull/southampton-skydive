@@ -20,4 +20,4 @@ var rigBookingSchema = new mongoose.Schema({
 	priority: {type: Number, default: -1}
 });
 
-module.exports = mongoose.model("RigBooking", rigBookingSchema);
+export default mongoose.model("RigBooking", rigBookingSchema);

@@ -3,9 +3,11 @@ import mongoose 	from "mongoose";
 
 import middleware 	from "../middleware";
 
-import Rig 			from "../models/rig";
-import RigBooking 	from "../models/rigBooking";
-import User 		from "../models/user";
+import {
+	Rig,
+	RigBooking,
+	User
+} 					from "../models/all";
 
 const router = express.Router();
 

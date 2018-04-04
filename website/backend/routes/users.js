@@ -2,8 +2,10 @@ import express 		from "express";
 
 import middleware 	from "../middleware";
 
-import User 		from "../models/user";
-import Rig 			from "../models/rig";
+import {
+	User,
+	Rig
+} 					from "../models/all";
 
 const router = express.Router();
 

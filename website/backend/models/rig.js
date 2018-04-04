@@ -21,7 +21,7 @@ var rigSchema = new mongoose.Schema({
 			model: {type: String, default: ""},
 			size: {type: Number, default: 0}
 		}
-	},	
+	},
 
 	// Users that are allowed to use the rig
 	approvedUsers: [
@@ -44,4 +44,4 @@ var rigSchema = new mongoose.Schema({
 	]
 });
 
-module.exports = mongoose.model("Rig", rigSchema);
+export default mongoose.model("Rig", rigSchema);

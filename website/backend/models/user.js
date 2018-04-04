@@ -15,6 +15,14 @@ var userSchema = new mongoose.Schema({
 	created: {type: Date, default: Date.now},
 	modified: {type: Date, default: Date.now},
 
+	// Additional login options
+	facebook: {
+		id: String,
+		token: String,
+		email: String,
+		name: String
+	},
+
 	// User level
 	isAdmin: {type: Boolean, default: false},
 	isCommittee: {type: Boolean, default: false},
@@ -48,4 +56,4 @@ var userSchema = new mongoose.Schema({
 });
 userSchema.plugin(passportLocalMongoose);
 
-module.exports = mongoose.model("User", userSchema);
+export default mongoose.model("User", userSchema);

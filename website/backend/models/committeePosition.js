@@ -1,8 +1,9 @@
-var mongoose = require("mongoose");
+import mongoose from "mongoose";
 
-var User = require("./user");
+import User from "./user";
 
-var committeePositionSchema = new mongoose.Schema({
+
+const committeePositionSchema = new mongoose.Schema({
 	title: String,
 	tier: Number,
 	description: String,
@@ -16,4 +17,4 @@ var committeePositionSchema = new mongoose.Schema({
 	modified: {type: Date, default: Date.now}
 });
 
-module.exports = mongoose.model("CommitteePosition", committeePositionSchema);
+export default mongoose.model("CommitteePosition", committeePositionSchema);
