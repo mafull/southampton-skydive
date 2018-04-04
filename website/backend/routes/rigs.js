@@ -7,7 +7,7 @@ import {
 	Rig,
 	RigBooking,
 	User
-} 					from "../models/all";
+} 					from "../models";
 
 const router = express.Router();
 

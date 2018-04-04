@@ -5,7 +5,7 @@ import middleware 	from "../middleware";
 import {
 	User,
 	Rig
-} 					from "../models/all";
+} 					from "../models";
 
 const router = express.Router();
 

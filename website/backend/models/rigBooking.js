@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import {
 	Rig,
 	User
-}				from "./all";
+}				from ".";
 
 
 const rigBookingSchema = new mongoose.Schema({

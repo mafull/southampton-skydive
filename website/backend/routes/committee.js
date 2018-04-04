@@ -6,7 +6,7 @@ import middleware 			from "../middleware";
 import {
 	CommitteePosition,
 	User
-} 							from "../models/all";
+} 							from "../models";
 
 const router = express.Router();
 

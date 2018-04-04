@@ -5,7 +5,7 @@ import {
 	CommitteePosition,
 	Rig,
 	RigBooking
-}								from "./all";
+}								from ".";
 
 
 const userSchema = new mongoose.Schema({
