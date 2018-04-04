@@ -1,6 +1,5 @@
 import express 			from "express";
 import bodyParser 		from "body-parser";
-import request 			from "request";
 import mongoose 		from "mongoose";
 import methodOverride 	from "method-override";
 
@@ -16,12 +15,11 @@ const app = express();
 //mongoose.connect("mongodb://localhost/skydive_website");
 mongoose.connect("mongodb://UoSAdmin:admin123@ds211588.mlab.com:11588/uos_skydive_website");
 
-// Set up public directory
-app.use(express.static("public"));
-
-// Configure body parser and method override
+// Configure body parser
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+// Enable method override
 app.use(methodOverride("_method"));
 
 // Declare routes
