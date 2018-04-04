@@ -17,4 +17,5 @@ const committeePositionSchema = new mongoose.Schema({
 	modified: {type: Date, default: Date.now}
 });
 
+
 export default mongoose.model("CommitteePosition", committeePositionSchema);

@@ -1,9 +1,12 @@
-var mongoose = require("mongoose");
+import mongoose from "mongoose";
 
-var Rig = require("./rig");
-var User = require("./user");
+import {
+	Rig,
+	User
+}				from "./all";
 
-var rigBookingSchema = new mongoose.Schema({
+
+const rigBookingSchema = new mongoose.Schema({
 	// General info
 	created: {type: Date, default: Date.now},
 
@@ -19,5 +22,6 @@ var rigBookingSchema = new mongoose.Schema({
 	requirement: {type: String, default: ""},
 	priority: {type: Number, default: -1}
 });
+
 
 export default mongoose.model("RigBooking", rigBookingSchema);

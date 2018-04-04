@@ -1,9 +1,12 @@
-var mongoose = require("mongoose");
+import mongoose from "mongoose";
 
-var RigBooking = require("./rigBooking");
-var User = require("./user");
+import {
+	RigBooking,
+	User
+ } 				from "./all";
 
-var rigSchema = new mongoose.Schema({
+
+const rigSchema = new mongoose.Schema({
 	// General info
 	name: String,
 	created: {type: Date, default: Date.now},
@@ -43,5 +46,6 @@ var rigSchema = new mongoose.Schema({
 		}
 	]
 });
+
 
 export default mongoose.model("Rig", rigSchema);

@@ -1,11 +1,14 @@
-var mongoose 				= require("mongoose"),
-	passportLocalMongoose 	= require("passport-local-mongoose");
+import mongoose 				from "mongoose";
+import passportLocalMongoose 	from "passport-local-mongoose";
 
-var CommitteePosition = require("./committeePosition");
-var Rig = require("./rig");
-var RigBooking = require("./rigBooking");
+import {
+	CommitteePosition,
+	Rig,
+	RigBooking
+}								from "./all";
 
-var userSchema = new mongoose.Schema({
+
+const userSchema = new mongoose.Schema({
 	// General info
 	username: String,
 	password: String,
@@ -55,5 +58,6 @@ var userSchema = new mongoose.Schema({
 
 });
 userSchema.plugin(passportLocalMongoose);
+
 
 export default mongoose.model("User", userSchema);
