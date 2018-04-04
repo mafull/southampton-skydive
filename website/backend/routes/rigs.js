@@ -1,14 +1,13 @@
-var express 	= require("express"),
-	mongoose 	= require("mongoose"),
-	multer		= require("multer");
-var router = express.Router();
-var upload = multer();
+import express 		from "express";
+import mongoose 	from "mongoose";
 
-var middleware = require("../middleware");
+import middleware 	from "../middleware";
 
-var Rig = require("../models/rig");
-var RigBooking = require("../models/rigBooking");
-var User = require("../models/user");
+import Rig 			from "../models/rig";
+import RigBooking 	from "../models/rigBooking";
+import User 		from "../models/user";
+
+const router = express.Router();
 
 
 // Index
@@ -21,7 +20,9 @@ router.get("/", (req, res) => {
 		])
 		.exec((err, rigs) => {
 			if (err) {
-				return res.status(404).send("Unable to retrieve rig data");
+				return res
+					.status(404)
+					.send("Unable to retrieve rig data");
 			}
 
 			// Return rig data
@@ -432,4 +433,5 @@ router.delete("/:id/booking", middleware.isLoggedIn, function(req, res) {
 	});
 });
 
-module.exports = router;
+
+export default router;

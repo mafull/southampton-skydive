@@ -1,12 +1,12 @@
-var express 	= require("express"),
-	mongoose 	= require("mongoose");
-var router = express.Router();
+import express				from "express";
+import mongoose 			from "mongoose";
 
-var middleware = require("../middleware");
+import middleware 			from "../middleware";
 
+import CommitteePosition 	from "../models/committeePosition";
+import User 				from "../models/user";
 
-var CommitteePosition = require("../models/committeePosition");
-var User = require("../models/user");
+const router = express.Router();
 
 
 // Index
@@ -19,7 +19,9 @@ router.get("/", (req, res) => {
 		])
 		.exec((err, foundPositions) => {
 			if (err) {
-				return res.status(404).send("Unable to retrieve committee position data");
+				return res
+					.status(404)
+					.send("Unable to retrieve committee position data");
 			}
 
 			// Return committee position data
@@ -231,4 +233,5 @@ router.delete("/:id", /*middleware.isLoggedIn, */(req, res) => {
 		});
 });
 
-module.exports = router;
+
+export default router;

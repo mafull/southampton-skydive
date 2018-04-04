@@ -1,10 +1,11 @@
-var express = require("express");
-var router = express.Router();
+import express 		from "express";
 
-var middleware = require("../middleware");
+import middleware 	from "../middleware";
 
-var User = require("../models/user");
-var Rig = require("../models/rig");
+import User 		from "../models/user";
+import Rig 			from "../models/rig";
+
+const router = express.Router();
 
 
 // Index
@@ -22,7 +23,7 @@ router.get("/", (req, res) => {
 
 			// Return user data
 			res.json(users);
-		});	
+		});
 });
 
 
@@ -47,8 +48,8 @@ router.get("/:id", (req, res) => {
 
 			// Return user data
 			res.json(foundUser);
-		});	
+		});
 });
 
 
-module.exports = router;
+export default router;
