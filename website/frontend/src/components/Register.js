@@ -12,33 +12,6 @@ import {
 
 import InlineError 			from "./InlineError";
 
-/*
-<div className="ui segment">
-					<form action="/register" method="POST" className="ui form">
-						<div className="field required">
-							<label>First name</label>
-							<input type="text" name="user[forename]" placeholder="First name"
-							<% if(user && user.forename) { %>value="<%= user.forename %>"<% } %> autofocus>
-						</div>
-						<div className="field required">
-							<label>Surname</label>
-							<input type="text" name="user[surname]" placeholder="Surname"
-							<% if(user && user.surname) { %>value="<%= user.surname %>"<% } %>>
-						</div>
-						<div className="field required">
-							<label>Email</label>
-							<input type="text" name="user[email]" placeholder="Email"
-							<% if(user && user.email) { %>value="<%= user.email %>"<% } %>>
-						</div>
-						<div className="field required">
-							<label>Password</label>
-							<input type="password" name="password" placeholder="********">
-						</div>
-						<button type="submit" className="ui fluid blue big button">Register</button>
-					</form>
-				</div>
-*/
-
 
 class Register extends Component {
 	state = {
@@ -63,16 +36,23 @@ class Register extends Component {
 
 
 	onSubmit = () => {
+		// Validate the form inputs
 		const errors = this.validate(this.state.data);
+
+		// Show any errors
 		this.setState({ errors });
+
+		// If no errors, attempt to register
 		if (Object.keys(errors).length === 0) {
 			this.setState({ loading: true });
 			axios
 				.post("/register", this.state.data)
 				.then(response => {
+					// Registration successful, redirect to the new user's page
 					this.setState({ redirectToId: response.data._id });
 				})
 				.catch(error => {
+					// Failed to register
 					console.error(error.response);
 					this.setState({ loading: false });
 				});
@@ -99,6 +79,9 @@ class Register extends Component {
 			data
 		} = this.state;
 
+		if (this.state.redirectToId !== "") {
+			return <Redirect to={`/users/${this.state.redirectToId}`} />
+		}
 
 		return (
 			<div>
